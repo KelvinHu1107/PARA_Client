@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ffffff">
+
+
+    <include
+        layout="@layout/toolbar_register_active" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/page_marge"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/toolbar_login_template"
+            android:layout_marginBottom="@dimen/register_active_left_marge"
+            android:background="@drawable/border_radius"
+            android:orientation="vertical">
+
+
+            <!--android:background="@drawable/border_underline"-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/login_content_height"
+
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="@dimen/login_title_size"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="right"
+                    android:text="@string/active_code"
+                    android:textColor="@color/TitleColor"
+                    android:textSize="@dimen/login_core_font_size" />
+
+                <EditText
+                    android:id="@+id/et_register_active_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="@dimen/register_active_left_marge"
+                    android:background="@drawable/bg_without_underline"
+                    android:hint="@string/active_code_4_digits"
+                    android:inputType="number"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:textColor="@color/inputColor"
+                    android:textSize="@dimen/login_core_font_size" />
+            </LinearLayout>
+        </LinearLayout>
+
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="We are sending a verifying message with active code your phone,"
+            android:textSize="@dimen/login_small_font_size" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="please enter above to active your account"
+            android:layout_marginBottom="@dimen/register_active_gap_bottom"
+            android:textSize="@dimen/login_small_font_size" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/register_active_gap_bottom"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/register_send_again"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Not receiving message? "
+                android:textColor="@color/inputColor"
+                android:textSize="@dimen/login_core_font_size" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/send_again"
+                android:textColor="@color/inputColor"
+                android:textSize="@dimen/login_core_font_size" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Still not receiving? "
+                android:textColor="@color/inputColor"
+                android:textSize="@dimen/login_core_font_size" />
+
+            <TextView
+                android:id="@+id/check_phone_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/check_phone_number"
+                android:textColor="@color/inputColor"
+                android:textSize="@dimen/login_core_font_size" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

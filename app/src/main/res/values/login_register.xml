@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--string-->
+    <string name="email_title">Email Address</string>
+    <string name="password">Password</string>
+    <string name="phone_number">Phone number</string>
+    <string name="first_name">First name</string>
+    <string name="last_name">Last name</string>
+    <string name="confirm_password">Confirm password</string>
+    <string name="no_account"><u>No account?</u></string>
+    <string name="forget_password"><u>Forget password?</u></string>
+    <string name="active_code">Active Code</string>
+    <string name="active_code_4_digits">4 digits active code</string>
+    <string name="send_again"><u>Send again</u></string>
+    <string name="check_phone_number"><u>Please Check your phone number</u></string>
+
+    <!--dimen-->
+    <dimen name="login_title_size">120dp</dimen>
+    <dimen name="login_input_left_marge">2dp</dimen>
+    <dimen name="login_content_height">50dp</dimen>
+    <dimen name="login_core_font_size">13sp</dimen>
+    <dimen name="login_small_font_size">10sp</dimen>
+    <dimen name="register_active_left_marge">8dp</dimen>
+    <dimen name="register_active_gap_bottom">20dp</dimen>
+    <!--color-->
+
+</resources>
