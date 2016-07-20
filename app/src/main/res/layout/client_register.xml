@@ -219,8 +219,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="We will send payment detail and invoice to your phone and email address."
-                android:textSize="@dimen/login_small_font_size" />
+                android:text="... can not be empty"
+                android:textSize="16sp"
+                android:textColor="#f3736f"
+                android:id="@+id/textView_register_warning"
+                android:visibility="invisible" />
 
 
             <ImageView

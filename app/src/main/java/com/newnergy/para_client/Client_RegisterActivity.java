@@ -22,13 +22,16 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private EditText EtLastName;
     private TextView tvToolbarNext;
     private TextView tvToolbarBack;
-
+    private TextView tvWarningMessage;
+    private int warningFlag = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_register);
+
         initComponent();
+        tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();
 
     }
@@ -43,6 +46,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
         EtLastName = (EditText) findViewById(R.id.et_register_last_name);
         tvToolbarNext = (TextView) findViewById(R.id.toolbar_register_next);
         tvToolbarBack = (TextView) findViewById(R.id.toolbar_register_back);
+        tvWarningMessage = (TextView) findViewById(R.id.textView_register_warning);
 
     }
 
@@ -62,6 +66,40 @@ public class Client_RegisterActivity extends AppCompatActivity {
                 final String emailAddress = EtEmail.getText().toString();
                 final String firstName = EtFirstName.getText().toString();
                 final String lastName = EtLastName.getText().toString();
+
+                if(password.equals("")){
+
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, password cant not be empty!");
+                }
+                else if (confirmPassword.equals("")){
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, password must be confirmed!");
+                }
+                else if(phoneNumber.equals("")){
+
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, phone number cant not be empty!");
+                }
+                else if(emailAddress.equals("")){
+
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, email address cant not be empty!");
+                }
+               else if(firstName.equals("")) {
+
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, first name cant not be empty!");
+                }
+                else if(lastName.equals("")){
+
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, last name cant not be empty!");
+                }
+                else{
+                    tvWarningMessage.setVisibility(View.INVISIBLE);
+                }
+
                 if (password.equals("") || confirmPassword.equals("") || phoneNumber.equals("") || emailAddress.equals("") || firstName.equals("") || lastName.equals("")) {
                     Toast.makeText(Client_RegisterActivity.this, "Sorry, every column must be filled", Toast.LENGTH_LONG).show();
                 } else {

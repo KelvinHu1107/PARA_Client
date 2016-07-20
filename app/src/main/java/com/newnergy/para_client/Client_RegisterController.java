@@ -17,6 +17,7 @@ public class Client_RegisterController extends AsyncTask<String, String, Boolean
         onResponse(result);
     }
 
+
     public void onResponse(Boolean result) {
     }
 }

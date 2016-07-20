@@ -52,9 +52,10 @@
                     android:lines="1"
                     android:singleLine="true"
                     android:textColor="@color/inputColor"
-                    android:textSize="@dimen/login_core_font_size"
+                    android:textSize="16sp"
                     android:layout_marginRight="25dp"
-                    android:hint="Enter here" />
+                    android:hint="Enter here"
+                    android:textColorHint="#f3736f" />
             </LinearLayout>
 
             <ImageView
@@ -81,18 +82,28 @@
                     android:id="@+id/et_login_password"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:inputType="textPassword"
                     android:layout_marginLeft="25dp"
+                    android:inputType="textEmailAddress"
                     android:layout_gravity="center_vertical"
                     android:background="@drawable/bg_without_underline"
                     android:lines="1"
                     android:singleLine="true"
                     android:textColor="@color/inputColor"
-                    android:textSize="@dimen/login_core_font_size"
+                    android:textSize="16sp"
                     android:layout_marginRight="25dp"
-                    android:hint="Enter here" />
+                    android:hint="Enter here"
+                    android:textColorHint="#f3736f" />
             </LinearLayout>
         </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="New Text"
+            android:id="@+id/textView_logIn_warning"
+            android:textColor="#f3736f"
+            android:textSize="16sp"
+            android:visibility="visible" />
 
         <ImageView
             android:layout_width="match_parent"

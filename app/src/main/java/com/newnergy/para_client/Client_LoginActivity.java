@@ -22,6 +22,7 @@ public class Client_LoginActivity extends AppCompatActivity {
     private EditText EtEmail;
     private EditText EtPassword;
     private TextView TvToolbarDone;
+    private TextView tvWarningMessage;
     ImageView vx;
     ImageView yx;
     private ArrayList<JobServiceViewModel> allJobServiceModel;
@@ -31,6 +32,9 @@ public class Client_LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_login);
         initComponent();
+        EtEmail.setHint("");
+        EtPassword.setHint("");
+        tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();
     }
 
@@ -39,6 +43,7 @@ public class Client_LoginActivity extends AppCompatActivity {
         EtPassword = (EditText) findViewById(R.id.et_login_password);
         toolbar = (Toolbar) findViewById(R.id.toolbar_login_template);
         TvToolbarDone = (TextView) findViewById(R.id.toolbar_done);
+        tvWarningMessage = (TextView) findViewById(R.id.textView_logIn_warning);
 
     }
 
@@ -54,20 +59,38 @@ public class Client_LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String email = EtEmail.getText().toString();
                 String password = EtPassword.getText().toString();
-                if (email.equals("") || password.equals("")) {
-                    Toast.makeText(Client_LoginActivity.this, "Neither email address nor password can be empty", Toast.LENGTH_LONG).show();
-                } else {
+                if (password.equals("") && email.equals("")) {
+
+                    tvWarningMessage.setText("* Email address and password can not be empty");
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    EtPassword.setHint("Can not be empty");
+                    EtEmail.setHint("Can not be empty");
+
+                }
+
+                else if (password.equals("") ) {
+
+                    tvWarningMessage.setText("* Password can not be empty");
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    EtPassword.setHint("Can not be empty");
+                }
+
+                else if (email.equals("")) {
+
+                    tvWarningMessage.setText("* Email can not be empty");
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    EtEmail.setHint("Can not be empty");
+                }
+
+                else {
                     Client_LoginController controller = new Client_LoginController() {
                         @Override
                         public void onResponse(Boolean s) {
                             super.onResponse(s);
-                            if (s) {
-                                Toast.makeText(Client_LoginActivity.this, "Logged in successfully", Toast.LENGTH_SHORT).show();
+
+
                                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                                 startActivity(nextPage_IncomingServices);
-                            } else {
-                                Toast.makeText(Client_LoginActivity.this, "Unsuccessful ", Toast.LENGTH_SHORT).show();
-                            }
                         }
                     };
                     controller.execute("http://para.co.nz/api/ClientAccount/validateAccount", "{'username':'" + email + "'," +
