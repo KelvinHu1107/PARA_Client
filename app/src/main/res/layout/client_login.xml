@@ -39,7 +39,8 @@
                     android:gravity="right"
                     android:text="Email Address :"
                     android:textColor="@color/TitleColor"
-                    android:textSize="@dimen/login_core_font_size" />
+                    android:textSize="@dimen/login_core_font_size"
+                    android:id="@+id/textView_login_emailLeft" />
 
                 <EditText
                     android:id="@+id/et_login_email"
@@ -52,7 +53,7 @@
                     android:lines="1"
                     android:singleLine="true"
                     android:textColor="@color/inputColor"
-                    android:textSize="16sp"
+                    android:textSize="13sp"
                     android:layout_marginRight="25dp"
                     android:hint="Enter here"
                     android:textColorHint="#f3736f" />
@@ -76,7 +77,8 @@
                     android:gravity="right"
                     android:text="Password:"
                     android:textColor="@color/TitleColor"
-                    android:textSize="@dimen/login_core_font_size" />
+                    android:textSize="@dimen/login_core_font_size"
+                    android:id="@+id/textView_login_passwordLeft" />
 
                 <EditText
                     android:id="@+id/et_login_password"
@@ -89,7 +91,7 @@
                     android:lines="1"
                     android:singleLine="true"
                     android:textColor="@color/inputColor"
-                    android:textSize="16sp"
+                    android:textSize="13sp"
                     android:layout_marginRight="25dp"
                     android:hint="Enter here"
                     android:textColorHint="#f3736f" />
@@ -102,7 +104,7 @@
             android:text="New Text"
             android:id="@+id/textView_logIn_warning"
             android:textColor="#f3736f"
-            android:textSize="16sp"
+            android:textSize="13sp"
             android:visibility="visible" />
 
         <ImageView

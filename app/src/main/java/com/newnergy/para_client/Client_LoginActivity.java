@@ -2,6 +2,7 @@ package com.newnergy.para_client;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,8 @@ public class Client_LoginActivity extends AppCompatActivity {
     private EditText EtPassword;
     private TextView TvToolbarDone;
     private TextView tvWarningMessage;
+    private TextView tvEmail;
+    private TextView tvPassword;
     ImageView vx;
     ImageView yx;
     private ArrayList<JobServiceViewModel> allJobServiceModel;
@@ -44,6 +47,8 @@ public class Client_LoginActivity extends AppCompatActivity {
         toolbar = (Toolbar) findViewById(R.id.toolbar_login_template);
         TvToolbarDone = (TextView) findViewById(R.id.toolbar_done);
         tvWarningMessage = (TextView) findViewById(R.id.textView_logIn_warning);
+        tvEmail = (TextView) findViewById(R.id.textView_login_emailLeft);
+        tvPassword = (TextView) findViewById(R.id.textView_login_passwordLeft);
 
     }
 
@@ -65,6 +70,8 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtPassword.setHint("Can not be empty");
                     EtEmail.setHint("Can not be empty");
+                    tvEmail.setTextColor(Color.parseColor("#f3736f"));
+                    tvPassword.setTextColor(Color.parseColor("#f3736f"));
 
                 }
 
@@ -73,6 +80,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setText("* Password can not be empty");
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtPassword.setHint("Can not be empty");
+                    tvPassword.setTextColor(Color.parseColor("#f3736f"));
                 }
 
                 else if (email.equals("")) {
@@ -80,6 +88,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setText("* Email can not be empty");
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtEmail.setHint("Can not be empty");
+                    tvEmail.setTextColor(Color.parseColor("#f3736f"));
                 }
 
                 else {

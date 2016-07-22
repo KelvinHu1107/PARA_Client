@@ -1,6 +1,7 @@
 package com.newnergy.para_client;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -22,8 +23,14 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private EditText EtLastName;
     private TextView tvToolbarNext;
     private TextView tvToolbarBack;
+    private TextView tvEmailLeft;
+    private TextView tvPasswordLeft;
+    private TextView tvConfirmLeft;
+    private TextView tvFirstNameLeft;
+    private TextView tvLastNameLeft;
+    private TextView tvPhoneLeft;
     private TextView tvWarningMessage;
-    private int warningFlag = 0;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +54,12 @@ public class Client_RegisterActivity extends AppCompatActivity {
         tvToolbarNext = (TextView) findViewById(R.id.toolbar_register_next);
         tvToolbarBack = (TextView) findViewById(R.id.toolbar_register_back);
         tvWarningMessage = (TextView) findViewById(R.id.textView_register_warning);
+        tvEmailLeft = (TextView) findViewById(R.id.textView_email_left);
+        tvPasswordLeft = (TextView) findViewById(R.id.textView_password_left);
+        tvConfirmLeft = (TextView) findViewById(R.id.textView_confirm_left);
+        tvFirstNameLeft = (TextView) findViewById(R.id.textView_firstName_left);
+        tvLastNameLeft = (TextView) findViewById(R.id.textView_lastName_left);
+        tvPhoneLeft = (TextView) findViewById(R.id.textView_phone_left);
 
     }
 
@@ -71,30 +84,36 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, password cant not be empty!");
+                    tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                 else if (confirmPassword.equals("")){
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, password must be confirmed!");
+                    tvConfirmLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                 else if(phoneNumber.equals("")){
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, phone number cant not be empty!");
+                    tvPhoneLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                 else if(emailAddress.equals("")){
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, email address cant not be empty!");
+                    tvEmailLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                else if(firstName.equals("")) {
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, first name cant not be empty!");
+                    tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                 else if(lastName.equals("")){
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, last name cant not be empty!");
+                    tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
                 else{
                     tvWarningMessage.setVisibility(View.INVISIBLE);
