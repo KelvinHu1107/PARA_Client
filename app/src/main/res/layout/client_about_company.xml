@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar_cardHolder"
+        layout="@layout/toolbar_about_company">
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="Description about PARA 2132132161651989819198199898498498498984984984984984984984"
+            android:id="@+id/textView5"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="25dp"
+            android:background="@drawable/border_radius"
+            android:padding="12.5dp" />
+
+    </LinearLayout>
+
+</LinearLayout>

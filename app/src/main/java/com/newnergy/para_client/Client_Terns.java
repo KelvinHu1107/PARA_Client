@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-public class Client_ExpireDate extends AppCompatActivity {
+public class Client_Terns extends AppCompatActivity {
 
 
     private TextView cancel, save;
@@ -15,13 +15,13 @@ public class Client_ExpireDate extends AppCompatActivity {
     public void btnFunction(){
 
 
-        cancel = (TextView) findViewById(R.id.textView_cancel_expire);
-        save = (TextView) findViewById(R.id.textView_save_expire);
+        cancel = (TextView) findViewById(R.id.textView_cancel_terns);
+
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_CreditCard = new Intent(Client_ExpireDate.this, Client_CreditCard.class);
+                Intent nextPage_CreditCard = new Intent(Client_Terns.this, Client_AboutUs.class);
                 startActivity(nextPage_CreditCard);
             }
         });
@@ -31,7 +31,7 @@ public class Client_ExpireDate extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.client_expire_date);
+        setContentView(R.layout.client_terns);
 
         btnFunction();
     }

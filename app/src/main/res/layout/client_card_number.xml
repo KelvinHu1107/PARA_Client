@@ -9,6 +9,11 @@
 
     </include>
 
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"></TableLayout>
+
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
@@ -102,6 +107,195 @@
                 android:maxLength="4"
                 android:layout_weight="1" />
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="First Name"
+                android:id="@+id/textView38"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="left|center_horizontal"
+                android:layout_margin="12.5dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText_cardFirstName"
+                android:textColorHint="#999999"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:background="@drawable/border_radius"
+                android:layout_marginLeft="12.5dp"
+                android:layout_marginRight="12.5dp"
+                android:padding="12.5dp"
+                android:autoText="true"
+                android:lines="1"
+                android:singleLine="true" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Last Name"
+                android:id="@+id/textView39"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="left|center_horizontal"
+                android:layout_margin="12.5dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText_cardLastName"
+                android:textColorHint="#999999"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:background="@drawable/border_radius"
+                android:layout_marginLeft="12.5dp"
+                android:layout_marginRight="12.5dp"
+                android:padding="12.5dp"
+                android:autoText="true"
+                android:lines="1"
+                android:singleLine="true" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Expire date"
+                android:id="@+id/textView42"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="left|center_horizontal"
+                android:layout_margin="12.5dp" />
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginTop="12.5dp"
+                android:layout_marginRight="12.5dp"
+                android:layout_marginLeft="12.5dp"
+                android:layout_marginBottom="12.5dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Month"
+                    android:id="@+id/textView43"
+                    android:layout_weight="1"
+                    android:textSize="16sp"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editText_expireMonth"
+                    android:textColorHint="#999999"
+                    android:textSize="15sp"
+                    android:textColor="#000000"
+                    android:background="@drawable/border_radius"
+                    android:layout_marginLeft="12.5dp"
+                    android:layout_marginRight="12.5dp"
+                    android:autoText="true"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="30dp"
+                    android:layout_height="wrap_content"
+                    android:text="/"
+                    android:id="@+id/textView44"
+                    android:textSize="18sp"
+                    android:textStyle="bold"
+                    android:textColor="#000000"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:layout_gravity="center" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Year"
+                    android:id="@+id/textView45"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    android:layout_weight="1"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical|center_horizontal" />
+
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/editText_expireYear"
+                    android:textColorHint="#999999"
+                    android:textSize="15sp"
+                    android:textColor="#000000"
+                    android:background="@drawable/border_radius"
+                    android:layout_marginLeft="12.5dp"
+                    android:layout_marginRight="12.5dp"
+                    android:autoText="true"
+                    android:lines="1"
+                    android:singleLine="true"
+                    android:layout_weight="1"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff" >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Security code"
+                android:id="@+id/textView47"
+                android:textColor="#333333"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="left|center_horizontal"
+                android:layout_margin="12.5dp" />
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"></TableRow>
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/editText_securityCode"
+                android:textColorHint="#999999"
+                android:textSize="15sp"
+                android:textColor="#000000"
+                android:background="@drawable/border_radius"
+                android:layout_marginLeft="12.5dp"
+                android:layout_marginRight="12.5dp"
+                android:padding="12.5dp"
+                android:autoText="true"
+                android:lines="1"
+                android:singleLine="true" />
         </LinearLayout>
     </LinearLayout>
 

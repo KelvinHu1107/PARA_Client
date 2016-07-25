@@ -2,7 +2,7 @@
 <android.support.v7.widget.Toolbar
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/toolbar_expire"
+    android:id="@+id/toolbar_terns"
     android:layout_width="match_parent"
     android:layout_height="50dp"
     android:background="@color/para_colorPrimary"
@@ -17,14 +17,14 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Cancel"
-            android:id="@+id/textView_cancel_expire"
+            android:text="Back"
+            android:id="@+id/textView_cancel_terns"
             android:textColor="#ffffff" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Expire date"
+            android:layout_height="match_parent"
+            android:text="Terns and conditions"
             android:id="@+id/profile_change_expire_title"
             android:textSize="16sp"
             android:layout_gravity="center_vertical"
@@ -36,8 +36,8 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Save"
-            android:id="@+id/textView_save_expire"
+            android:text="        "
+            android:id="@+id/textView_save_terns"
             android:layout_marginRight="15dp"
             android:textColor="#ffffff" />
 

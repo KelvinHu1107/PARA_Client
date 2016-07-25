@@ -42,7 +42,7 @@ public class Client_CreditCard extends AppCompatActivity {
         holder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_CardHolder = new Intent(Client_CreditCard.this, Client_CardHolder.class);
+                Intent nextPage_CardHolder = new Intent(Client_CreditCard.this, Client_CreditCardNum.class);
                 startActivity(nextPage_CardHolder);
             }
         });
@@ -50,7 +50,7 @@ public class Client_CreditCard extends AppCompatActivity {
         expire.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_Expire = new Intent(Client_CreditCard.this, Client_ExpireDate.class);
+                Intent nextPage_Expire = new Intent(Client_CreditCard.this, Client_CreditCardNum.class);
                 startActivity(nextPage_Expire);
             }
         });
@@ -58,7 +58,7 @@ public class Client_CreditCard extends AppCompatActivity {
         securityCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_SecurityCode = new Intent(Client_CreditCard.this, Client_SecurityCode.class);
+                Intent nextPage_SecurityCode = new Intent(Client_CreditCard.this, Client_CreditCardNum.class);
                 startActivity(nextPage_SecurityCode);
             }
         });
@@ -74,7 +74,7 @@ public class Client_CreditCard extends AppCompatActivity {
         postCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_PostCode = new Intent(Client_CreditCard.this, Client_PostCode.class);
+                Intent nextPage_PostCode = new Intent(Client_CreditCard.this, Client_CardAddress.class);
                 startActivity(nextPage_PostCode);
             }
         });
