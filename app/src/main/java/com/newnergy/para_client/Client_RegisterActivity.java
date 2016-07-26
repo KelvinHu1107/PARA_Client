@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by GaoxinHuang on 2016/6/2.
  */
@@ -80,11 +83,15 @@ public class Client_RegisterActivity extends AppCompatActivity {
                 final String firstName = EtFirstName.getText().toString();
                 final String lastName = EtLastName.getText().toString();
 
+                tvWarningMessage.setVisibility(View.INVISIBLE);
+
+
                 if(password.equals("")){
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     tvWarningMessage.setText("Warning, password cant not be empty!");
                     tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
+
                 }
                 else if (confirmPassword.equals("")){
                     tvWarningMessage.setVisibility(View.VISIBLE);
@@ -103,6 +110,13 @@ public class Client_RegisterActivity extends AppCompatActivity {
                     tvWarningMessage.setText("Warning, email address cant not be empty!");
                     tvEmailLeft.setTextColor(Color.parseColor("#f3736f"));
                 }
+
+                else if(!isEmail(emailAddress)){
+                    tvWarningMessage.setVisibility(View.VISIBLE);
+                    tvWarningMessage.setText("Warning, the email address contains illegal characters or format!");
+                    tvEmailLeft.setTextColor(Color.parseColor("#f3736f"));
+                }
+
                else if(firstName.equals("")) {
 
                     tvWarningMessage.setVisibility(View.VISIBLE);
@@ -119,7 +133,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
                     tvWarningMessage.setVisibility(View.INVISIBLE);
                 }
 
-                if (password.equals("") || confirmPassword.equals("") || phoneNumber.equals("") || emailAddress.equals("") || firstName.equals("") || lastName.equals("")) {
+                if (password.equals("") || confirmPassword.equals("") || phoneNumber.equals("") || emailAddress.equals("") || firstName.equals("") || lastName.equals("") || !isEmail(emailAddress)) {
                     Toast.makeText(Client_RegisterActivity.this, "Sorry, every column must be filled", Toast.LENGTH_LONG).show();
                 } else {
                     if (password.equals(confirmPassword)) {
@@ -158,6 +172,14 @@ public class Client_RegisterActivity extends AppCompatActivity {
             }
         };
         return event;
+    }
+
+    public boolean isEmail(String email){
+
+        Pattern p = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}");
+        //Pattern p =  Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Matcher m = p.matcher(email);
+        return m.matches();
     }
 
 
