@@ -20,9 +20,10 @@
             android:id="@+id/textView55"
             android:textColor="#333333"
             android:textSize="22sp"
-            android:layout_margin="12.5dp"
             android:textStyle="bold"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginTop="25dp"
+            android:layout_marginBottom="12.5dp" />
 
         <LinearLayout
             android:orientation="horizontal"
@@ -44,7 +45,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="123"
-                android:id="@+id/textView57"
+                android:id="@+id/textView_rating_price"
                 android:layout_weight="1"
                 android:textSize="18sp"
                 android:textColor="#333333" />
@@ -52,23 +53,22 @@
 
         <RatingBar
             style="@style/foodRatingBar"
-            android:id="@+id/ratingBar"
-            android:layout_height="13dp"
+            android:id="@+id/ratingBar_confirm"
+            android:layout_height="wrap_content"
             android:layout_width="wrap_content"
             android:numStars="5"
             android:rating="5"
             android:isIndicator="false"
             android:stepSize="0.5"
-            android:layout_marginTop="12.5dp"
-            android:layout_marginLeft="12.5dp"
+            android:layout_marginTop="25dp"
             android:layout_gravity="center" />
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="12.5dp"
-            android:background="@drawable/border_radius">
+            android:background="@drawable/border_radius"
+            android:layout_margin="25dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -90,8 +90,18 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/editText"
                 android:padding="12.5dp"
-                android:hint="Add a comment" />
+                android:hint="Add a comment"
+                android:textColor="#666666"
+                android:textSize="18sp" />
         </LinearLayout>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_rating_confirm"
+            android:layout_gravity="center"
+            android:src="@drawable/tick_104px"
+            android:background="#ffffff" />
     </LinearLayout>
 
 </LinearLayout>

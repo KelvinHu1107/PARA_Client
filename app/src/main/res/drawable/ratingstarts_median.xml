@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@android:id/background"
-        android:drawable="@drawable/large_empty_star" />
+        android:drawable="@drawable/median_empty_star" />
     <item android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/large_half_star" />
+        android:drawable="@drawable/median_half_star" />
     <item android:id="@android:id/progress"
-        android:drawable="@drawable/large_full_star" />
+        android:drawable="@drawable/median_full_star" />
 </layer-list>

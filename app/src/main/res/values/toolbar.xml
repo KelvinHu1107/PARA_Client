@@ -4,10 +4,7 @@
     <string name="toolbar_done">DONE</string>
     <string name="toolbar_back">BACK</string>
     <string name="toolbar_next">NEXT</string>
-
     <color name="toolbar_font_color">#FFFFFF</color>
-
-
     <dimen name="toolbar_font_size">10sp</dimen>
     <dimen name="title_font_size">16sp</dimen>
     <dimen name="toolbar__header_high">50dp</dimen>

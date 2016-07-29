@@ -7,11 +7,35 @@ import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 public class Client_CreditCard extends AppCompatActivity {
 
-    private TextView back;
+    private TextView back, cardNum, cardHolder, expireDate, securityCodeNum, holderAddress, holderPostcode;
     private LinearLayout number, holder, expire, securityCode, address, postCode;
 
+
+    public String readData(String openFileName){
+        try {
+
+            FileInputStream fileInputStream = openFileInput(openFileName);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            ValueMessager.readDataBuffer = bufferedReader.readLine();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ValueMessager.readDataBuffer.toString();
+    }
 
     public void btnFunction(){
 
@@ -22,6 +46,20 @@ public class Client_CreditCard extends AppCompatActivity {
         address = (LinearLayout) findViewById(R.id.linearLayout_card_address);
         number = (LinearLayout) findViewById(R.id.linearLayout_cardNum);
         postCode = (LinearLayout) findViewById(R.id.linearLayout_postCode);
+        cardNum  = (TextView) findViewById(R.id.textView_creditCardNum);
+        cardHolder  = (TextView) findViewById(R.id.textView_creditCardHolder);
+        expireDate  = (TextView) findViewById(R.id.textView_creditCard_expireDate);
+        securityCodeNum  = (TextView) findViewById(R.id.textView_creditCardSecurityCOde);
+        holderAddress  = (TextView) findViewById(R.id.textView_creditCardAddress);
+        holderPostcode  = (TextView) findViewById(R.id.textView_creditCard_postCode);
+
+        cardNum.setText(readData("cardNum1")+"-"+readData("cardNum2")+"-"+readData("cardNum3")+"-"+readData("cardNum4"));
+        cardHolder.setText(readData("holderFirstName")+" "+readData("holderLastName"));
+        expireDate.setText(readData("expireMonth")+" / "+readData("expireYear"));
+        securityCodeNum.setText(readData("securityCode"));
+        holderAddress.setText(readData("creditCardStreet")+", "+readData("creditCardSuburb")+", "+readData("creditCardCity")+", "+readData("creditCardCountry"));
+        holderPostcode.setText(readData("creditCardPostCode"));
+
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

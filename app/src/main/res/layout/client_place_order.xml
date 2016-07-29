@@ -219,7 +219,10 @@
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:id="@+id/imageButton21" />
+                    android:id="@+id/imageButton_addPhoto"
+                    android:src="@drawable/add_photo_0"
+                    android:background="#ffffff"
+                    android:layout_margin="12.5dp" />
             </LinearLayout>
 
         </LinearLayout>
