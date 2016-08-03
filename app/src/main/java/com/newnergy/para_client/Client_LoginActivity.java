@@ -16,6 +16,9 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class Client_LoginActivity extends AppCompatActivity {
@@ -29,6 +32,20 @@ public class Client_LoginActivity extends AppCompatActivity {
     ImageView vx;
     ImageView yx;
     private ArrayList<JobServiceViewModel> allJobServiceModel;
+
+
+    public void writeData(String fileName, String writeData){
+
+        try {
+            FileOutputStream fileOutputStream = openFileOutput(fileName,MODE_PRIVATE);
+            fileOutputStream.write(writeData.getBytes());
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,6 +113,9 @@ public class Client_LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Boolean s) {
                             super.onResponse(s);
+
+
+                            writeData("userEmail",EtEmail.getText().toString());
 
 
                                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
