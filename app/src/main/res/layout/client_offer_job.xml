@@ -3,8 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
-        android:id="@+id/toolbar_placeOrder"
-        layout="@layout/toolbar_place_order">
+        android:id="@+id/toolbar_offerJob"
+        layout="@layout/toolbar_offer_job">
     </include>
 
     <ScrollView
@@ -22,7 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/textView_PO_error"
+                android:id="@+id/textView_offerJob_error"
                 android:textSize="18sp"
                 android:layout_marginTop="12.5dp"
                 android:layout_marginLeft="12.5dp"
@@ -58,7 +58,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText_PO_workTitle"
+                        android:id="@+id/editText_offerJob_workTitle"
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
@@ -96,7 +96,7 @@
                     <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/spinner_OP"
+                        android:id="@+id/spinner_offerJob"
                         android:entries="@array/Type"
                         android:spinnerMode="dropdown"
                         android:layout_gravity="center"
@@ -132,7 +132,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText_PO_budget"
+                        android:id="@+id/editText_offerJob_budget"
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
@@ -172,7 +172,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText_PO_street"
+                        android:id="@+id/editText_offerJob_street"
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
@@ -209,7 +209,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText_PO_suburb"
+                        android:id="@+id/editText_offerJob_suburb"
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
@@ -246,7 +246,7 @@
                     <EditText
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/editText_PO_city"
+                        android:id="@+id/editText_offerJob_city"
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
@@ -284,7 +284,7 @@
                 <EditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:id="@+id/editText_PO_description"
+                    android:id="@+id/editText_offerJob_description"
                     android:layout_weight="1"
                     android:layout_margin="12.5dp"
                     android:padding="12.5dp"
@@ -324,31 +324,31 @@
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/imageView_OP_photo1"
+                        android:id="@+id/imageView_offerJob_photo1"
                         android:layout_margin="5dp" />
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/imageView_OP_photo2"
+                        android:id="@+id/imageView_offerJob_photo2"
                         android:layout_margin="5dp" />
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/imageView_OP_photo3"
+                        android:id="@+id/imageView_offerJob_photo3"
                         android:layout_margin="5dp" />
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/imageView_OP_photo4"
+                        android:id="@+id/imageView_offerJob_photo4"
                         android:layout_margin="5dp" />
 
                     <ImageView
                         android:layout_width="50dp"
                         android:layout_height="50dp"
-                        android:id="@+id/imageView_OP_photo5"
+                        android:id="@+id/imageView_offerJob_photo5"
                         android:layout_margin="5dp" />
                 </LinearLayout>
 
@@ -360,7 +360,7 @@
                     <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/imageButton_addPhoto"
+                        android:id="@+id/imageButton_addPhoto_offerJob"
                         android:src="@drawable/add_photo_0"
                         android:background="#ffffff"
                         android:layout_margin="12.5dp" />

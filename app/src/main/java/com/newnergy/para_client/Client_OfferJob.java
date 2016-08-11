@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Client_PlaceOrder extends AppCompatActivity {
+public class Client_OfferJob extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
@@ -174,22 +174,22 @@ public class Client_PlaceOrder extends AppCompatActivity {
     public void btnFunction(){
 
 
-        cancel = (TextView) findViewById(R.id.textView_cancel_placeOrder);
-        error = (TextView) findViewById(R.id.textView_PO_error);
-        save = (TextView) findViewById(R.id.textView_save_placeOrder);
-        jobTitle = (EditText) findViewById(R.id.editText_PO_workTitle);
-        budget = (EditText) findViewById(R.id.editText_PO_budget);
-        street = (EditText) findViewById(R.id.editText_PO_street);
-        suburb = (EditText) findViewById(R.id.editText_PO_suburb);
-        city = (EditText) findViewById(R.id.editText_PO_city);
-        description = (EditText) findViewById(R.id.editText_PO_description);
-        addPhoto = (ImageButton) findViewById(R.id.imageButton_addPhoto);
-        photo1 = (ImageView) findViewById(R.id.imageView_OP_photo1);
-        photo2 = (ImageView) findViewById(R.id.imageView_OP_photo2);
-        photo3 = (ImageView) findViewById(R.id.imageView_OP_photo3);
-        photo4 = (ImageView) findViewById(R.id.imageView_OP_photo4);
-        photo5 = (ImageView) findViewById(R.id.imageView_OP_photo5);
-        s = (Spinner) findViewById(R.id.spinner_OP);
+        cancel = (TextView) findViewById(R.id.textView_cancel_offerJob);
+        error = (TextView) findViewById(R.id.textView_offerJob_error);
+        save = (TextView) findViewById(R.id.textView_save_offerJob);
+        jobTitle = (EditText) findViewById(R.id.editText_offerJob_workTitle);
+        budget = (EditText) findViewById(R.id.editText_offerJob_budget);
+        street = (EditText) findViewById(R.id.editText_offerJob_street);
+        suburb = (EditText) findViewById(R.id.editText_offerJob_suburb);
+        city = (EditText) findViewById(R.id.editText_offerJob_city);
+        description = (EditText) findViewById(R.id.editText_offerJob_description);
+        addPhoto = (ImageButton) findViewById(R.id.imageButton_addPhoto_offerJob);
+        photo1 = (ImageView) findViewById(R.id.imageView_offerJob_photo1);
+        photo2 = (ImageView) findViewById(R.id.imageView_offerJob_photo2);
+        photo3 = (ImageView) findViewById(R.id.imageView_offerJob_photo3);
+        photo4 = (ImageView) findViewById(R.id.imageView_offerJob_photo4);
+        photo5 = (ImageView) findViewById(R.id.imageView_offerJob_photo5);
+        s = (Spinner) findViewById(R.id.spinner_offerJob);
 
         photo1.setVisibility(View.INVISIBLE);
         photo2.setVisibility(View.INVISIBLE);
@@ -202,7 +202,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                Intent nextPage_History = new Intent(Client_OfferJob.this, Client_Further_Info.class);
                 startActivity(nextPage_History);
             }
         });
@@ -247,7 +247,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
                         super.onResponse(result);
 
                         for(int i=0; i<bitmapArray.size(); i++){
-                           sendImage(bitmapArray.get(i),result);
+                            sendImage(bitmapArray.get(i),result);
                         }
                     }
                 };
@@ -315,9 +315,9 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     placeOrderServiceViewModel.setDescription(description.getText().toString());
 
                     String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
-                    c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
+                    c.execute("http://para.co.nz/api/JobService/AddService", data, "POST");
 
-                    Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    Intent nextPage_History = new Intent(Client_OfferJob.this, Client_Further_Info.class);
                     startActivity(nextPage_History);
                 }
             }
@@ -328,9 +328,10 @@ public class Client_PlaceOrder extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.client_place_order);
+        setContentView(R.layout.client_offer_job);
 
         btnFunction();
 
     }
+
 }

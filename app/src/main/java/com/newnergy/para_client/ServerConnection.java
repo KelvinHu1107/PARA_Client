@@ -64,7 +64,7 @@ public class ServerConnection {
         }
     }
     public static int getIdFromServer(String urlString, String urlParameters, String method){
-        int result=0;
+        int result = 0;
         BufferedReader reader = null;
         try {
             URL url = new URL(urlString);
@@ -72,14 +72,13 @@ public class ServerConnection {
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Connection", "Keep-Alive");
-//            conn.setDoOutput(true);
+            conn.setDoOutput(true);
             conn.setDoInput(true);
-//            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-//            dataOutputStream.writeBytes(urlParameters);
-//            dataOutputStream.flush();
-//            dataOutputStream.close();
+            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+            dataOutputStream.writeBytes(urlParameters);
+            dataOutputStream.flush();
+            dataOutputStream.close();
             int reposeCode = conn.getResponseCode();
-//            System.out.println(reposeCode);
             if (reposeCode == 200) {
                 InputStream stream = conn.getInputStream();
                 reader = new BufferedReader(new InputStreamReader(stream));
@@ -88,7 +87,9 @@ public class ServerConnection {
                 while ((line = reader.readLine()) != null) {
                     buffer.append(line);
                 }
-                result= Integer.parseInt(buffer.toString());
+               result=Integer.parseInt(buffer.toString());
+            } else {
+                return 0;
             }
 //            result+=responseBuffer.toString();
 //                String finalJson = buffer.toString();
@@ -99,7 +100,9 @@ public class ServerConnection {
 //                int year = finalObject.getInt("year");
 //                return movieName;
         } catch (Exception e) {
+
             e.printStackTrace();
+            return 0;
         }
         return result;
     }

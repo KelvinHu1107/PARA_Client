@@ -32,18 +32,17 @@ import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Client_PlaceOrder extends AppCompatActivity {
+public class Client_EditOrder extends AppCompatActivity {
 
     private static final int RESULT_LOAD_IMAGE = 1;
     private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
-    private TextView cancel, save, error;
+    private TextView title, cancel, save, warning;
+    private Spinner s;
     private EditText jobTitle, budget, street, suburb, city, description;
     private ImageButton addPhoto;
     private Bitmap bitmap;
     private ImageView photo1, photo2, photo3, photo4, photo5;
-    private Spinner s;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-
 
     public boolean isBudget (String email){
 
@@ -171,12 +170,13 @@ public class Client_PlaceOrder extends AppCompatActivity {
         return ValueMessager.readDataBuffer.toString();
     }
 
+
     public void btnFunction(){
 
-
+        title = (TextView) findViewById(R.id.profile_placeOrder_title);
         cancel = (TextView) findViewById(R.id.textView_cancel_placeOrder);
-        error = (TextView) findViewById(R.id.textView_PO_error);
         save = (TextView) findViewById(R.id.textView_save_placeOrder);
+        warning = (TextView) findViewById(R.id.textView_PO_error);
         jobTitle = (EditText) findViewById(R.id.editText_PO_workTitle);
         budget = (EditText) findViewById(R.id.editText_PO_budget);
         street = (EditText) findViewById(R.id.editText_PO_street);
@@ -197,13 +197,21 @@ public class Client_PlaceOrder extends AppCompatActivity {
         photo4.setVisibility(View.INVISIBLE);
         photo5.setVisibility(View.INVISIBLE);
 
-        error.setVisibility(View.INVISIBLE);
+        warning.setVisibility(View.INVISIBLE);
+        title.setText("Edit task");
+
+        jobTitle.setText(ValueMessager.edit_workTitle);
+        budget.setText(ValueMessager.edit_budget);
+        street.setText(ValueMessager.edit_street);
+        suburb.setText(ValueMessager.edit_subrub);
+        city.setText(ValueMessager.edit_city);
+        description.setText(ValueMessager.edit_description);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
-                startActivity(nextPage_History);
+                Intent intent = new Intent(Client_EditOrder.this, Client_Confirm.class);
+                startActivity(intent);
             }
         });
 
@@ -233,21 +241,21 @@ public class Client_PlaceOrder extends AppCompatActivity {
             }
         });
 
-
         save.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                PlaceOrderServiceViewModel placeOrderServiceViewModel=new PlaceOrderServiceViewModel();
-                PlaceServiceDataConvert placeServiceDataConvert = new PlaceServiceDataConvert();
+                final ClientUpdateServiceViewModel model=new ClientUpdateServiceViewModel();
+                ClientUpdateServiceDataConvert convert = new ClientUpdateServiceDataConvert();
 
                 DataGetIntController c = new DataGetIntController(){
                     @Override
                     public void onResponse(Integer result) {
                         super.onResponse(result);
 
+
                         for(int i=0; i<bitmapArray.size(); i++){
-                           sendImage(bitmapArray.get(i),result);
+                            sendImage(bitmapArray.get(i),result);
                         }
                     }
                 };
@@ -256,45 +264,45 @@ public class Client_PlaceOrder extends AppCompatActivity {
                 {
                     jobTitle.setHint("Title can not be empty!");
                     jobTitle.setHintTextColor(Color.parseColor("#f3736f"));
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Title can not be empty!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Title can not be empty!");
                 }
                 else if (!isBudget(budget.getText().toString())){
                     budget.setHint("Budget allows numbers only!");
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Budget allows numbers only!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Budget allows numbers only!");
                 }
 
                 else if(street.getText().toString().equals(""))
                 {
                     street.setHint("Address can not be empty!");
                     street.setHintTextColor(Color.parseColor("#f3736f"));
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Address can not be empty!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Address can not be empty!");
                 }
 
                 else if(suburb.getText().toString().equals(""))
                 {
                     suburb.setHint("Address can not be empty!");
                     suburb.setHintTextColor(Color.parseColor("#f3736f"));
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Address can not be empty!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Address can not be empty!");
                 }
 
                 else if(city.getText().toString().equals(""))
                 {
                     city.setHint("Address can not be empty!");
                     city.setHintTextColor(Color.parseColor("#f3736f"));
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Address can not be empty!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Address can not be empty!");
                 }
 
                 else if(description.getText().toString().equals(""))
                 {
                     description.setHint("Description can not be empty!");
                     description.setHintTextColor(Color.parseColor("#f3736f"));
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Description can not be empty!");
+                    warning.setVisibility(View.VISIBLE);
+                    warning.setText("Description can not be empty!");
                 }
 
                 if(jobTitle.getText().toString().equals("")||street.getText().toString().equals("")||suburb.getText().toString().equals("")
@@ -302,26 +310,27 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     return;
                 }
                 else {
-                    placeOrderServiceViewModel.setClientEmail(readData("userEmail"));
-                    placeOrderServiceViewModel.setTitle(jobTitle.getText().toString());
-                    placeOrderServiceViewModel.setType(s.getSelectedItem().toString());
+
+                    model.setTitle(jobTitle.getText().toString());
+                    model.setType(s.getSelectedItem().toString());
                     if (budget.getText().toString().equals("")) {
                         budget.setText("0");
                     }
-                    placeOrderServiceViewModel.setBudget(Double.parseDouble(budget.getText().toString()));
-                    placeOrderServiceViewModel.setStreet(street.getText().toString());
-                    placeOrderServiceViewModel.setSuburb(suburb.getText().toString());
-                    placeOrderServiceViewModel.setCity(city.getText().toString());
-                    placeOrderServiceViewModel.setDescription(description.getText().toString());
+                    model.setBudget(Double.parseDouble(budget.getText().toString()));
+//                    model.set(street.getText().toString());
+//                    model.setSuburb(suburb.getText().toString());
+//                    model.setCity(city.getText().toString());
+                    model.setDescription(description.getText().toString());
 
-                    String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
-                    c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
+                    String data = convert.ModelToJson(model);
+                    c.execute("http://para.co.nz/api/ClientJobService/updatejobservice", data, "PUT");
 
-                    Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
-                    startActivity(nextPage_History);
+                    Intent intent = new Intent(Client_EditOrder.this, Client_Confirm.class);
+                    startActivity(intent);
                 }
             }
         });
+
 
     }
 

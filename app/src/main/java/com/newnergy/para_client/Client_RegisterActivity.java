@@ -10,6 +10,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -44,6 +47,19 @@ public class Client_RegisterActivity extends AppCompatActivity {
         tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();
 
+    }
+
+    public void writeData(String fileName, String writeData){
+
+        try {
+            FileOutputStream fileOutputStream = openFileOutput(fileName,MODE_PRIVATE);
+            fileOutputStream.write(writeData.getBytes());
+            fileOutputStream.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void initComponent() {
@@ -141,7 +157,9 @@ public class Client_RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Boolean result) {
                                 if (result) {
-                                    Toast.makeText(Client_RegisterActivity.this, "The email exists ", Toast.LENGTH_LONG).show();
+                                    writeData("userEmail",EtEmail.getText().toString());
+                                    ValueMessager.email = EtEmail.getText().toString();
+
                                 } else {
                                     Client_RegisterController controller = new Client_RegisterController() {
                                         @Override

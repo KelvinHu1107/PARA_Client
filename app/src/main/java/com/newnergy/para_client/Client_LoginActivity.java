@@ -113,13 +113,16 @@ public class Client_LoginActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(Boolean s) {
                             super.onResponse(s);
-
-
-                            writeData("userEmail",EtEmail.getText().toString());
-
+                            if (s) {
+                                writeData("userEmail",EtEmail.getText().toString());
+                                ValueMessager.email = EtEmail.getText().toString();
 
                                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                                 startActivity(nextPage_IncomingServices);
+
+                            } else {
+                                Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
+                            }
                         }
                     };
                     controller.execute("http://para.co.nz/api/ClientAccount/validateAccount", "{'username':'" + email + "'," +
