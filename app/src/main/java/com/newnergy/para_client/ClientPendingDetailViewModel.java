@@ -24,6 +24,15 @@ public class ClientPendingDetailViewModel {
     private String Type;
     private String[] ServicePhotoUrl;
     private String ProviderUsername;
+    private String CreateDate;
+
+    public String getCreateDate() {
+        return CreateDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        CreateDate = createDate;
+    }
 
     public String getProviderUsername() {
         return ProviderUsername;

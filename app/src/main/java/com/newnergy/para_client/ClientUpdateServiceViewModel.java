@@ -10,6 +10,15 @@ public class ClientUpdateServiceViewModel {
     private Integer Status;
     private String Type;
     private String Description;
+    private Double Price;
+
+    public Double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(Double price) {
+        Price = price;
+    }
 
     public Integer getServiceId() {
         return ServiceId;

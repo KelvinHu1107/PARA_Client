@@ -26,6 +26,9 @@ public class ClientUpdateServiceDataConvert {
         if (model.getType() != null) {
             json.append("\"Type\":\"" + model.getType() + "\",");
         }
+        if (model.getPrice() != null) {
+            json.append("\"Price\":\"" + model.getPrice() + "\",");
+        }
         json.deleteCharAt(json.length() - 1);
         json.append("}");
         return json.toString();
