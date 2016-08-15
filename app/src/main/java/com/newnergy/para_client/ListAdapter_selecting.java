@@ -70,6 +70,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
                     imageView.setImageResource(R.drawable.client_photo_round);
                 }
                 imageView.setImageBitmap(mBitmap);
+                ValueMessengerTaskInfo.providerProfilePhoto = mBitmap;
             }
         };
         controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");
@@ -165,7 +166,12 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                Intent nextPage_Confirm = new Intent(c,Client_Confirm.class);
+                ValueMessengerTaskInfo.providerOfferedPrice = budget[position];
+                ValueMessengerTaskInfo.providerFirstName = firstName[position];
+                ValueMessengerTaskInfo.providerLastName = lastName[position];
+
+
+                Intent nextPage_Confirm = new Intent(c,Client_PopUpWindow.class);
                 c.startActivity(nextPage_Confirm);
             }
         });

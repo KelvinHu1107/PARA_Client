@@ -8,11 +8,11 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,13 +21,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -41,12 +37,66 @@ public class Client_EditOrder extends AppCompatActivity {
     private EditText jobTitle, budget, street, suburb, city, description;
     private ImageButton addPhoto;
     private Bitmap bitmap;
-    private ImageView photo1, photo2, photo3, photo4, photo5;
+    ClientPendingDetailViewModel jsm;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+    String[] photoAddress;
+    int[] photoId;
+    private ImageView[] photo;
+
+
+    public void getImageData(String profilePhotoUrl, final ImageView imageView) {
+
+        GetImageController controller = new GetImageController() {
+            @Override
+            public void onResponse(Bitmap mBitmap) {
+                super.onResponse(mBitmap);
+                if (mBitmap == null) {
+                    return;
+                }
+                imageView.setImageBitmap(mBitmap);
+                bitmapArray.add(mBitmap);
+            }
+        };
+        controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
+    }
+
+    public void getData() {
+        DataTransmitController c = new DataTransmitController() {
+            @Override
+            public void onResponse(String result) {
+                super.onResponse(result);
+                ClientPendingDetailDataConvert clientPendingDetailDataConvert = new ClientPendingDetailDataConvert();
+                jsm = clientPendingDetailDataConvert.convertJsonToModel(result);
+
+                if(jsm.getServicePhotoUrl().length != 0) {
+
+                    photoId = new int[5];
+                    photoAddress = new String[jsm.getServicePhotoUrl().length];
+                    photo = new ImageView[jsm.getServicePhotoUrl().length];
+
+                    photoId[0] = R.id.imageView_OP_photo1;
+                    photoId[1] = R.id.imageView_OP_photo2;
+                    photoId[2] = R.id.imageView_OP_photo3;
+                    photoId[3] = R.id.imageView_OP_photo4;
+                    photoId[4] = R.id.imageView_OP_photo5;
+                    photoAddress = jsm.getServicePhotoUrl();
+
+                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++)
+                        getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
+                }
+
+                btnFunction();
+            }
+
+
+        };
+        c.execute("http://para.co.nz/api/ClientJobService/GetJobService/"+ ValueMessengerTaskInfo.id,"","GET");
+    }
+
 
     public boolean isBudget (String email){
 
-        Pattern p = Pattern.compile("\\d*");
+        Pattern p = Pattern.compile("\\d*\\.?\\d+");
         Matcher m = p.matcher(email);
         return m.matches();
     }
@@ -85,36 +135,27 @@ public class Client_EditOrder extends AppCompatActivity {
                 inputStream = getContentResolver().openInputStream(selectedImage);
                 bitmap = BitmapFactory.decodeStream(inputStream);
 
-                if(photo1.getVisibility() == View.INVISIBLE)
-                {
-                    photo1.setImageBitmap(bitmap);
-                    photo1.setVisibility(View.VISIBLE);
-                    bitmapArray.add(bitmap) ;
-                }
-                else if(photo1.getVisibility() == View.VISIBLE && photo2.getVisibility() == View.INVISIBLE )
-                {
-                    photo2.setImageBitmap(bitmap);
-                    photo2.setVisibility(View.VISIBLE);
-                    bitmapArray.add(bitmap);
-                }
-                else if(photo2.getVisibility() == View.VISIBLE && photo3.getVisibility() == View.INVISIBLE  )
-                {
-                    photo3.setImageBitmap(bitmap);
-                    photo3.setVisibility(View.VISIBLE);
-                    bitmapArray.add(bitmap);
-                }
-                else if(photo3.getVisibility() == View.VISIBLE && photo4.getVisibility() == View.INVISIBLE  )
-                {
-                    photo4.setImageBitmap(bitmap);
-                    photo4.setVisibility(View.VISIBLE);
-                    bitmapArray.add(bitmap);
-                }
-                else if(photo4.getVisibility() == View.VISIBLE && photo5.getVisibility() == View.INVISIBLE  )
-                {
-                    photo5.setImageBitmap(bitmap);
-                    photo5.setVisibility(View.VISIBLE);
-                    bitmapArray.add(bitmap);
-                }
+                bitmapArray.add(bitmap);
+
+                    photoId = new int[5];
+                    photoAddress = new String[bitmapArray.size()];
+                    photo = new ImageView[bitmapArray.size()];
+
+                    photoId[0] = R.id.imageView_OP_photo1;
+                    photoId[1] = R.id.imageView_OP_photo2;
+                    photoId[2] = R.id.imageView_OP_photo3;
+                    photoId[3] = R.id.imageView_OP_photo4;
+                    photoId[4] = R.id.imageView_OP_photo5;
+                    //photoAddress = bitmapArray.size();
+
+                    for(int i=0; i<bitmapArray.size(); i++) {
+                        photo[i] = (ImageView) findViewById(photoId[i]);
+                        photo[i].setImageBitmap(bitmapArray.get(i));
+                    }
+
+
+
+
 
                 //sendImage(roundImage.getBitmap(), ValueMessager.email.toString() );
 
@@ -152,25 +193,6 @@ public class Client_EditOrder extends AppCompatActivity {
         }
     }
 
-    public String readData(String openFileName){
-        try {
-
-            FileInputStream fileInputStream = openFileInput(openFileName);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            ValueMessager.readDataBuffer = bufferedReader.readLine();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ValueMessager.readDataBuffer.toString();
-    }
-
-
     public void btnFunction(){
 
         title = (TextView) findViewById(R.id.profile_placeOrder_title);
@@ -184,18 +206,7 @@ public class Client_EditOrder extends AppCompatActivity {
         city = (EditText) findViewById(R.id.editText_PO_city);
         description = (EditText) findViewById(R.id.editText_PO_description);
         addPhoto = (ImageButton) findViewById(R.id.imageButton_addPhoto);
-        photo1 = (ImageView) findViewById(R.id.imageView_OP_photo1);
-        photo2 = (ImageView) findViewById(R.id.imageView_OP_photo2);
-        photo3 = (ImageView) findViewById(R.id.imageView_OP_photo3);
-        photo4 = (ImageView) findViewById(R.id.imageView_OP_photo4);
-        photo5 = (ImageView) findViewById(R.id.imageView_OP_photo5);
         s = (Spinner) findViewById(R.id.spinner_OP);
-
-        photo1.setVisibility(View.INVISIBLE);
-        photo2.setVisibility(View.INVISIBLE);
-        photo3.setVisibility(View.INVISIBLE);
-        photo4.setVisibility(View.INVISIBLE);
-        photo5.setVisibility(View.INVISIBLE);
 
         warning.setVisibility(View.INVISIBLE);
         title.setText("Edit task");
@@ -255,7 +266,7 @@ public class Client_EditOrder extends AppCompatActivity {
 
 
                         for(int i=0; i<bitmapArray.size(); i++){
-                            sendImage(bitmapArray.get(i),result);
+                            sendImage(bitmapArray.get(i),ValueMessengerTaskInfo.id);
                         }
                     }
                 };
@@ -312,6 +323,7 @@ public class Client_EditOrder extends AppCompatActivity {
                 else {
 
                     model.setTitle(jobTitle.getText().toString());
+                    model.setServiceId(ValueMessengerTaskInfo.id);
                     model.setType(s.getSelectedItem().toString());
                     if (budget.getText().toString().equals("")) {
                         budget.setText("0");
@@ -339,7 +351,7 @@ public class Client_EditOrder extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_place_order);
 
-        btnFunction();
+        getData();
 
     }
 }
