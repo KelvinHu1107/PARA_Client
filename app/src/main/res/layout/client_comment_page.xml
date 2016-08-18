@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar_rating"
+        layout="@layout/toolbar_rating">
+    </include>
+
+    <LinearLayout tools:context="com.newnergy.para_client.Client_Pending"
+        tools:showIn="@layout/app_bar_pending"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff"
+        android:orientation="vertical" >
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView21"
+            android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="75dp"
+            android:background="#ffffff" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:layout_marginRight="12.5dp"
+                android:background="@drawable/border_radius"
+                android:layout_marginBottom="25dp"
+                android:layout_marginTop="12.5dp"
+                android:layout_marginLeft="12.5dp" >
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Comment amount"
+                    android:id="@+id/textView48"
+                    android:textColor="#333333"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="Number"
+                    android:id="@+id/textView_commentPage_number"
+                    android:layout_weight="1"
+                    android:textColor="#666666"
+                    android:gravity="center_vertical|right"
+                    android:paddingRight="40dp"
+                    android:textSize="16sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:id="@+id/linearLayout12"
+            android:layout_height="match_parent"
+            android:weightSum="1"
+            android:background="#ffffff" >
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:id="@+id/linearLayout10"
+                android:layout_height="427dp"
+                android:layout_weight="1" >
+
+                <ListView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/listView_commentPage"
+                    android:layout_weight="1"
+                    android:background="#ffffff" />
+            </LinearLayout>
+
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

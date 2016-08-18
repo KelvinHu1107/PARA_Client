@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="#ffffff">
 
     <LinearLayout
@@ -14,13 +14,13 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Name"
-                android:id="@+id/textView11"
+                android:text="Client Name"
+                android:id="@+id/textView_clientName"
                 android:textColor="#333333"
                 android:textSize="18sp"
                 android:layout_margin="12.5dp"
@@ -30,7 +30,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Time"
-                android:id="@+id/textView18"
+                android:id="@+id/textView_comment_createDate"
                 android:textSize="16sp"
                 android:textColor="#333333"
                 android:gravity="right"
@@ -47,7 +47,7 @@
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <RatingBar
                 android:id="@+id/comment_listSample_ratingBar"
@@ -64,10 +64,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Comment 511961919814575757927941\9412\91\941\5419\51\915\91"
-                android:id="@+id/textView22"
+                android:id="@+id/textView_comment_comment"
                 android:textColor="#666666"
                 android:textSize="16sp"
                 android:layout_margin="12.5dp" />
+
         </LinearLayout>
     </LinearLayout>
 

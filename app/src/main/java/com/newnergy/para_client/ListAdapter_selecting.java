@@ -169,6 +169,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
                 ValueMessengerTaskInfo.providerOfferedPrice = budget[position];
                 ValueMessengerTaskInfo.providerFirstName = firstName[position];
                 ValueMessengerTaskInfo.providerLastName = lastName[position];
+                ValueMessagerFurtherInfo.userName = providerUserName[position];
 
 
                 Intent nextPage_Confirm = new Intent(c,Client_PopUpWindow.class);

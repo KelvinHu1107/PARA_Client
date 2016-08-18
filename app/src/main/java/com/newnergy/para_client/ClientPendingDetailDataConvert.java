@@ -35,6 +35,9 @@ public class ClientPendingDetailDataConvert {
             jsvm.setBudget(object.getDouble("Budget"));
             jsvm.setProviderUsername(object.getString("ProviderUsername"));
             jsvm.setCreateDate(object.getString("CreateDate"));
+            jsvm.setProviderFirstname(object.getString("ProviderFirstname"));
+            jsvm.setProviderLastname(object.getString("ProviderLastname"));
+            jsvm.setRating(object.getDouble("Rating"));
             String[] servicePhotoUrls;
             JSONArray photoUrls = new JSONArray(object.getString("ServicePhotoUrl"));
             servicePhotoUrls = new String[photoUrls.length()];

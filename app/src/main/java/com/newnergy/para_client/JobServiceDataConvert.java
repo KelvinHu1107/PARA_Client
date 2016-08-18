@@ -6,6 +6,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by GaoxinHuang on 2016/6/20.
@@ -72,6 +73,7 @@ public class JobServiceDataConvert {
             jsvm.setClientEmail(object.getString("ClientEmail"));
             jsvm.setType(object.getString("Type"));
             jsvm.setBudget(object.getDouble("Budget"));
+
             String[] servicePhotoUrls;
             JSONArray photoUrls = new JSONArray(object.getString("ServicePhotoUrl"));
             servicePhotoUrls = new String[photoUrls.length()];

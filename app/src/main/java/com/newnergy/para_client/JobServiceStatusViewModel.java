@@ -7,6 +7,15 @@ public class JobServiceStatusViewModel {
     private String ProviderUsername ;
     private Integer Status ;
     private int ServiceId ;
+    private Double Price;
+
+    public Double getPrice() {
+        return Price;
+    }
+
+    public void setPrice(Double price) {
+        Price = price;
+    }
 
     public String getProviderUsername() {
         return ProviderUsername;

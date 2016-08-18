@@ -22,6 +22,9 @@ public class JobServiceViewModel {
     private Double Budget;
     private String Type;
 
+
+
+
     public Double getBudget() {
         return Budget;
     }

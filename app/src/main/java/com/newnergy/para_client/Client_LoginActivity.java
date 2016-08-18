@@ -16,9 +16,12 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 
 public class Client_LoginActivity extends AppCompatActivity {
@@ -33,6 +36,24 @@ public class Client_LoginActivity extends AppCompatActivity {
     ImageView yx;
     private ArrayList<JobServiceViewModel> allJobServiceModel;
 
+
+    public String readData(String openFileName){
+        try {
+
+            FileInputStream fileInputStream = openFileInput(openFileName);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            ValueMessager.readDataBuffer = bufferedReader.readLine();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ValueMessager.readDataBuffer.toString();
+    }
 
     public void writeData(String fileName, String writeData){
 
@@ -53,6 +74,7 @@ public class Client_LoginActivity extends AppCompatActivity {
         setContentView(R.layout.client_login);
         initComponent();
         EtEmail.setHint("");
+        EtEmail.setText(readData("userEmail"));
         EtPassword.setHint("");
         tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();

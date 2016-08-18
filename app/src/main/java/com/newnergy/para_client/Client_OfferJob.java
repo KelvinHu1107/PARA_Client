@@ -246,6 +246,24 @@ public class Client_OfferJob extends AppCompatActivity {
                     public void onResponse(Integer result) {
                         super.onResponse(result);
 
+                        DataSendController controller = new DataSendController(){
+                            @Override
+                            public void onResponse(Boolean r) {
+                                super.onResponse(r);
+                            }
+                        };
+
+                        JobServiceStatusViewModel model = new JobServiceStatusViewModel();
+
+                        model.setStatus(2);
+                        model.setProviderUsername(ValueMessagerFurtherInfo.providerUserName.toString());
+
+                        String data2= new JobServiceStatusDataConvert().ModelToJson(model);
+
+
+
+                        controller.execute("http://para.co.nz/api/JobService/UpdateServiceStatus/"+result, data2, "PUT");
+
                         for(int i=0; i<bitmapArray.size(); i++){
                             sendImage(bitmapArray.get(i),result);
                         }
@@ -315,9 +333,9 @@ public class Client_OfferJob extends AppCompatActivity {
                     placeOrderServiceViewModel.setDescription(description.getText().toString());
 
                     String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
-                    c.execute("http://para.co.nz/api/JobService/AddService", data, "POST");
+                    c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
 
-                    Intent nextPage_History = new Intent(Client_OfferJob.this, Client_Further_Info.class);
+                    Intent nextPage_History = new Intent(Client_OfferJob.this, Client_Incoming_Services.class);
                     startActivity(nextPage_History);
                 }
             }

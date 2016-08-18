@@ -157,8 +157,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Boolean result) {
                                 if (result) {
-                                    writeData("userEmail",EtEmail.getText().toString());
-                                    ValueMessager.email = EtEmail.getText().toString();
+
 
                                 } else {
                                     Client_RegisterController controller = new Client_RegisterController() {
@@ -166,7 +165,11 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                         public void onResponse(Boolean result) {
                                             super.onResponse(result);
                                             if (result) {
-                                                Intent intent = new Intent(Client_RegisterActivity.this, Client_RegisterActiveActivity.class);
+
+                                                writeData("userEmail",EtEmail.getText().toString());
+                                                ValueMessager.email = EtEmail.getText().toString();
+
+                                                Intent intent = new Intent(Client_RegisterActivity.this, Client_Incoming_Services.class);
                                                 startActivity(intent);
                                             } else {
                                                 Toast.makeText(Client_RegisterActivity.this, "Unsuccessful ", Toast.LENGTH_LONG).show();

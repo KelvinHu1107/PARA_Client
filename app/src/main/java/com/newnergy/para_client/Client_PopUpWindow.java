@@ -34,8 +34,8 @@ public class Client_PopUpWindow extends AppCompatActivity {
         name = (TextView) findViewById(R.id.textView_popUpWindow_name);
         photo = (ImageView) findViewById(R.id.imageView_popUpWindow_photo);
 
-        if(ValueMessengerTaskInfo.budget != null)
-        price.setText(ValueMessengerTaskInfo.budget.toString());
+
+        price.setText("$ "+ValueMessengerTaskInfo.providerOfferedPrice.toString());
         name.setText(ValueMessengerTaskInfo.providerFirstName+" "+ValueMessengerTaskInfo.providerLastName);
         if(ValueMessengerTaskInfo.providerProfilePhoto != null)
         photo.setImageBitmap(ValueMessengerTaskInfo.providerProfilePhoto);
@@ -54,12 +54,14 @@ public class Client_PopUpWindow extends AppCompatActivity {
                 JobServiceStatusViewModel model = new JobServiceStatusViewModel();
 
                 model.setStatus(3);
-                model.setProviderUsername(ValueMessager.email.toString());
+                model.setPrice(ValueMessengerTaskInfo.providerOfferedPrice);
+                model.setProviderUsername(ValueMessagerFurtherInfo.userName.toString());
 
                 String data= new JobServiceStatusDataConvert().ModelToJson(model);
-                c.execute("http://para.co.nz/api/JobService/UpdateServiceStatus/"+ValueMessagerFurtherInfo.id, data, "PUT");
 
-                Intent nextPage = new Intent(Client_PopUpWindow.this, Client_Confirm.class);
+                c.execute("http://para.co.nz/api/JobService/UpdateServiceStatus/"+ValueMessengerTaskInfo.id, data, "PUT");
+
+                Intent nextPage = new Intent(Client_PopUpWindow.this, Client_Confirm2.class);
                 startActivity(nextPage);
             }
         });

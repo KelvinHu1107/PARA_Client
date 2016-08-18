@@ -16,6 +16,9 @@ public class JobServiceStatusDataConvert {
         if (model.getProviderUsername() != null) {
             json.append("\"ProviderUsername\":\"" + model.getProviderUsername() + "\",");
         }
+        if (model.getPrice() != null) {
+            json.append("\"Price\":\"" + model.getPrice() + "\",");
+        }
 
         json.deleteCharAt(json.length() - 1);
         json.append("}");

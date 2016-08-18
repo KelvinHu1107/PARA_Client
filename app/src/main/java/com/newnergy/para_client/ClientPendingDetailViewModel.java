@@ -25,6 +25,33 @@ public class ClientPendingDetailViewModel {
     private String[] ServicePhotoUrl;
     private String ProviderUsername;
     private String CreateDate;
+    private Double Rating;
+    private String ProviderFirstname;
+    private String ProviderLastname;
+
+    public Double getRating() {
+        return Rating;
+    }
+
+    public void setRating(Double rating) {
+        Rating = rating;
+    }
+
+    public String getProviderFirstname() {
+        return ProviderFirstname;
+    }
+
+    public void setProviderFirstname(String providerFirstname) {
+        ProviderFirstname = providerFirstname;
+    }
+
+    public String getProviderLastname() {
+        return ProviderLastname;
+    }
+
+    public void setProviderLastname(String providerLastname) {
+        ProviderLastname = providerLastname;
+    }
 
     public String getCreateDate() {
         return CreateDate;
