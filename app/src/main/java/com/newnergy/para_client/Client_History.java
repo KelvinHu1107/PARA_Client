@@ -1,7 +1,6 @@
 package com.newnergy.para_client;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -19,65 +18,34 @@ public class Client_History extends AppCompatActivity {
     ListAdapter_History adapter;
     ListView listView;
     TextView back;
-    CharSequence[] startDate;
-    int[] clientId;
-    int[]id;
-    CharSequence[] clientDueDate;
-    CharSequence[] jobSurburb;
-    CharSequence[] profilePhoto;
-    CharSequence[] getTitle;
+    int[] serviceId;
+    Integer[] providerId, status;
+    CharSequence[] profilePhoto, providerPhoto;
+    CharSequence[] getTitle, createDate;
     private  String[] objectName ;
     ClientData[] dataList;
-    CharSequence[] name ;
-    private List<PendingJobViewModel> list;
+    private List<ClientPendingListViewModel> list;
     private ClientProfileViewModel profileList;
     private ImageView profilePicture;
     private RoundImage roundImage;
     private TextView profileName;
-
-    public void getProfileData(){
-        DataTransmitController c =new DataTransmitController(){
-            @Override
-            public void onResponse(String result) {
-                super.onResponse(result);
-                //profileList = ClientDataConvert.convertJsonToModel(result);
-                //profilePicture = (ImageView) findViewById(R.id.imageView_sideMenu_pic);
-                //profileName = (TextView) findViewById(R.id.textView_slidingMenu_name);
-                //profileName.setText(profileList.getFirstName()+" "+profileList.getLastName());
-                getProfileImageData();
-            }
-        };
-        c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/gaoxin","","GET");
-
-    }
-
-    public void getProfileImageData() {
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap bitmap) {
-                super.onResponse(bitmap);
-                if (bitmap == null) {
-                }
-                roundImage = new RoundImage(bitmap);
-                profilePicture.setImageDrawable(roundImage);
-            }
-        };
-        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profileList.getProfilePicture(), "","POST");
-    }
-
+    private Double[] budget;
 
     public void getData(){
         DataTransmitController c =new DataTransmitController(){
             @Override
             public void onResponse(String result) {
                 super.onResponse(result);
-                list = PendingJobDataConvert.convertJsonToArrayList(result);
+
+                ClientPendingDataConvert convert = new ClientPendingDataConvert();
+                list = convert.convertJsonToArrayList(result);
 
                 initList();
 
+
             }
         };
-        c.execute("http://para.co.nz/api/PendingJob/GetAllPendingJobs/gaoxin","","GET");
+        c.execute("http://para.co.nz/api/ClientJobService/ClientGetHistory/"+ValueMessager.email,"","GET");
     }
 
     //init listview
@@ -85,26 +53,29 @@ public class Client_History extends AppCompatActivity {
 
         dataList = new ClientData[list.size()];
         objectName = new String[list.size()];
-        name = new CharSequence[list.size()];
-        startDate = new CharSequence[list.size()];
-        clientId = new int[list.size()];
-        id = new int[list.size()];
-        clientDueDate = new CharSequence[list.size()];
-        jobSurburb = new CharSequence[list.size()];
+        serviceId = new int[list.size()];
+        providerId = new Integer[list.size()];
         profilePhoto = new CharSequence[list.size()];
         getTitle = new CharSequence[list.size()];
+        providerPhoto = new CharSequence[list.size()];
+        createDate = new CharSequence[list.size()];
+        status = new Integer[list.size()];
+        budget = new Double[list.size()];
+
 
         for(int i=0; i< list.size() ; i++) {
-            objectName[i] = list.get(i).getClientName();
-            name[i] = list.get(i).getClientName();
-            clientId[i] = list.get(i).getClientId();
-            clientDueDate[i] = list.get(i).getDueDate();
-            startDate[i] = list.get(i).getStartDate();
-            id[i] = list.get(i).getId();
-            profilePhoto[i] = list.get(i).getProfilePhoto();
+            objectName[i] = list.get(i).getTitle();
+            serviceId[i] = list.get(i).getServiceId();
+            providerId[i] = list.get(i).getProviderId();
+            providerPhoto[i] = list.get(i).getProviderProfilePhoto();
             getTitle[i] = list.get(i).getTitle();
+            status[i] = list.get(i).getStatus();
+            createDate[i] = list.get(i).getCreateDate();
+            budget[i] = list.get(i).getBudget();
 
         }
+
+
 
         for (int i = 0; i < list.size(); i++)
             dataList[i] = new ClientData();
@@ -112,16 +83,17 @@ public class Client_History extends AppCompatActivity {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
         for (int i = 0; i < list.size(); i++) {
-            dataList[i].name = name[i];
-            dataList[i].createDate = startDate[i];
-            dataList[i].clientId = clientId[i];
-            dataList[i].clientDueDate = clientDueDate[i];
-            dataList[i].id = id[i];
-            dataList[i].jobSurburb = jobSurburb[i];
-            dataList[i].profilePhoto = profilePhoto[i];
+
+            dataList[i].profilePhoto = providerPhoto[i];
             dataList[i].getTitle = getTitle[i];
+            dataList[i].providerId = providerId[i];
+            dataList[i].serviceId = serviceId[i];
+            dataList[i].createDate = createDate[i];
+            dataList[i].status = status[i];
+            dataList[i].budget = budget[i];
+
             try {
-                dataList[i].date = format.parse(startDate[i].toString());
+                dataList[i].date = format.parse(createDate[i].toString());
             } catch (ParseException e) {
                 e.printStackTrace();
             }
@@ -141,21 +113,20 @@ public class Client_History extends AppCompatActivity {
 
         //swap
         for (int i = 0; i < list.size(); i++) {
-            name[i] = dataList[i].name;
-            startDate[i] = dataList[i].createDate;
-            clientId[i] = dataList[i].clientId;
-            clientDueDate[i] = dataList[i].clientDueDate;
-            id[i] = dataList[i].id;
-            jobSurburb[i] = dataList[i].jobSurburb;
-            profilePhoto[i] = dataList[i].profilePhoto;
-            getTitle[i] = dataList[i].getTitle;
 
+            createDate[i] = dataList[i].createDate;
+            serviceId[i] = dataList[i].serviceId;
+            providerId[i] = dataList[i].providerId;
+            providerPhoto[i] = dataList[i].profilePhoto;
+            getTitle[i] = dataList[i].getTitle;
+            status[i] = dataList[i].status;
+            budget[i] = dataList[i].budget;
         }
         //swap
 
 
 
-        adapter = new ListAdapter_History(this, objectName, name, startDate, clientId, clientDueDate, id, jobSurburb, profilePhoto, getTitle);
+        adapter = new ListAdapter_History(this, objectName, createDate, serviceId, providerId, providerPhoto, getTitle, status, budget);
         listView.setAdapter(adapter);
 
     }
@@ -165,6 +136,7 @@ public class Client_History extends AppCompatActivity {
     public void btnFunction(){
 
         back = (TextView) findViewById(R.id.textView_cancel_history);
+        listView = (ListView) findViewById(R.id.listView_history);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override

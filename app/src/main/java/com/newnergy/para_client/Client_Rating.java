@@ -78,14 +78,17 @@ public class Client_Rating extends AppCompatActivity {
                                 public void onResponse(Boolean result) {
                                     super.onResponse(result);
 
+                                    System.out.println("xxxxxx"+result);
                                     if(result){
                                         ValueMessager.commentLastPage = 1;
+                                        ValueMessengerTaskInfo.providerUserName = ValueMessagerFurtherInfo.userName.toString();
                                         Intent intent = new Intent(Client_Rating.this, Client_CommentPage.class);
                                         startActivity(intent);
                                     }
                                 }
                             };
                             JobServiceStatusViewModel model = new JobServiceStatusViewModel();
+                            model.setProviderUsername(ValueMessagerFurtherInfo.userName.toString());
                             model.setStatus(4);
 
                             String data2= new JobServiceStatusDataConvert().ModelToJson(model);

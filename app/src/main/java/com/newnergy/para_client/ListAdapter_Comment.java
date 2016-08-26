@@ -30,7 +30,7 @@ public class ListAdapter_Comment extends ArrayAdapter<String> {
     public ListAdapter_Comment(Context context, String[] objectName, CharSequence[] firstName, CharSequence[] lastName,CharSequence[] comment,
                                CharSequence[] createDate,Double[] rating) {
 
-        super(context, R.layout.pending_list_sample, objectName);
+        super(context, R.layout.client_comment_list_sample, objectName);
 
         this.c = context;
         this.firstName = firstName;
@@ -38,15 +38,11 @@ public class ListAdapter_Comment extends ArrayAdapter<String> {
         this.comment = comment;
         this.createDate = createDate;
         this.rating = rating;
-
-
     }
 
     public class ViewHolder {
         TextView nameTv, createDateTv, comment;
         RatingBar ratingBarRb;
-
-
     }
 
     @Override
@@ -92,12 +88,7 @@ public class ListAdapter_Comment extends ArrayAdapter<String> {
 
         holder.comment.setText(comment[position]);
 
-        //holder.createDateTv.setText(budget[position].toString());
-
-
         // <Scrollable list layout>end
         return convertView;
     }
-
-
 }

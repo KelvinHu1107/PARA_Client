@@ -328,11 +328,28 @@ public class Client_EditOrder extends AppCompatActivity {
                     if (budget.getText().toString().equals("")) {
                         budget.setText("0");
                     }
+
                     model.setBudget(Double.parseDouble(budget.getText().toString()));
 //                    model.set(street.getText().toString());
 //                    model.setSuburb(suburb.getText().toString());
 //                    model.setCity(city.getText().toString());
                     model.setDescription(description.getText().toString());
+
+                    DataSendController controller = new DataSendController(){
+                        @Override
+                        public void onResponse(Boolean result) {
+                            super.onResponse(result);
+                        }
+                    };
+
+                    AddressModel addressModel=new AddressModel();
+                    addressModel.setId(jsm.getServiceAddressId());
+                    addressModel.setStreet(street.getText().toString());
+                    addressModel.setSuburb(suburb.getText().toString());
+                    addressModel.setCity(city.getText().toString());
+                    String data2= AddressDataConvert.ModelToJson(addressModel);
+                    controller.execute("http://para.co.nz/api/Address/UpdateAddress", data2, "PUT");
+
 
                     String data = convert.ModelToJson(model);
                     c.execute("http://para.co.nz/api/ClientJobService/updatejobservice", data, "PUT");

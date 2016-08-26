@@ -7,14 +7,29 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import org.json.JSONArray;
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
+import com.facebook.Profile;
+import com.facebook.ProfileTracker;
+import com.facebook.login.LoginManager;
+import com.facebook.login.LoginResult;
+import com.facebook.login.widget.LoginButton;
+
 import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -23,6 +38,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Client_LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
@@ -32,9 +48,83 @@ public class Client_LoginActivity extends AppCompatActivity {
     private TextView tvWarningMessage;
     private TextView tvEmail;
     private TextView tvPassword;
+    private LoginButton facebookLogIn;
+    private CallbackManager callbackManager = null;
+    private AccessTokenTracker mtracker = null;
+    private ProfileTracker mprofileTracker = null;
+    Intent intent;
+    ImageView picBuffer;
     ImageView vx;
     ImageView yx;
     private ArrayList<JobServiceViewModel> allJobServiceModel;
+
+    FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
+        @Override
+        public void onSuccess(LoginResult loginResult) {
+
+            Profile profile = Profile.getCurrentProfile();
+            GraphRequest request = GraphRequest.newMeRequest(
+                    loginResult.getAccessToken(),
+                    new GraphRequest.GraphJSONObjectCallback() {
+                        @Override
+                        public void onCompleted(JSONObject object, GraphResponse response) {
+                            Log.v("LoginActivity", response.toString());
+
+                            try {
+                                writeData("userEmail", object.getString("email"));
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                            intent = new Intent(Client_LoginActivity.this, Client_RegisterActivity.class);
+                            intent.putExtra("jsondata",object.toString());
+
+
+                                Client_LoginController controller = new Client_LoginController() {
+                                    @Override
+                                    public void onResponse(Boolean s) {
+                                        super.onResponse(s);
+                                        if (s) {
+                                            ValueMessager.userLogInByFb = true;
+
+                                            Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
+                                            startActivity(nextPage_IncomingServices);
+
+                                        } else {
+
+                                            startActivity(intent);
+                                        }
+                                    }
+                                };
+                            try {
+                                controller.execute("http://para.co.nz/api/ClientAccount/CheckDuplicateUsername", "{'username':'" + object.getString("email") + "'}", "POST");
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                    });
+
+            Bundle parameters=new Bundle();
+            parameters.putString("fields", "id,name,email,gender,birthday");
+            request.setParameters(parameters);
+            request.executeAsync();
+            Profile.getCurrentProfile();
+
+
+        }
+
+        @Override
+        public void onCancel() {
+            //Toast.makeText(,"Login Cancelled", Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public void onError(FacebookException error) {
+
+        }
+    };
 
 
     public String readData(String openFileName){
@@ -71,13 +161,63 @@ public class Client_LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ValueMessager.userLogInByFb = false;
+        FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.client_login);
+
+
+        callbackManager = CallbackManager.Factory.create();
+
+        mtracker = new AccessTokenTracker() {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldAccessToken, AccessToken currentAccessToken) {
+
+                Log.v("AccessTokenTracker", "oldAccessToken=" + oldAccessToken + "||" + "CurrentAccessToken" + currentAccessToken);
+            }
+        };
+
+        mprofileTracker = new ProfileTracker() {
+            @Override
+            protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
+
+                Log.v("Session Tracker", "oldProfile=" + oldProfile + "||" + "currentProfile" + currentProfile);
+
+            }
+        };
+
+        mtracker.startTracking();
+        mprofileTracker.startTracking();
+
         initComponent();
         EtEmail.setHint("");
         EtEmail.setText(readData("userEmail"));
         EtPassword.setHint("");
         tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();
+
+    }
+
+    public boolean isLoggedIn() {
+        AccessToken accessToken = AccessToken.getCurrentAccessToken();
+        return accessToken != null;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        if (isLoggedIn()) {
+            LoginManager.getInstance().logOut();
+
+        }
+
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 
     private void initComponent() {
@@ -88,6 +228,12 @@ public class Client_LoginActivity extends AppCompatActivity {
         tvWarningMessage = (TextView) findViewById(R.id.textView_logIn_warning);
         tvEmail = (TextView) findViewById(R.id.textView_login_emailLeft);
         tvPassword = (TextView) findViewById(R.id.textView_login_passwordLeft);
+        facebookLogIn = (LoginButton) findViewById(R.id.imageButton_faceBook_logIn);
+
+        facebookLogIn.setReadPermissions(Arrays.asList(
+                "public_profile", "email", "user_birthday", "user_friends"));
+
+        facebookLogIn.registerCallback(callbackManager, callback);
 
     }
 
@@ -139,7 +285,8 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 writeData("userEmail",EtEmail.getText().toString());
                                 ValueMessager.email = EtEmail.getText().toString();
 
-                                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
+                                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Chat.class);
+                                //Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                                 startActivity(nextPage_IncomingServices);
 
                             } else {
@@ -194,19 +341,4 @@ public class Client_LoginActivity extends AppCompatActivity {
         controller.execute("http://para.co.nz/api/image/uploadImage");
     }
 
-    private ArrayList getJavaCollection(String jsons) throws JSONException {
-
-        JSONArray json = new JSONArray(jsons);
-
-//        if(jsonArray!=null){
-//            objs=new ArrayList<T>();
-//            List list=(List)JSONSerializer.toJava(jsonArray);
-//            for(Object o:list){
-//                JSONObject jsonObject=JSONObject.fromObject(o);
-//                T obj=(T) JSONObject.toBean(jsonObject, clazz.getClass());
-//                objs.add(obj);
-//            }
-//        }
-        return null;
-    }
 }

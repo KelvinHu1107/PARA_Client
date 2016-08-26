@@ -10,9 +10,15 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,6 +42,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private TextView tvLastNameLeft;
     private TextView tvPhoneLeft;
     private TextView tvWarningMessage;
+    JSONObject response;
 
 
     @Override
@@ -62,7 +69,30 @@ public class Client_RegisterActivity extends AppCompatActivity {
         }
     }
 
+
+    public String readData(String openFileName){
+        try {
+
+            FileInputStream fileInputStream = openFileInput(openFileName);
+            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
+            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
+
+            ValueMessager.readDataBuffer = bufferedReader.readLine();
+
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return ValueMessager.readDataBuffer.toString();
+    }
+
     public void initComponent() {
+
+        Intent intent = getIntent();
+        String jsondata = intent.getStringExtra("jsondata");
+
         toolbar = (Toolbar) findViewById(R.id.toolbar_register_template);
         EtEmail = (EditText) findViewById(R.id.et_register_email);
         EtPassword = (EditText) findViewById(R.id.et_register_password);
@@ -79,6 +109,24 @@ public class Client_RegisterActivity extends AppCompatActivity {
         tvFirstNameLeft = (TextView) findViewById(R.id.textView_firstName_left);
         tvLastNameLeft = (TextView) findViewById(R.id.textView_lastName_left);
         tvPhoneLeft = (TextView) findViewById(R.id.textView_phone_left);
+
+        try {
+
+            if(!ValueMessager.userLogInByFb) {
+
+                ValueMessager.email = readData("userEmail");
+
+                response = new JSONObject(jsondata);
+                String names[] = response.get("name").toString().split(" ");
+                EtEmail.setText(readData("userEmail"));
+                EtFirstName.setText(names[0]);
+                EtLastName.setText(names[1]);
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
 
     }
 
@@ -157,7 +205,9 @@ public class Client_RegisterActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(Boolean result) {
                                 if (result) {
-
+                                    tvWarningMessage.setVisibility(View.VISIBLE);
+                                    tvWarningMessage.setText("Warning, this account has been registered!");
+                                    tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
 
                                 } else {
                                     Client_RegisterController controller = new Client_RegisterController() {

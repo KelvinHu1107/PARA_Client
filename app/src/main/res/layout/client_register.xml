@@ -232,19 +232,6 @@
                 android:visibility="invisible" />
 
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/page_marge"
-                android:layout_marginTop="@dimen/page_marge"
-                android:src="@drawable/login_or"></ImageView>
-
-            <ImageButton
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@android:color/white"
-                android:src="@drawable/facebook_login" />
-
         </LinearLayout>
     </ScrollView>
 </LinearLayout>

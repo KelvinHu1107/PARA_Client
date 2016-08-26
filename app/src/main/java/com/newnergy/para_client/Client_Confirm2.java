@@ -93,6 +93,8 @@ public class Client_Confirm2 extends AppCompatActivity {
                 jobDone = (Button) findViewById(R.id.button_confirm2);
 
 
+                cancel.setText("Back");
+
                 jobDone.setVisibility(View.VISIBLE);
                 if(jsm.getStatus() == 2 || jsm.getStatus() == 4)
                     jobDone.setVisibility(View.INVISIBLE);
