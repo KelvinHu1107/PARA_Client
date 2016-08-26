@@ -74,7 +74,6 @@ public class Client_Chat extends AppCompatActivity {
     private boolean sendChatMessage() {
 
         adapter.add(new ChatMessage(side, chatText.getText().toString()));
-        System.out.println("yyyyyyyy"+chatText.getText().toString());
         chatText.setText("");
 
         side = !side;

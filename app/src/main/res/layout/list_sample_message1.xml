@@ -12,33 +12,49 @@
         <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+            android:id="@+id/chat_gravityContainer">
 
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:id="@+id/imageView_chat_profile_pic"
+            android:id="@+id/imageView_chat_profile_pic_left"
             android:src="@drawable/client_portrait_xh_720x1280"
             android:layout_marginLeft="12.5dp"
             android:layout_marginTop="12.5dp"
             android:layout_marginBottom="12.5dp"
             android:layout_alignParentLeft="false"
-            android:layout_alignParentRight="false" />
+            android:layout_alignParentRight="false"
+            android:layout_marginRight="12.5dp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="New Text"
+                android:id="@+id/textView_chat_time_right"
+                android:layout_marginTop="30dp"
+                android:layout_toRightOf="@+id/linearLayout_message1"
+                android:layout_alignParentRight="false"
+                android:lines="1"
+                android:singleLine="true"
+                android:textColor="#333333"
+                android:textSize="10sp"
+                android:layout_marginRight="5dp" />
 
             <LinearLayout
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="#666666"
+        android:background="@drawable/border_radius_blue_button"
         android:id="@+id/linearLayout_message1"
-        android:layout_margin="12.5dp"
-        android:layout_alignParentStart="false"
+                android:layout_alignParentStart="false"
         android:layout_alignParentEnd="false"
         android:layout_alignParentTop="false"
         android:layout_alignWithParentIfMissing="false"
         android:layout_alignParentRight="false"
         android:layout_alignParentBottom="false"
-        android:layout_centerHorizontal="true">
+        android:layout_centerHorizontal="true"
+                android:layout_marginTop="12.5dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,6 +64,7 @@
             android:textColor="#333333"
             android:textSize="15sp"
             android:layout_margin="5dp"
+            android:maxWidth="200dp"
             android:layout_gravity="left"
             android:gravity="left" />
     </LinearLayout>
@@ -56,13 +73,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="New Text"
-                android:id="@+id/textView_chat_time"
-            android:layout_marginTop="25dp"
+                android:id="@+id/textView_chat_time_left"
+            android:layout_marginTop="30dp"
                 android:layout_toRightOf="@+id/linearLayout_message1"
                 android:layout_alignParentRight="false"
                 android:lines="1"
                 android:singleLine="true"
-            android:textColor="#333333" />
+            android:textColor="#333333"
+                android:textSize="10sp"
+                android:layout_marginLeft="5dp" />
+
+            <ImageView
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                android:id="@+id/imageView_chat_profile_pic_right"
+                android:src="@drawable/client_portrait_xh_720x1280"
+                android:layout_marginTop="12.5dp"
+                android:layout_marginBottom="12.5dp"
+                android:layout_alignParentLeft="false"
+                android:layout_alignParentRight="false"
+                android:layout_marginLeft="12.5dp"
+                android:layout_marginRight="12.5dp" />
 
         </LinearLayout>
 
