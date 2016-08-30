@@ -32,7 +32,8 @@
             android:layout_gravity="center_vertical"
             android:textColor="@color/toolbar_font_color"
             android:textSize="@dimen/title_font_size"
-            android:gravity="center" />
+            android:gravity="center"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/toolbar_register_next"

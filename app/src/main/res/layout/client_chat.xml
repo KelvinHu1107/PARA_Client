@@ -31,14 +31,21 @@
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton9"
-            android:src="@drawable/chat_photo"
-            android:background="#4973b3" />
+            android:id="@+id/imageButton_camera_chat"
+            android:src="@drawable/client_camera01"
+            android:background="#4973b3"
+            android:layout_gravity="center"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageButton21" />
+            android:id="@+id/imageButton_voiceMwssage_chat"
+            android:src="@drawable/client_mic02"
+            android:background="#4972b3"
+            android:layout_margin="3dp"
+            android:layout_gravity="center" />
 
         <EditText
             android:layout_width="match_parent"
@@ -47,11 +54,14 @@
             android:layout_weight="6"
             android:background="@drawable/border_radius_blue_stroke"
             android:layout_gravity="center"
-            android:layout_margin="12.5dp"
             android:textColor="#333333"
             android:textSize="16sp"
             android:paddingLeft="25dp"
-            android:paddingRight="25dp" />
+            android:paddingRight="25dp"
+            android:layout_marginTop="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:layout_marginBottom="12.5dp"
+            android:layout_marginLeft="5dp" />
 
         <Button
             android:layout_width="wrap_content"

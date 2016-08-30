@@ -1,5 +1,6 @@
 package com.newnergy.para_client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -43,6 +44,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private TextView tvPhoneLeft;
     private TextView tvWarningMessage;
     JSONObject response;
+    Context context;
 
 
     @Override
@@ -218,6 +220,9 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
                                                 writeData("userEmail",EtEmail.getText().toString());
                                                 ValueMessager.email = EtEmail.getText().toString();
+
+                                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                                signalRHubConnection.startSignalR();
 
                                                 Intent intent = new Intent(Client_RegisterActivity.this, Client_Incoming_Services.class);
                                                 startActivity(intent);

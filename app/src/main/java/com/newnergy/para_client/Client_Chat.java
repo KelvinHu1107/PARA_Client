@@ -3,6 +3,8 @@ package com.newnergy.para_client;
 import android.content.Intent;
 import android.database.DataSetObserver;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v7.app.AppCompatActivity;
 import android.view.KeyEvent;
 import android.view.View;
@@ -12,12 +14,17 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.util.Calendar;
+
+import microsoft.aspnet.signalr.client.hubs.SubscriptionHandler1;
+
 public class Client_Chat extends AppCompatActivity {
 
     private ListView list;
     private EditText chatText;
     private Button send;
     private TextView title, back;
+    private String time, message;
     Intent intent;
     private boolean side = false;
     ListAdapter_ChatArray adapter;
@@ -30,12 +37,32 @@ public class Client_Chat extends AppCompatActivity {
 
         Intent i = getIntent();
 
+
         send = (Button) findViewById(R.id.button_chat_send);
         title = (TextView) findViewById(R.id.textView_setting_title);
+        back = (TextView) findViewById(R.id.textView_setting_back);
         chatText = (EditText) findViewById(R.id.editText_chat);
         list = (ListView) findViewById(R.id.listView_chat);
 
-        adapter = new ListAdapter_ChatArray(getApplicationContext(), R.layout.list_sample_message1);
+        title.setText(ValueMessager.providerFirstName+" "+ValueMessager.providerLastName);
+
+        adapter = new ListAdapter_ChatArray(getApplicationContext(), R.layout.list_sample_message1, ValueMessager.providerProfileBitmap, ValueMessager.userProfileBitmap);
+
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switch(ValueMessager.chatLastPage){
+                    case 0:
+                        Intent intent = new Intent(Client_Chat.this, Client_Incoming_Services.class);
+                        startActivity(intent);
+                        break;
+                    case 1:
+                        Intent intent2 = new Intent(Client_Chat.this, Client_Further_Info.class);
+                        startActivity(intent2);
+                        break;
+                }
+            }
+        });
 
         chatText.setOnKeyListener(new View.OnKeyListener() {
             @Override
@@ -69,14 +96,56 @@ public class Client_Chat extends AppCompatActivity {
             }
         });
 
+
+        SignalRHubConnection.mHubProxy.on("recieveTextMessage",
+                new SubscriptionHandler1<ChatGetMessageViewModel>() {
+                    @Override
+                    public void run(ChatGetMessageViewModel model) {
+                        time = model.getCreateDate();
+
+                        message = model.getMessageContent();
+                        Handler xHandler=new Handler(Looper.getMainLooper());
+                        xHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                adapter.add(new ChatMessage(side = true, message, time));
+                                chatText.setText("");
+
+                            }
+                        });
+                    }
+                },ChatGetMessageViewModel.class);
+
     }
+
+
+
 
     private boolean sendChatMessage() {
 
-        adapter.add(new ChatMessage(side, chatText.getText().toString()));
+        DataSendController controller = new DataSendController() {
+            @Override
+            public void onResponse(Boolean r) {
+                super.onResponse(r);
+            }
+        };
+        String username = ValueMessager.email.toString();
+        ChatSendMessageDataConvert convert=new ChatSendMessageDataConvert();
+        ChatSendMessageViewModel model=new ChatSendMessageViewModel();
+        model.setFromUsername(username);
+        model.setToUsername("gaoxin");
+        model.setMessageContent(chatText.getText().toString());
+        String data= convert.ModelToJson(model);
+        controller.execute("http://para.co.nz/api/ChatClient/SendTextMessage", data, "POST");
+
+        Calendar currentTime = Calendar.getInstance();
+        String calenderTime = currentTime.getTime().toString();
+
+        adapter.add(new ChatMessage(side = false, chatText.getText().toString(), calenderTime));
         chatText.setText("");
 
-        side = !side;
+
 
         return true;
     }

@@ -1,5 +1,6 @@
 package com.newnergy.para_client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -37,7 +38,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Client_LoginActivity extends AppCompatActivity {
@@ -53,10 +53,10 @@ public class Client_LoginActivity extends AppCompatActivity {
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
     Intent intent;
-    ImageView picBuffer;
     ImageView vx;
     ImageView yx;
-    private ArrayList<JobServiceViewModel> allJobServiceModel;
+    Context context;
+
 
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
         @Override
@@ -71,7 +71,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                             Log.v("LoginActivity", response.toString());
 
                             try {
-                                writeData("userEmail", object.getString("email"));
+                                ValueMessager.userEmailBuffer = object.getString("email");
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             }
@@ -86,6 +86,10 @@ public class Client_LoginActivity extends AppCompatActivity {
                                         super.onResponse(s);
                                         if (s) {
                                             ValueMessager.userLogInByFb = true;
+                                            ValueMessager.email = ValueMessager.userEmailBuffer;
+                                            writeData("userEmail", ValueMessager.email.toString());
+                                            SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                            signalRHubConnection.startSignalR();
 
                                             Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                                             startActivity(nextPage_IncomingServices);
@@ -285,8 +289,11 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 writeData("userEmail",EtEmail.getText().toString());
                                 ValueMessager.email = EtEmail.getText().toString();
 
-                                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Chat.class);
-                                //Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
+                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                signalRHubConnection.startSignalR();
+
+                                //Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Chat.class);
+                                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                                 startActivity(nextPage_IncomingServices);
 
                             } else {

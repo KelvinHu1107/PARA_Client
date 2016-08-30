@@ -12,7 +12,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -24,10 +27,17 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
     private List<ChatMessage> MessageList = new ArrayList<ChatMessage>();
     private LinearLayout layout, container;
     private ImageView profilePic_left,profilePic_right;
+    private Bitmap providerBitmap, clientBitmap;
+    private String time;
+    private Date date;
 
 
-    public ListAdapter_ChatArray(Context context, int textViewResourceId) {
+    public ListAdapter_ChatArray(Context context, int textViewResourceId, Bitmap providerBitmap, Bitmap clientBitmap) {
         super(context, textViewResourceId);
+
+        this.providerBitmap = providerBitmap;
+        this.clientBitmap = clientBitmap;
+
     }
 
 
@@ -65,7 +75,25 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
         container = (LinearLayout)v.findViewById(R.id.chat_gravityContainer);
         ChatMessage messageObj = getItem(position);
         chatText.setText(messageObj.message);
-        System.out.println("xxxxxxxxxx"+messageObj.left);
+
+        profilePic_right.setImageBitmap(clientBitmap);
+        profilePic_left.setImageBitmap(providerBitmap);
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
+        SimpleDateFormat finalFormat = new SimpleDateFormat("MM-dd hh:mm aa");
+        try {
+            if(messageObj.left) {
+                date = format.parse(messageObj.currentTime);
+            }
+            else if(!messageObj.left){
+                date = format2.parse(messageObj.currentTime);
+            }
+            time = finalFormat.format(date);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
 
         if(!messageObj.left){
             profilePic_right.setVisibility(View.VISIBLE);
@@ -73,9 +101,10 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
             time_right.setVisibility(View.VISIBLE);
             time_left.setVisibility(View.INVISIBLE);
             time_left.setText("");
-            time_right.setText("time");
+            time_right.setText(time);
             chatText.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
             container.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
+            //chatText.setBackgroundResource(messageObj.left ?R.drawable.client_blank:R.drawable.chat_client);
         }
         else{
             profilePic_right.setVisibility(View.INVISIBLE);
@@ -83,11 +112,13 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
             time_right.setVisibility(View.INVISIBLE);
             time_left.setVisibility(View.VISIBLE);
             time_right.setText("");
-            time_left.setText("time");
+            time_left.setText(time);
+
             chatText.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
             container.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
+            //chatText.setBackgroundResource(messageObj.left ?R.drawable.client_blank:R.drawable.chat_client);
         }
-        //chatText.setBackgroundResource(messageObj.left ?);
+
 
         return v;
 

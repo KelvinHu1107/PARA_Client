@@ -6,12 +6,19 @@ package com.newnergy.para_client;
 public class ChatMessage {
     public boolean left;
     public String message;
+    public String currentTime;
 
-    public ChatMessage(boolean left, String message) {
+
+
+    public ChatMessage(boolean left, String message, String currentTime) {
 
         super();
         this.left = left;
         this.message = message;
+        this.currentTime =currentTime;
+
 
     }
+
+
 }
