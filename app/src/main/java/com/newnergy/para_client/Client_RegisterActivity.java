@@ -114,7 +114,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
         try {
 
-            if(!ValueMessager.userLogInByFb) {
+            if(ValueMessager.registerByFb) {
 
                 ValueMessager.email = readData("userEmail");
 

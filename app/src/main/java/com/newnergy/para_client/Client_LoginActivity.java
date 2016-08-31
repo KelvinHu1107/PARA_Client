@@ -86,6 +86,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                                         super.onResponse(s);
                                         if (s) {
                                             ValueMessager.userLogInByFb = true;
+                                            ValueMessager.registerByFb = false;
                                             ValueMessager.email = ValueMessager.userEmailBuffer;
                                             writeData("userEmail", ValueMessager.email.toString());
                                             SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
@@ -96,6 +97,7 @@ public class Client_LoginActivity extends AppCompatActivity {
 
                                         } else {
 
+                                            ValueMessager.registerByFb = true;
                                             startActivity(intent);
                                         }
                                     }

@@ -26,7 +26,7 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
     private TextView chatText, time_left, time_right;
     private List<ChatMessage> MessageList = new ArrayList<ChatMessage>();
     private LinearLayout layout, container;
-    private ImageView profilePic_left,profilePic_right;
+    private ImageView profilePic_left,profilePic_right, picture;
     private Bitmap providerBitmap, clientBitmap;
     private String time;
     private Date date;
@@ -37,6 +37,7 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
 
         this.providerBitmap = providerBitmap;
         this.clientBitmap = clientBitmap;
+
 
     }
 
@@ -60,9 +61,10 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
     public View getView(int position, View convertView, ViewGroup parent){
 
         View v = convertView;
+
         if(v==null){
                 LayoutInflater inflater = (LayoutInflater) this.getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = inflater.inflate(R.layout.list_sample_message1, parent, false);
+                v = inflater.inflate(R.layout.list_sample__chat_message, parent, false);
         }
 
 
@@ -72,12 +74,16 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
         time_right = (TextView) v.findViewById(R.id.textView_chat_time_right);
         profilePic_left = (ImageView) v.findViewById(R.id.imageView_chat_profile_pic_left);
         profilePic_right = (ImageView) v.findViewById(R.id.imageView_chat_profile_pic_right);
+        picture = (ImageView) v.findViewById(R.id.imageView_chat_picture);
         container = (LinearLayout)v.findViewById(R.id.chat_gravityContainer);
         ChatMessage messageObj = getItem(position);
         chatText.setText(messageObj.message);
 
         profilePic_right.setImageBitmap(clientBitmap);
         profilePic_left.setImageBitmap(providerBitmap);
+
+
+
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat format2 = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy");
@@ -104,6 +110,20 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
             time_right.setText(time);
             chatText.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
             container.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
+            if(messageObj.bitmap == null)
+            {
+                picture.setImageBitmap(null);
+
+                picture.setVisibility(View.INVISIBLE);
+                layout.setVisibility(View.VISIBLE);
+            }
+            else{
+
+                picture.setImageBitmap(messageObj.bitmap);
+                picture.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.INVISIBLE);
+                chatText.setText("");
+            }
             //chatText.setBackgroundResource(messageObj.left ?R.drawable.client_blank:R.drawable.chat_client);
         }
         else{
@@ -116,6 +136,22 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
 
             chatText.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
             container.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
+
+            if(messageObj.bitmap == null)
+            {
+
+                picture.setImageBitmap(null);
+
+                picture.setVisibility(View.INVISIBLE);
+                container.setVisibility(View.VISIBLE);
+            }
+            else{
+
+                picture.setImageBitmap(messageObj.bitmap);
+                picture.setVisibility(View.VISIBLE);
+                container.setVisibility(View.INVISIBLE);
+                chatText.setText("");
+            }
             //chatText.setBackgroundResource(messageObj.left ?R.drawable.client_blank:R.drawable.chat_client);
         }
 
