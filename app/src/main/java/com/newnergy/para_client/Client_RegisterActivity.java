@@ -58,6 +58,8 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
     }
 
+
+
     public void writeData(String fileName, String writeData){
 
         try {
@@ -221,11 +223,11 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                                 writeData("userEmail",EtEmail.getText().toString());
                                                 ValueMessager.email = EtEmail.getText().toString();
 
-                                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
                                                 signalRHubConnection.startSignalR();
 
-                                                Intent intent = new Intent(Client_RegisterActivity.this, Client_Incoming_Services.class);
-                                                startActivity(intent);
+                                                ValueMessager.userFirstName = firstName;
+                                                ValueMessager.userLastName = lastName;
                                             } else {
                                                 Toast.makeText(Client_RegisterActivity.this, "Unsuccessful ", Toast.LENGTH_LONG).show();
                                             }

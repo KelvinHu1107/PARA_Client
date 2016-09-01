@@ -46,6 +46,7 @@ public class Client_Confirm2 extends AppCompatActivity {
                 }
                 imageView.setImageBitmap(mBitmap);
                 ValueMessengerTaskInfo.providerProfilePhoto = mBitmap;
+
             }
         };
         controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");

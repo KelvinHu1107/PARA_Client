@@ -25,6 +25,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 
 public class SelectPicPopupWindow extends Activity {
@@ -34,12 +36,15 @@ public class SelectPicPopupWindow extends Activity {
     private LinearLayout layout;
     private static ImageView profilePicture_new;
     private static ImageView profilePictureSlidingMenu_new;
-    private static final int RESULT_LOAD_IMAGE = 1;
-    private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
+    private static final int RESULT_LOAD_IMAGE = 2;
+    private static final int RESULT_EXTERNAL_STORAGE_RESULT = 2;
     private ImageUnity imageUnity;
     private static AppCompatActivity a;
     private ImageView profilePictureSlidingMenu;
     private ImageView profilePicture;
+
+    private static final int TAKE_PICTURE = 1;
+    private Uri imageUri;
 
 
     @Override
@@ -153,8 +158,14 @@ public class SelectPicPopupWindow extends Activity {
 
     public void PhotoCamera() {
 
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        startActivityForResult(intent, 1);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},TAKE_PICTURE);
+        }
+        else {
+            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+            startActivityForResult(intent, 1);
+        }
+
 
     }
 
@@ -165,43 +176,111 @@ public class SelectPicPopupWindow extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK){
 
-            //URI address on SD card
-            Uri selectedImage = data.getData();
-            // Declare a stream to read the image data
-            InputStream inputStream;
-            try {
+        imageUnity = new ImageUnity();
 
-                imageUnity = new ImageUnity();
-                //getting an input stream from the image data
-                inputStream = getContentResolver().openInputStream(selectedImage);
-                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                bitmap=imageUnity.toRoundBitmap(bitmap);
-                bitmap = imageUnity.compressImage(bitmap, 5);
+        switch (requestCode) {
+            case TAKE_PICTURE: {
+                super.onActivityResult(requestCode, resultCode, data);
+                if (resultCode == Activity.RESULT_OK) {
 
-                ValueMessager.profileBitmap = bitmap;
+                    String sdStatus = Environment.getExternalStorageState();
+                    //check sd
+                    if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
+                        return;
+                    }
 
-                writeData(ValueMessager.profileBitmap);
-
-
-                profilePicture_new.setImageBitmap(bitmap);
-                profilePictureSlidingMenu_new.setImageBitmap(bitmap);
-                //profilePicture.setImageDrawable(roundImage);
-              //  profilePictureSlidingMenu.setImageDrawable(roundImage);
-                sendImage(bitmap, ValueMessager.email.toString());
-                finish();
+                    Bundle bundle = data.getExtras();
+                    Bitmap bitmap = (Bitmap) bundle.get("data");
+                    FileOutputStream b = null;
+                    File file = new File("/sdcard/myImage/");
+                    file.mkdirs();
 
 
+                    String str = null;
+                    Date date = null;
+                    SimpleDateFormat format = new SimpleDateFormat("yyyyMMddHHmmss");
+                    date = new Date();
+                    str = format.format(date);
+                    String fileName = "/sdcard/myImage/" + str + ".jpg";
+                    try {
+                        b = new FileOutputStream(fileName);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, b);// save data into file
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    } finally {
+                        try {
+                            b.flush();
+                            b.close();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        if (data != null) {
+                            Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
+                            System.out.println("fdf=================" + data.getDataString());
+                            //img.setImageBitmap(cameraBitmap);
+                            PostProfilePicture(cameraBitmap);
+                            System.out.println("success======" + cameraBitmap.getWidth() + cameraBitmap.getHeight());
+                            finish();
+                        }
+                    }
+                }
+
+
+                break;
             }
-            catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Unable to load image", Toast.LENGTH_LONG).show();
+
+            //////////////////////
+            case 2: {
+                if (requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK) {
+
+                    //URI address on SD card
+                    Uri selectedImage = data.getData();
+                    // Declare a stream to read the image data
+                    InputStream inputStream;
+                    try {
+
+
+                        //getting an input stream from the image data
+                        inputStream = getContentResolver().openInputStream(selectedImage);
+                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        PostProfilePicture(bitmap);
+                        finish();
+
+
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Unable to load image", Toast.LENGTH_LONG).show();
+                    }
+
+                }
+
+
+                break;
             }
 
         }
-
     }
+
+
+    public void PostProfilePicture(Bitmap bitmap)
+    {
+        imageUnity = new ImageUnity();
+        bitmap = imageUnity.toRoundBitmap(bitmap);
+
+         bitmap = imageUnity.compressImage(bitmap, 1);
+
+        ValueMessager.profileBitmap = bitmap;
+        ValueMessager.userProfileBitmap = bitmap;
+
+        writeData(ValueMessager.profileBitmap);
+
+        profilePicture_new.setImageBitmap(bitmap);
+        profilePictureSlidingMenu_new.setImageBitmap(bitmap);
+        sendImage(bitmap, ValueMessager.email.toString());
+    }
+
+
 
     public void writeData(Bitmap image){
 

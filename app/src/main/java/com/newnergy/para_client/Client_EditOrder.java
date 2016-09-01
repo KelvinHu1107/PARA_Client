@@ -55,6 +55,7 @@ public class Client_EditOrder extends AppCompatActivity {
                 }
                 imageView.setImageBitmap(mBitmap);
                 bitmapArray.add(mBitmap);
+                mBitmap.recycle();
             }
         };
         controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
@@ -115,6 +116,7 @@ public class Client_EditOrder extends AppCompatActivity {
             }
         };
         controller.setBitmap(newImg);
+        newImg.recycle();
         controller.execute("http://para.co.nz/api/JobService/UploadImage/"+username);
 
     }
@@ -136,6 +138,7 @@ public class Client_EditOrder extends AppCompatActivity {
                 bitmap = BitmapFactory.decodeStream(inputStream);
 
                 bitmapArray.add(bitmap);
+                bitmap.recycle();
 
                     photoId = new int[5];
                     photoAddress = new String[bitmapArray.size()];

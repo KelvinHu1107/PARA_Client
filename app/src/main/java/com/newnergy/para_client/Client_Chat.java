@@ -149,33 +149,32 @@ public class Client_Chat extends AppCompatActivity {
         });
 
 
+
+
         SignalRHubConnection.mHubProxy.on("recieveImageMessage",
                 new SubscriptionHandler1<ChatGetMessageViewModel>() {
                     @Override
                     public void run(ChatGetMessageViewModel model) {
                         time = model.getCreateDate();
                         message = model.getMessageContent();
-                        System.out.println("xxxxxxxxxxxxxx"+message);
-
-                        xHandler.post(new Runnable() {
+                        GetImageController controller=new GetImageController(){
                             @Override
-                            public void run() {
-
-                                GetImageController controller2 = new GetImageController() {
-                                    @Override
-                                    public void onResponse(Bitmap mBitmap) {
-                                        super.onResponse(bitmap);
-                                        if (bitmap == null) {
-                                            System.out.println("tttttttttttttttttt");
-                                            return;
-                                        }
-                                        adapter.add(new ChatMessage(side = true, "", time, 1, mBitmap));// type0: string, 1:picture, 2:voice
-
-                                    }
-                                };
-                                controller2.execute("http://para.co.nz/api/ChatClient/GetChatImage/"+message,"","POST");
+                            public void onResponse(Bitmap mBitmap) {
+                                super.onResponse(mBitmap);
+                                if (mBitmap == null) {
+                                    System.out.println("didnt get pic form chat server!!!");
+                                }
+                                adapter.add(new ChatMessage(side = true, "", time, 1, mBitmap));// type0: string, 1:picture, 2:voice
+//                                Handler xHandler=new Handler(Looper.getMainLooper());
+//                                xHandler.post(new Runnable() {
+//                                    @Override
+//                                    public void run() {
+//
+//                                    }
+//                                });
                             }
-                       });
+                        };
+                        controller.execute("http://para.co.nz/api/ChatClient/GetChatImage/"+message, "", "POST");
                     }
                 },ChatGetMessageViewModel.class);
 
@@ -196,7 +195,7 @@ public class Client_Chat extends AppCompatActivity {
         ChatSendMessageDataConvert convert=new ChatSendMessageDataConvert();
         ChatSendMessageViewModel model=new ChatSendMessageViewModel();
         model.setFromUsername(username);
-        model.setToUsername("gaoxin");
+        model.setToUsername(ValueMessager.providerEmail);
         model.setMessageContent(chatText.getText().toString());
         String data= convert.ModelToJson(model);
         controller.execute("http://para.co.nz/api/ChatClient/SendTextMessage", data, "POST");

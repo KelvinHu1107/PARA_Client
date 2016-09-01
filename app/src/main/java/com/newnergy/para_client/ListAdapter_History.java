@@ -68,8 +68,10 @@ public class ListAdapter_History extends ArrayAdapter<String> {
             public void onResponse(Bitmap mBitmap) {
                 super.onResponse(mBitmap);
                 if (mBitmap == null) {
+                    return;
                 }
                 imageView.setImageBitmap(mBitmap);
+                mBitmap.recycle();
             }
         };
         controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ profilePhotoUrl, "","POST");

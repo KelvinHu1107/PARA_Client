@@ -1,7 +1,6 @@
 package com.newnergy.para_client;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,12 +16,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStreamReader;
-
 public class Client_Profile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
     public RoundImage roundImage;
@@ -31,46 +24,10 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
     public TextView name,email,phone,address;
     public ImageView profilePicture;
     public Button button;
-    private Bitmap bitmap,uploadBitmap;
     private ClientProfileViewModel list;
-
     private ImageView profilePictureSlidingMenu;
     private TextView profileName;
-
-
-    public String readData(String openFileName){
-        try {
-
-            FileInputStream fileInputStream = openFileInput(openFileName);
-            InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream);
-            BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
-
-            ValueMessager.readDataBuffer = bufferedReader.readLine();
-
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return ValueMessager.readDataBuffer.toString();
-    }
-
-
-    public void getProfileImageData() {
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap bitmap) {
-                super.onResponse(bitmap);
-                if (bitmap == null) {
-                    return;
-                }
-                roundImage = new RoundImage(bitmap);
-                profilePictureSlidingMenu.setImageDrawable(roundImage);
-            }
-        };
-        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ list.getProfilePicture(), "","POST");
-    }
+    ImageUnity imageUnity = new ImageUnity();
 
     public void getData(){
         DataTransmitController c =new DataTransmitController(){
@@ -83,12 +40,10 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
                 profileName.setText(list.getFirstName()+" "+list.getLastName());
                 refreshData();
 
-                getProfileImageData();
-
             }
         };
 
-        c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/"+readData("userEmail"),"","GET");
+        c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/"+ValueMessager.email,"","GET");
 
     }
 
@@ -105,25 +60,12 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
             ValueMessager.address_city = list.getClientAddressCity();
         }
 
-        if(ValueMessager.profileBitmap != null){
-            Bitmap bitmap = ValueMessager.profileBitmap;
-            roundImage = new RoundImage(bitmap);
-            profilePicture.setImageDrawable(roundImage);
-        }
-
         //setup profile value from value messenger
 
             name.setText(ValueMessager.firstName+" "+ ValueMessager.lastName);
-
-
-            email.setText(readData("userEmail"));
-
-
-
+            email.setText(ValueMessager.email);
             phone.setText(ValueMessager.phone);
-
-
-        address.setText(ValueMessager.address_street+", "+ ValueMessager.address_suburb+", "+ ValueMessager.address_city);
+            address.setText(ValueMessager.address_street+", "+ ValueMessager.address_suburb+", "+ ValueMessager.address_city);
 
 //        if(ValueMessager.companyName != null)
 //            companyName.setText(ValueMessager.companyName);
@@ -141,43 +83,9 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
 //            description.setText(ValueMessager.description);
         //setup profile value from value messenger
 
-        getImageData();
     }
 
 
-    public void sendImage(Bitmap newImg,String username) {
-//        Bitmap good = ((BitmapDrawable) newImg.getDrawable()).getBitmap();
-        SendImageController controller = new SendImageController() {
-            @Override
-            public void onResponse(Boolean result) {
-                super.onResponse(result);
-                if (result) {
-                    System.out.println("yes");
-                } else {
-                    System.out.println("no");
-                }
-            }
-        };
-        controller.setBitmap(newImg);
-        controller.execute("http://para.co.nz/api/ClientProfile/UploadImage/"+username);
-    }
-
-    public void getImageData() {
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap bitmap) {
-                super.onResponse(bitmap);
-                if (bitmap == null) {
-                    return;
-                }
-
-                roundImage = new RoundImage(bitmap);
-                profilePicture.setImageDrawable(roundImage);
-                //profilePicture.setImageBitmap(bitmap);
-            }
-        };
-        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ list.getProfilePicture(), "","POST");
-    }
 
     public void btnFunction() {
         pending = (ImageButton) findViewById(R.id.imageButton_ProfileToPending);
@@ -193,6 +101,14 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
         profilePicture = (ImageView) findViewById(R.id.imageView_profile_profileImage);
         profilePictureSlidingMenu = (ImageView) findViewById(R.id.imageView_sideMenu_pic);
         profileName = (TextView) findViewById(R.id.textView_slidingMenu_name);
+
+        if(ValueMessager.userProfileBitmap != null) {
+            ValueMessager.userProfileBitmap = imageUnity.toRoundBitmap(ValueMessager.userProfileBitmap);
+            profilePictureSlidingMenu.setImageBitmap(ValueMessager.userProfileBitmap);
+            profilePicture.setImageBitmap(ValueMessager.userProfileBitmap);
+        }
+        if(ValueMessager.userFirstName != null && ValueMessager.userLastName != null)
+            profileName.setText(ValueMessager.userFirstName+" "+ValueMessager.userLastName);
 
         main.setOnClickListener(new View.OnClickListener() {
             @Override

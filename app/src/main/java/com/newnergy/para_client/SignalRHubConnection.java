@@ -29,11 +29,6 @@ public  class  SignalRHubConnection {
     public final static String HOST = "http://para.co.nz";
 //    private final IBinder mBinder = new LocalBinder();
 
-    public SignalRHubConnection(Context context) {
-
-        this.context = context;
-    }
-
     //
      /*
     This function try to connect with chat hub and return connection ID.

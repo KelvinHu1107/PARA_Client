@@ -118,8 +118,8 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
                 layout.setVisibility(View.VISIBLE);
             }
             else{
-
                 picture.setImageBitmap(messageObj.bitmap);
+                messageObj.bitmap.recycle();
                 picture.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.INVISIBLE);
                 chatText.setText("");
@@ -143,13 +143,14 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
                 picture.setImageBitmap(null);
 
                 picture.setVisibility(View.INVISIBLE);
-                container.setVisibility(View.VISIBLE);
+                layout.setVisibility(View.VISIBLE);
             }
             else{
 
                 picture.setImageBitmap(messageObj.bitmap);
+                messageObj.bitmap.recycle();
                 picture.setVisibility(View.VISIBLE);
-                container.setVisibility(View.INVISIBLE);
+                layout.setVisibility(View.INVISIBLE);
                 chatText.setText("");
             }
             //chatText.setBackgroundResource(messageObj.left ?R.drawable.client_blank:R.drawable.chat_client);

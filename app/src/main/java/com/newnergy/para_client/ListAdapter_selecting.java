@@ -28,6 +28,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
     CharSequence[] providerUserName;
     Double[] budget, providerRating;
     LayoutInflater inflaterSelecting;
+    ImageUnity imageUnity = new ImageUnity();
 
     public ListAdapter_Selecting(Context context, String[] objectName, CharSequence[] firstName, CharSequence[] lastName,CharSequence[] providerPhoto,
                                CharSequence[] providerUserName,Double[] budget, CharSequence[] acceptTime, Integer[] providerId, int[] serviceId, Double[] providerRating,
@@ -69,8 +70,10 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
                 if (mBitmap == null) {
                     imageView.setImageResource(R.drawable.client_photo_round);
                 }
-                imageView.setImageBitmap(mBitmap);
-                ValueMessengerTaskInfo.providerProfilePhoto = mBitmap;
+
+                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
+                ValueMessengerTaskInfo.providerProfilePhoto = imageUnity.toRoundBitmap(mBitmap);
+
             }
         };
         controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");

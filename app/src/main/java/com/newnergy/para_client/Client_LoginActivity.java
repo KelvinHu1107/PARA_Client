@@ -52,6 +52,8 @@ public class Client_LoginActivity extends AppCompatActivity {
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
     private ProfileTracker mprofileTracker = null;
+    private ClientProfileViewModel list;
+    private ImageUnity imageUnity = new ImageUnity();
     Intent intent;
     ImageView vx;
     ImageView yx;
@@ -89,11 +91,10 @@ public class Client_LoginActivity extends AppCompatActivity {
                                             ValueMessager.registerByFb = false;
                                             ValueMessager.email = ValueMessager.userEmailBuffer;
                                             writeData("userEmail", ValueMessager.email.toString());
-                                            SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                            SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
                                             signalRHubConnection.startSignalR();
 
-                                            Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
-                                            startActivity(nextPage_IncomingServices);
+                                            getData(ValueMessager.email.toString());
 
                                         } else {
 
@@ -132,6 +133,45 @@ public class Client_LoginActivity extends AppCompatActivity {
         }
     };
 
+
+    public void getProfileImageData() {
+        GetImageController controller = new GetImageController() {
+            @Override
+            public void onResponse(Bitmap bitmap) {
+                super.onResponse(bitmap);
+                if (bitmap == null) {
+                    return;
+                }
+
+                ValueMessager.userProfileBitmap = imageUnity.toRoundBitmap(bitmap);
+
+                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
+                startActivity(nextPage_IncomingServices);
+            }
+        };
+        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ list.getProfilePicture(), "","POST");
+    }
+
+    public void getData(String userName){
+        DataTransmitController c =new DataTransmitController(){
+            @Override
+            public void onResponse(String result) {
+                super.onResponse(result);
+
+                list = ClientDataConvert.convertJsonToModel(result);
+
+                ValueMessager.userFirstName = list.getFirstName();
+                ValueMessager.userLastName = list.getLastName();
+
+                System.out.println("yyyyyyyyyyyyyyyy"+ValueMessager.userFirstName+" "+ValueMessager.userLastName );
+                getProfileImageData();
+
+            }
+        };
+
+        c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/"+userName,"","GET");
+
+    }
 
     public String readData(String openFileName){
         try {
@@ -291,13 +331,10 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 writeData("userEmail",EtEmail.getText().toString());
                                 ValueMessager.email = EtEmail.getText().toString();
 
-                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection(context);
+                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
                                 signalRHubConnection.startSignalR();
 
-                                //Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Chat.class);
-                                Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
-                                startActivity(nextPage_IncomingServices);
-
+                                getData(EtEmail.getText().toString());
                             } else {
                                 Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
                             }
