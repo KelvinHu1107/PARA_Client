@@ -42,6 +42,7 @@ public class Client_EditOrder extends AppCompatActivity {
     String[] photoAddress;
     int[] photoId;
     private ImageView[] photo;
+    ImageUnity imageUnity = new ImageUnity();
 
 
     public void getImageData(String profilePhotoUrl, final ImageView imageView) {
@@ -53,9 +54,8 @@ public class Client_EditOrder extends AppCompatActivity {
                 if (mBitmap == null) {
                     return;
                 }
-                imageView.setImageBitmap(mBitmap);
-                bitmapArray.add(mBitmap);
-                mBitmap.recycle();
+                imageView.setImageBitmap(imageUnity.compressImage(mBitmap, 1));
+                bitmapArray.add(imageUnity.compressImage(mBitmap, 1));
             }
         };
         controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
@@ -135,10 +135,12 @@ public class Client_EditOrder extends AppCompatActivity {
 
                 //getting an input stream from the image data
                 inputStream = getContentResolver().openInputStream(selectedImage);
-                bitmap = BitmapFactory.decodeStream(inputStream);
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inJustDecodeBounds = false;
+                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                bitmap = BitmapFactory.decodeStream(inputStream, null, opt);
 
                 bitmapArray.add(bitmap);
-                bitmap.recycle();
 
                     photoId = new int[5];
                     photoAddress = new String[bitmapArray.size()];

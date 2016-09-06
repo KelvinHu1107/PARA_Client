@@ -43,6 +43,7 @@ public class Client_OfferJob extends AppCompatActivity {
     private ImageView photo1, photo2, photo3, photo4, photo5;
     private Spinner s;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+    ImageUnity imageUnity = new ImageUnity();
 
 
     public boolean isBudget (String email){
@@ -84,7 +85,10 @@ public class Client_OfferJob extends AppCompatActivity {
 
                 //getting an input stream from the image data
                 inputStream = getContentResolver().openInputStream(selectedImage);
-                bitmap = BitmapFactory.decodeStream(inputStream);
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inJustDecodeBounds = false;
+                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                bitmap = BitmapFactory.decodeStream(inputStream, null, opt);
 
                 if(photo1.getVisibility() == View.INVISIBLE)
                 {

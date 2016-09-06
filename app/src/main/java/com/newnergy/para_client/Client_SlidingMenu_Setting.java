@@ -34,7 +34,13 @@ public class Client_SlidingMenu_Setting extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ValueMessager.readDataBuffer.toString();
+
+        if(ValueMessager.readDataBuffer == null){
+            return "";
+        }
+        else {
+            return ValueMessager.readDataBuffer.toString();
+        }
     }
 
     public void btnFunction() {
@@ -51,6 +57,7 @@ public class Client_SlidingMenu_Setting extends AppCompatActivity {
         else
             notification.setText(ValueMessager.readDataBuffer);
 
+        if((readData("cardNum1").toString() != "") && (readData("cardNum2").toString() != "" )&& (readData("cardNum3").toString() != "")&& (readData("cardNum4").toString() != ""))
         creditCardNum.setText(readData("cardNum1")+"-"+readData("cardNum2")+"-"+readData("cardNum3")+"-"+readData("cardNum4"));
 
         changeCreditCard.setOnClickListener(new View.OnClickListener() {

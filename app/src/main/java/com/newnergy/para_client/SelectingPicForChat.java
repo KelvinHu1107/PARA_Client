@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,7 +35,7 @@ public class SelectingPicForChat extends Activity {
     private ImageUnity imageUnity;
     private boolean side = false;
     private static AppCompatActivity a;
-    private static final int TAKE_PICTURE = 1;
+    private static final int TAKE_PICTURE = 93;
 
 
     @Override
@@ -135,7 +134,7 @@ public class SelectingPicForChat extends Activity {
         }
         else {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, TAKE_PICTURE);
         }
 
 
@@ -146,6 +145,8 @@ public class SelectingPicForChat extends Activity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         imageUnity = new ImageUnity();
+
+
 
         switch (requestCode) {
             //carme
@@ -159,6 +160,7 @@ public class SelectingPicForChat extends Activity {
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
                         return;
                     }
+
 
                     Bundle bundle = data.getExtras();
                     Bitmap bitmap = (Bitmap) bundle.get("data");
@@ -176,6 +178,7 @@ public class SelectingPicForChat extends Activity {
                     try {
                         b = new FileOutputStream(fileName);
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 80, b);// save data into file
+
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } finally {
@@ -186,39 +189,39 @@ public class SelectingPicForChat extends Activity {
                             e.printStackTrace();
                         }
                         if (data != null) {
-                            Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
-                            System.out.println("fdf=================" + data.getDataString());
 
-                            //TODO:  put imgae here
-                            //example: img.setImageBitmap(cameraBitmap);
+                            try {
+                                Uri selectedImage = data.getData();
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                                Bitmap cameraBitmap= null;
+                                cameraBitmap = imageUnity.compressBySize(inputStream);
+                                cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
+                                cameraBitmap = imageUnity.ResizeBitmap(cameraBitmap);
+                                ValueMessager.chatAddMessageFlag = 1;
+                                ValueMessager.bitmapBuffer = cameraBitmap;
+                                System.out.println("success======" + cameraBitmap.getWidth() + cameraBitmap.getHeight());
 
-                            imageUnity.compressImage(cameraBitmap, 1);
-                            ValueMessager.bitmapBuffer = cameraBitmap;
-                            ValueMessager.chatAddMessageFlag = 1;
+                                Intent nextPage_Search = new Intent(SelectingPicForChat.this, Client_Chat.class);
+                                startActivity(nextPage_Search);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                           /// System.out.println("fdf=================" + data.getDataString());
+                            //File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
 
-                            SendImageController controller = new SendImageController() {
-                                @Override
-                                public void onResponse(Boolean result) {
-                                    super.onResponse(result);
-                                    if (result) {
-                                        System.out.println("yes");
-                                        Intent nextPage_Search = new Intent(SelectingPicForChat.this, Client_Chat.class);
-                                        startActivity(nextPage_Search);
-                                    } else {
-                                        System.out.println("no");
-                                        Intent nextPage_Search = new Intent(SelectingPicForChat.this, Client_Chat.class);
-                                        startActivity(nextPage_Search);
-                                    }
-                                }
-                            };
-                            controller.setBitmap(cameraBitmap);
-                            String FromUsername = ValueMessager.email.toString();
-                            String ToUsername = ValueMessager.providerEmail;
-                            controller.execute("http://para.co.nz/api/ChatClient/SendImageMessage/" + FromUsername + "/" + ToUsername, "", "POST");
+                            //img.setImageBitmap(cameraBitmap);
+
+                            //System.out.println("fdf=================" + data.getDataString());
+
+
+
+
 
                         }
                     }
                 }
+
+
                 break;
             }
 
@@ -235,9 +238,11 @@ public class SelectingPicForChat extends Activity {
                         imageUnity = new ImageUnity();
                         //getting an input stream from the image data
                         inputStream = getContentResolver().openInputStream(selectedImage);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
                         //bitmap = imageUnity.toRoundBitmap(bitmap);
-                        bitmap = imageUnity.compressImage(bitmap, 5);
+                        Bitmap  bitmap=imageUnity.compressBySize(inputStream);
+
+                        bitmap=imageUnity.ResizeBitmap(bitmap,300);
 
                         ValueMessager.bitmapBuffer = bitmap;
                         ValueMessager.chatAddMessageFlag = 1;
@@ -267,6 +272,8 @@ public class SelectingPicForChat extends Activity {
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Toast.makeText(this, "Unable to load image", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
                 }

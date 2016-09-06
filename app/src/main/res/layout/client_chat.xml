@@ -12,7 +12,9 @@
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:paddingTop="12.5dp"
+        android:paddingBottom="12.5dp">
 
         <ListView
             android:layout_width="match_parent"

@@ -70,8 +70,7 @@
                                 android:textSize="15sp"
                                 android:layout_gravity="center_vertical"
                                 android:gravity="right"
-                                android:paddingRight="12.5dp"
-                                android:text="1234-1234-1234-1234" />
+                                android:paddingRight="12.5dp" />
 
                             <ImageButton
                                 android:layout_width="wrap_content"

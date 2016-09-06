@@ -228,6 +228,10 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
                                                 ValueMessager.userFirstName = firstName;
                                                 ValueMessager.userLastName = lastName;
+
+                                                Intent intent = new Intent(Client_RegisterActivity.this, Client_Incoming_Services.class);
+                                                startActivity(intent);
+
                                             } else {
                                                 Toast.makeText(Client_RegisterActivity.this, "Unsuccessful ", Toast.LENGTH_LONG).show();
                                             }

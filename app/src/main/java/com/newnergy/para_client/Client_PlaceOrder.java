@@ -41,8 +41,9 @@ public class Client_PlaceOrder extends AppCompatActivity {
     private ImageButton addPhoto;
     private Bitmap bitmap;
     private ImageView photo1, photo2, photo3, photo4, photo5;
-    private Spinner s;
+    private Spinner spinner;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+    ImageUnity imageUnity = new ImageUnity();
 
 
     public boolean isBudget (String email){
@@ -65,6 +66,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
                 }
             }
         };
+
         controller.setBitmap(newImg);
         controller.execute("http://para.co.nz/api/JobService/UploadImage/"+username);
 
@@ -84,7 +86,10 @@ public class Client_PlaceOrder extends AppCompatActivity {
 
                 //getting an input stream from the image data
                 inputStream = getContentResolver().openInputStream(selectedImage);
-                bitmap = BitmapFactory.decodeStream(inputStream);
+                BitmapFactory.Options opt = new BitmapFactory.Options();
+                opt.inJustDecodeBounds = false;
+                opt.inPreferredConfig = Bitmap.Config.RGB_565;
+                bitmap = BitmapFactory.decodeStream(inputStream, null, opt);
 
                 if(photo1.getVisibility() == View.INVISIBLE)
                 {
@@ -189,7 +194,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
         photo3 = (ImageView) findViewById(R.id.imageView_OP_photo3);
         photo4 = (ImageView) findViewById(R.id.imageView_OP_photo4);
         photo5 = (ImageView) findViewById(R.id.imageView_OP_photo5);
-        s = (Spinner) findViewById(R.id.spinner_OP);
+        spinner = (Spinner) findViewById(R.id.spinner_OP);
 
         photo1.setVisibility(View.INVISIBLE);
         photo2.setVisibility(View.INVISIBLE);
@@ -304,7 +309,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
                 else {
                     placeOrderServiceViewModel.setClientEmail(readData("userEmail"));
                     placeOrderServiceViewModel.setTitle(jobTitle.getText().toString());
-                    placeOrderServiceViewModel.setType(s.getSelectedItem().toString());
+                    placeOrderServiceViewModel.setType(spinner.getSelectedItem().toString());
                     if (budget.getText().toString().equals("")) {
                         budget.setText("0");
                     }

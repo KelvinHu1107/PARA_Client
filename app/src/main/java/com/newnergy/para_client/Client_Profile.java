@@ -1,5 +1,6 @@
 package com.newnergy.para_client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
@@ -28,6 +29,8 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
     private ImageView profilePictureSlidingMenu;
     private TextView profileName;
     ImageUnity imageUnity = new ImageUnity();
+    Context context = this;
+    Loading_Dialog myLoading=new Loading_Dialog();
 
     public void getData(){
         DataTransmitController c =new DataTransmitController(){
@@ -42,8 +45,9 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
 
             }
         };
-
+        myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/"+ValueMessager.email,"","GET");
+
 
     }
 
@@ -83,6 +87,7 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
 //            description.setText(ValueMessager.description);
         //setup profile value from value messenger
 
+        myLoading.CloseLoadingDialog();
     }
 
 
@@ -175,15 +180,15 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
         });
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_pending);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    @Override
+//    public void onBackPressed() {
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_pending);
+//        if (drawer.isDrawerOpen(GravityCompat.START)) {
+//            drawer.closeDrawer(GravityCompat.START);
+//        } else {
+//            super.onBackPressed();
+//        }
+//    }
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
@@ -224,6 +229,9 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_profile);
+
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
         setSupportActionBar(toolbar);

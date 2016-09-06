@@ -207,28 +207,23 @@
                     android:layout_height="wrap_content"
                     android:text="Month"
                     android:id="@+id/textView43"
-                    android:layout_weight="1"
+                    android:layout_weight="1.1"
                     android:textSize="16sp"
                     android:textColor="#000000"
                     android:gravity="center_vertical|center_horizontal"
                     android:layout_gravity="center" />
 
-                <EditText
+                <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/editText_expireMonth"
-                    android:textColorHint="#999999"
-                    android:textSize="15sp"
-                    android:textColor="#000000"
-                    android:background="@drawable/border_radius"
-                    android:layout_marginRight="12.5dp"
-                    android:autoText="true"
-                    android:lines="1"
-                    android:singleLine="true"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spinner_expireMonth"
+                    android:entries="@array/Month"
+                    android:spinnerMode="dropdown"
                     android:layout_gravity="center"
-                    android:maxLength="2"
-                    android:gravity="center_vertical|center_horizontal" />
+                    android:layout_margin="12.5dp"
+                    android:layout_weight="1"
+                    android:popupBackground="#ffffff"
+                    android:theme="@style/AppTheme.PopupOverlay" />
 
                 <TextView
                     android:layout_width="30dp"
@@ -248,26 +243,21 @@
                     android:id="@+id/textView45"
                     android:textColor="#333333"
                     android:textSize="16sp"
-                    android:layout_weight="1"
+                    android:layout_weight="1.1"
                     android:layout_gravity="center"
                     android:gravity="center_vertical|center_horizontal" />
 
-                <EditText
+                <Spinner
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/editText_expireYear"
-                    android:textColorHint="#999999"
-                    android:textSize="15sp"
-                    android:textColor="#000000"
-                    android:background="@drawable/border_radius"
-                    android:layout_marginRight="12.5dp"
-                    android:autoText="true"
-                    android:lines="1"
-                    android:singleLine="true"
-                    android:layout_weight="1"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spinner_expireYear"
+                    android:entries="@array/Year"
+                    android:spinnerMode="dropdown"
                     android:layout_gravity="center"
-                    android:maxLength="4"
-                    android:gravity="center_vertical|center_horizontal" />
+                    android:layout_margin="12.5dp"
+                    android:layout_weight="0.9"
+                    android:popupBackground="#ffffff"
+                    android:theme="@style/AppTheme.PopupOverlay" />
             </LinearLayout>
         </LinearLayout>
 

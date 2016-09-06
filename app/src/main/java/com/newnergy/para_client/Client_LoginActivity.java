@@ -8,6 +8,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -57,7 +58,8 @@ public class Client_LoginActivity extends AppCompatActivity {
     Intent intent;
     ImageView vx;
     ImageView yx;
-    Context context;
+    Context context = this;
+    Loading_Dialog myLoading;
 
 
     FacebookCallback<LoginResult> callback = new FacebookCallback<LoginResult>() {
@@ -95,15 +97,18 @@ public class Client_LoginActivity extends AppCompatActivity {
                                             signalRHubConnection.startSignalR();
 
                                             getData(ValueMessager.email.toString());
+                                            myLoading.CloseLoadingDialog();
 
                                         } else {
 
                                             ValueMessager.registerByFb = true;
+                                            myLoading.CloseLoadingDialog();
                                             startActivity(intent);
                                         }
                                     }
                                 };
                             try {
+                                myLoading.ShowLoadingDialog();
                                 controller.execute("http://para.co.nz/api/ClientAccount/CheckDuplicateUsername", "{'username':'" + object.getString("email") + "'}", "POST");
 
                             } catch (JSONException e) {
@@ -163,7 +168,6 @@ public class Client_LoginActivity extends AppCompatActivity {
                 ValueMessager.userFirstName = list.getFirstName();
                 ValueMessager.userLastName = list.getLastName();
 
-                System.out.println("yyyyyyyyyyyyyyyy"+ValueMessager.userFirstName+" "+ValueMessager.userLastName );
                 getProfileImageData();
 
             }
@@ -211,6 +215,24 @@ public class Client_LoginActivity extends AppCompatActivity {
         FacebookSdk.sdkInitialize(getApplicationContext());
         setContentView(R.layout.client_login);
 
+        DisplayMetrics metric = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(metric);
+
+        int width = metric.widthPixels;
+        int height = metric.heightPixels;
+
+        if(width == 720 && height == 1080)
+            ValueMessager.resolution1080x720 = true;
+        else if(width == 480 && height == 800)
+            ValueMessager.resolution800x480 = true;
+        else if(width == 1920 && height == 1080)
+            ValueMessager.resolution1920x1080 = true;
+
+
+        System.out.println("xxxxxxxxxx"+ width+"yyy===="+height);
+
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         callbackManager = CallbackManager.Factory.create();
 
@@ -235,11 +257,16 @@ public class Client_LoginActivity extends AppCompatActivity {
         mprofileTracker.startTracking();
 
         initComponent();
-        EtEmail.setHint("");
-        EtEmail.setText(readData("userEmail"));
-        EtPassword.setHint("");
         tvWarningMessage.setVisibility(View.INVISIBLE);
         setToolbarComponent();
+
+        if(readData("userEmail")!="" && readData("userEmail") != null && readData("userEmail") != "On") {
+            EtEmail.setHint("");
+            EtEmail.setText(readData("userEmail"));
+        }
+        else{
+            EtEmail.setText("");
+        }
 
     }
 
@@ -335,11 +362,15 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 signalRHubConnection.startSignalR();
 
                                 getData(EtEmail.getText().toString());
+
+                                myLoading.CloseLoadingDialog();
                             } else {
                                 Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
+                                myLoading.CloseLoadingDialog();
                             }
                         }
                     };
+                    myLoading.ShowLoadingDialog();
                     controller.execute("http://para.co.nz/api/ClientAccount/validateAccount", "{'username':'" + email + "'," +
                             "'password':'" + password + "'}", "POST");
                 }

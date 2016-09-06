@@ -34,6 +34,7 @@ public class Client_Confirm2 extends AppCompatActivity {
     String[] photoAddress;
     RatingBar ratingBar;
     Button jobDone;
+    ImageUnity imageUnity = new ImageUnity();
 
     public void getProviderImageData(String profilePhotoUrl, final ImageView imageView) {
 
@@ -44,8 +45,8 @@ public class Client_Confirm2 extends AppCompatActivity {
                 if (mBitmap == null) {
                     imageView.setImageResource(R.drawable.client_photo_round);
                 }
-                imageView.setImageBitmap(mBitmap);
-                ValueMessengerTaskInfo.providerProfilePhoto = mBitmap;
+                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
+                ValueMessengerTaskInfo.providerProfilePhoto = imageUnity.toRoundBitmap(mBitmap);
 
             }
         };
@@ -231,8 +232,21 @@ public class Client_Confirm2 extends AppCompatActivity {
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Intent nextPage_CreditCard = new Intent(Client_Confirm2.this, Client_Pending.class);
-                        startActivity(nextPage_CreditCard);
+                        switch(ValueMessager.lastPageConfirm2){
+                            case 0:{
+                                Intent nextPage_CreditCard = new Intent(Client_Confirm2.this, Client_History.class);
+                                startActivity(nextPage_CreditCard);
+                                break;
+                            }
+
+                            case 1:{
+                                Intent nextPage_CreditCard = new Intent(Client_Confirm2.this, Client_Pending.class);
+                                startActivity(nextPage_CreditCard);
+                                break;
+                            }
+                        }
+
+
                     }
                 });
 

@@ -5,7 +5,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -163,7 +162,7 @@ public class SelectPicPopupWindow extends Activity {
         }
         else {
             Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivityForResult(intent, 1);
+            startActivityForResult(intent, TAKE_PICTURE);
         }
 
 
@@ -216,12 +215,27 @@ public class SelectPicPopupWindow extends Activity {
                             e.printStackTrace();
                         }
                         if (data != null) {
-                            Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
-                            System.out.println("fdf=================" + data.getDataString());
-                            //img.setImageBitmap(cameraBitmap);
-                            PostProfilePicture(cameraBitmap);
-                            System.out.println("success======" + cameraBitmap.getWidth() + cameraBitmap.getHeight());
-                            finish();
+
+                            try {
+                                Uri selectedImage = data.getData();
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImage);
+                                Bitmap cameraBitmap=imageUnity.compressBySize(inputStream);
+                                System.out.println("fdf=================" + data.getDataString());
+                                //File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
+                                cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
+                                //img.setImageBitmap(cameraBitmap);
+                                PostProfilePicture(cameraBitmap);
+                                System.out.println("success======" + cameraBitmap.getWidth() + cameraBitmap.getHeight());
+                                finish();
+
+
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                            //Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
+
                         }
                     }
                 }
@@ -243,14 +257,31 @@ public class SelectPicPopupWindow extends Activity {
 
                         //getting an input stream from the image data
                         inputStream = getContentResolver().openInputStream(selectedImage);
-                        Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+                        Bitmap  bitmap=imageUnity.compressBySize(inputStream);
+                        //Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
                         PostProfilePicture(bitmap);
+                        //get url
+
+                       // File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
+
+                       // System.out.println("xxxx: "+imageFile);
+///////////////////////////////////////////////////////////////////
+
+
+                        /////////////////////////////////////////////////////////////////////////
+
+
+
+
+
                         finish();
 
 
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                         Toast.makeText(this, "Unable to load image", Toast.LENGTH_LONG).show();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
 
                 }
@@ -267,8 +298,6 @@ public class SelectPicPopupWindow extends Activity {
     {
         imageUnity = new ImageUnity();
         bitmap = imageUnity.toRoundBitmap(bitmap);
-
-         bitmap = imageUnity.compressImage(bitmap, 1);
 
         ValueMessager.profileBitmap = bitmap;
         ValueMessager.userProfileBitmap = bitmap;

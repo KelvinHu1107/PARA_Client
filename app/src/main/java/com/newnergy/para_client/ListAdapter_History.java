@@ -31,6 +31,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
     Double[] budget;
     Context c;
     LayoutInflater inflaterPending;
+    ImageUnity imageUnity = new ImageUnity();
 
 
 
@@ -70,8 +71,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
                 if (mBitmap == null) {
                     return;
                 }
-                imageView.setImageBitmap(mBitmap);
-                mBitmap.recycle();
+                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
             }
         };
         controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ profilePhotoUrl, "","POST");
@@ -132,6 +132,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
                 ValueMessengerTaskInfo.id = serviceId[position];
                 ValueMessengerTaskInfo.providerId = providerId[position];
+                ValueMessager.lastPageConfirm2 = 0;
 
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);
@@ -145,6 +146,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
                 ValueMessengerTaskInfo.id = serviceId[position];
                 ValueMessengerTaskInfo.providerId = providerId[position];
+                ValueMessager.lastPageConfirm2 = 0;
 
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);
@@ -158,6 +160,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
                 ValueMessengerTaskInfo.id = serviceId[position];
                 ValueMessengerTaskInfo.providerId = providerId[position];
+                ValueMessager.lastPageConfirm2 = 0;
 
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);

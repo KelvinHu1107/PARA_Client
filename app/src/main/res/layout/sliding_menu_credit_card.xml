@@ -39,7 +39,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1234-1234-1234-1234"
                 android:id="@+id/textView_creditCardNum"
                 android:layout_weight="1"
                 android:textColor="#666666"
@@ -86,7 +85,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="John Key"
                 android:id="@+id/textView_creditCardHolder"
                 android:layout_weight="1"
                 android:textColor="#666666"
@@ -132,7 +130,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="01/01/2020"
                 android:id="@+id/textView_creditCard_expireDate"
                 android:layout_weight="1"
                 android:textColor="#666666"
@@ -179,7 +176,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="123"
                 android:id="@+id/textView_creditCardSecurityCOde"
                 android:layout_weight="1"
                 android:textColor="#666666"
@@ -232,7 +228,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="123 St"
                 android:id="@+id/textView_creditCardAddress"
                 android:layout_weight="1"
                 android:textColor="#666666"
@@ -279,7 +274,6 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="1234"
                 android:id="@+id/textView_creditCard_postCode"
                 android:layout_weight="1"
                 android:textColor="#666666"

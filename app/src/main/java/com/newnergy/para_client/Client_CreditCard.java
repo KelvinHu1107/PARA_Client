@@ -34,7 +34,12 @@ public class Client_CreditCard extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return ValueMessager.readDataBuffer.toString();
+        if(ValueMessager.readDataBuffer == null){
+            return "";
+        }
+        else {
+            return ValueMessager.readDataBuffer.toString();
+        }
     }
 
     public void btnFunction(){
@@ -53,6 +58,7 @@ public class Client_CreditCard extends AppCompatActivity {
         holderAddress  = (TextView) findViewById(R.id.textView_creditCardAddress);
         holderPostcode  = (TextView) findViewById(R.id.textView_creditCard_postCode);
 
+        //if((readData("cardNum1").toString() != "") && (readData("cardNum2").toString() != "" )&& (readData("cardNum3").toString() != "")&& (readData("cardNum4").toString() != ""))
         cardNum.setText(readData("cardNum1")+"-"+readData("cardNum2")+"-"+readData("cardNum3")+"-"+readData("cardNum4"));
         cardHolder.setText(readData("holderFirstName")+" "+readData("holderLastName"));
         expireDate.setText(readData("expireMonth")+" / "+readData("expireYear"));
