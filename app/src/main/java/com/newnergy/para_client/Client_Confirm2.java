@@ -15,7 +15,6 @@ import android.widget.TextView;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 
 public class Client_Confirm2 extends AppCompatActivity {
@@ -26,7 +25,6 @@ public class Client_Confirm2 extends AppCompatActivity {
     private ImageView progressBar, providerPic;
     ClientPendingDetailViewModel jsm;
     Date dateData;
-    private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
     ListView list;
     String[] objectName;
     int[] serviceId, status, photoId;
@@ -35,6 +33,8 @@ public class Client_Confirm2 extends AppCompatActivity {
     RatingBar ratingBar;
     Button jobDone;
     ImageUnity imageUnity = new ImageUnity();
+    Context context = this;
+    Loading_Dialog myLoading;
 
     public void getProviderImageData(String profilePhotoUrl, final ImageView imageView) {
 
@@ -173,8 +173,11 @@ public class Client_Confirm2 extends AppCompatActivity {
                     photoId[4] = R.id.imageView_confirm_photo5;
                     photoAddress = jsm.getServicePhotoUrl();
 
-                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++)
+                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++) {
                         getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
+                    }
+
+                    myLoading.CloseLoadingDialog();
 
                 }
 
@@ -253,6 +256,7 @@ public class Client_Confirm2 extends AppCompatActivity {
             }
         };
 
+        myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientJobService/GetJobService/"+ ValueMessengerTaskInfo.id,"","GET");
     }
 
@@ -262,6 +266,8 @@ public class Client_Confirm2 extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_confirm2);
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         getData();
     }

@@ -1,17 +1,10 @@
 package com.newnergy.para_client;
 
-import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
@@ -19,11 +12,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -43,6 +32,9 @@ public class Client_EditOrder extends AppCompatActivity {
     int[] photoId;
     private ImageView[] photo;
     ImageUnity imageUnity = new ImageUnity();
+    private static final int REQUESTCODE=3;
+    Context context = this;
+    Loading_Dialog myLoading;
 
 
     public void getImageData(String profilePhotoUrl, final ImageView imageView) {
@@ -54,8 +46,8 @@ public class Client_EditOrder extends AppCompatActivity {
                 if (mBitmap == null) {
                     return;
                 }
-                imageView.setImageBitmap(imageUnity.compressImage(mBitmap, 1));
-                bitmapArray.add(imageUnity.compressImage(mBitmap, 1));
+                imageView.setImageBitmap(mBitmap);
+                bitmapArray.add(mBitmap);
             }
         };
         controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
@@ -87,23 +79,25 @@ public class Client_EditOrder extends AppCompatActivity {
                 }
 
                 btnFunction();
+                myLoading.CloseLoadingDialog();
             }
 
 
         };
+        myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientJobService/GetJobService/"+ ValueMessengerTaskInfo.id,"","GET");
     }
 
 
-    public boolean isBudget (String email){
+    public boolean isBudget (String number){
 
         Pattern p = Pattern.compile("\\d*\\.?\\d+");
-        Matcher m = p.matcher(email);
+        Matcher m = p.matcher(number);
         return m.matches();
     }
 
     public void sendImage(Bitmap newImg,int username) {
-//        Bitmap good = ((BitmapDrawable) newImg.getDrawable()).getBitmap();
+
         SendImageController controller = new SendImageController() {
             @Override
             public void onResponse(Boolean result) {
@@ -116,86 +110,43 @@ public class Client_EditOrder extends AppCompatActivity {
             }
         };
         controller.setBitmap(newImg);
-        newImg.recycle();
         controller.execute("http://para.co.nz/api/JobService/UploadImage/"+username);
 
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUESTCODE) {
+            if (resultCode == RESULT_OK) {
+                String returnedResult = data.getStringExtra("test_String");
+                Bitmap bitmapFromPW = (Bitmap) data.getParcelableExtra("BitmapImage");
+                System.out.println("here: "+ bitmapFromPW);
 
-
-        if(requestCode == RESULT_LOAD_IMAGE && resultCode == RESULT_OK){
-
-            //URI address on SD card
-            Uri selectedImage = data.getData();
-            // Declare a stream to read the image data
-            InputStream inputStream;
-            try {
-
-                //getting an input stream from the image data
-                inputStream = getContentResolver().openInputStream(selectedImage);
-                BitmapFactory.Options opt = new BitmapFactory.Options();
-                opt.inJustDecodeBounds = false;
-                opt.inPreferredConfig = Bitmap.Config.RGB_565;
-                bitmap = BitmapFactory.decodeStream(inputStream, null, opt);
-
-                bitmapArray.add(bitmap);
-
-                    photoId = new int[5];
-                    photoAddress = new String[bitmapArray.size()];
-                    photo = new ImageView[bitmapArray.size()];
-
-                    photoId[0] = R.id.imageView_OP_photo1;
-                    photoId[1] = R.id.imageView_OP_photo2;
-                    photoId[2] = R.id.imageView_OP_photo3;
-                    photoId[3] = R.id.imageView_OP_photo4;
-                    photoId[4] = R.id.imageView_OP_photo5;
-                    //photoAddress = bitmapArray.size();
-
-                    for(int i=0; i<bitmapArray.size(); i++) {
-                        photo[i] = (ImageView) findViewById(photoId[i]);
-                        photo[i].setImageBitmap(bitmapArray.get(i));
-                    }
-
-
-
-
-
-                //sendImage(roundImage.getBitmap(), ValueMessager.email.toString() );
-
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-                Toast.makeText(this, "Unable to load image", Toast.LENGTH_LONG).show();
+                UploadPhoto(bitmapFromPW);
             }
-
         }
-
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+    private void UploadPhoto(Bitmap bitmapFromPW)
+    {
+        bitmapArray.add(bitmapFromPW);
 
-        if(requestCode == RESULT_EXTERNAL_STORAGE_RESULT){
-            if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        photoId = new int[5];
+        photoAddress = new String[bitmapArray.size()];
+        photo = new ImageView[bitmapArray.size()];
 
-                //invoke image gallery by intent
-                Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                //where do we get the data
-                File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                String pictureDirectoryPath = pictureDirectory.getPath();
-                //URI representation
-                Uri data = Uri.parse(pictureDirectoryPath);
+        photoId[0] = R.id.imageView_OP_photo1;
+        photoId[1] = R.id.imageView_OP_photo2;
+        photoId[2] = R.id.imageView_OP_photo3;
+        photoId[3] = R.id.imageView_OP_photo4;
+        photoId[4] = R.id.imageView_OP_photo5;
 
-                //set data and type, get all image type
-                galleryIntent.setDataAndType(data,"image/*");
-
-                startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
+        for(int i=0; i<bitmapArray.size(); i++) {
+            photo[i] = (ImageView) findViewById(photoId[i]);
+            if(bitmapArray.get(i) != null)
+            photo[i].setImageBitmap(bitmapArray.get(i));
             }
-            else{
-                super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-            }
-        }
+
     }
 
     public void btnFunction(){
@@ -235,25 +186,10 @@ public class Client_EditOrder extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                Intent uploadImage = new Intent(Client_EditOrder.this, SelectPicPopupWindowUploadImage.class);
+                startActivityForResult(uploadImage,REQUESTCODE);
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},RESULT_EXTERNAL_STORAGE_RESULT);
-                }
 
-                else{
-                    //invoke image gallery by intent
-                    Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-                    //where do we get the data
-                    File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-                    String pictureDirectoryPath = pictureDirectory.getPath();
-                    //URI representation
-                    Uri data = Uri.parse(pictureDirectoryPath);
-
-                    //set data and type, get all image type
-                    galleryIntent.setDataAndType(data,"image/*");
-
-                    startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
-                }
             }
         });
 
@@ -273,6 +209,7 @@ public class Client_EditOrder extends AppCompatActivity {
                         for(int i=0; i<bitmapArray.size(); i++){
                             sendImage(bitmapArray.get(i),ValueMessengerTaskInfo.id);
                         }
+                        myLoading.CloseLoadingDialog();
                     }
                 };
 
@@ -353,6 +290,7 @@ public class Client_EditOrder extends AppCompatActivity {
                     addressModel.setSuburb(suburb.getText().toString());
                     addressModel.setCity(city.getText().toString());
                     String data2= AddressDataConvert.ModelToJson(addressModel);
+                    myLoading.ShowLoadingDialog();
                     controller.execute("http://para.co.nz/api/Address/UpdateAddress", data2, "PUT");
 
 
@@ -372,6 +310,9 @@ public class Client_EditOrder extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_place_order);
+
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         getData();
 

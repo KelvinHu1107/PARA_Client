@@ -14,67 +14,22 @@ import android.graphics.RectF;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 
 /**
  * Created by G7 on 3/08/2016.
  */
 public class ImageUnity {
 
-    public static boolean isLimitSize (Bitmap image) {
-        ByteArrayOutputStream stream2 = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream2);
-        byte[] imageInByte = stream2.toByteArray();
-        double originLengthBmp = imageInByte.length;
 
 
-        originLengthBmp = originLengthBmp / 1024;//kb
-        if (originLengthBmp > 10240) {
-            return false;
-        }
-           return true;
-    }
-
-    public Bitmap compressImage(Bitmap image,int targetSize)
-    {
-
-        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-        image.compress(Bitmap.CompressFormat.JPEG, 100, stream);
-        byte[] imageInByte = stream.toByteArray();
-        double originLengthBmp = imageInByte.length/1024;
-        System.out.println("OR image size："+originLengthBmp+"kb");
-
-        if(originLengthBmp<targetSize)
-        {
-           // image.recycle();
-            return image;
-        }
-
-        double quality=(targetSize/originLengthBmp)*100;
-        stream.reset();
-        image.compress(Bitmap.CompressFormat.JPEG, (int)quality, stream);
-        imageInByte = stream.toByteArray();
-        originLengthBmp=imageInByte.length/1024;
-
-
-        System.out.println("number image size："+originLengthBmp+"kb");
-
-        while (originLengthBmp / 1024 > 100) {
-            stream.reset();
-            image.compress(Bitmap.CompressFormat.JPEG, 1, stream);
-            imageInByte = stream.toByteArray();
-            originLengthBmp=imageInByte.length/1024;
-            System.out.println("hight image size："+originLengthBmp+"kb");
-            //image.recycle();
-            return image;
-        }
-       // image.recycle();
-        return image;
-
-    }
 
     public Uri getImageUri(Context inContext, Bitmap inImage) {
         ByteArrayOutputStream bytes = new ByteArrayOutputStream();
@@ -308,5 +263,14 @@ public class ImageUnity {
         return output;
     }
     //////
+
+    public void setImage(Context context, ImageView v, String url)
+    {
+        Picasso
+                .with(context)
+                .load(url)
+                //.fit()
+                .into(v);
+    }
 
 }

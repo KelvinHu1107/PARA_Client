@@ -188,7 +188,7 @@ public class SelectingPicForChat extends Activity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if (data != null) {
+                        if (data.getData() != null) {
 
                             try {
                                 Uri selectedImage = data.getData();
@@ -217,13 +217,15 @@ public class SelectingPicForChat extends Activity {
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage2);
 
                                 cameraBitmap=imageUnity.compressBySize(inputStream);
-
-                                cameraBitmap = imageUnity.ResizeBitmap(cameraBitmap,300);
+                                cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage2,this),cameraBitmap);
+                                System.out.println("no problem: "+cameraBitmap);
 
                                 ValueMessager.bitmapBuffer = cameraBitmap;
                                 ValueMessager.chatAddMessageFlag = 1;
 
-                                finish();
+                                Intent nextPage_Search = new Intent(SelectingPicForChat.this, Client_Chat.class);
+                                startActivity(nextPage_Search);
+
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {

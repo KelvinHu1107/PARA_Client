@@ -19,7 +19,7 @@ import android.widget.TextView;
 
 public class Client_Profile extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
 
-    public RoundImage roundImage;
+
     public ImageButton pending,message,main;
     public LinearLayout changeName,changePhone,changeAddress;
     public TextView name,email,phone,address;

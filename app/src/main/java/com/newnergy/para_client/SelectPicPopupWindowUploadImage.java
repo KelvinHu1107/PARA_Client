@@ -11,12 +11,9 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import java.io.File;
@@ -27,39 +24,25 @@ import java.io.InputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-
-public class SelectPicPopupWindow extends Activity {
-
-
+public class SelectPicPopupWindowUploadImage extends Activity {
     private ImageButton button_Camera, button_Local;
-    private LinearLayout layout;
-    private static ImageView profilePicture_new;
-    private static ImageView profilePictureSlidingMenu_new;
+
     private static final int RESULT_LOAD_IMAGE = 2;
     private static final int RESULT_EXTERNAL_STORAGE_RESULT = 2;
-    private ImageUnity imageUnity;
-    private static AppCompatActivity a;
-    private ImageView profilePictureSlidingMenu;
-    private ImageView profilePicture;
-
     private static final int TAKE_PICTURE = 1;
-    private Uri imageUri;
+
+    private ImageUnity imageUnity;
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.client_pic_selecting_popup);
-
-
-        profilePicture= (ImageView) findViewById(R.id.imageView_profile_profileImage);
-        profilePictureSlidingMenu=(ImageView) findViewById(R.id.imageView_sideMenu_pic);
-
         button_Camera = (ImageButton) this.findViewById(R.id.imageButton_takingPic);
         button_Local = (ImageButton) this.findViewById(R.id.imageButton_gallery);
-        layout = (LinearLayout) findViewById(R.id.pop_layout);
+
+
         button_Local.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,20 +58,50 @@ public class SelectPicPopupWindow extends Activity {
 
         });
 
-        layout.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                // TODO Auto-generated method stub
-                Toast.makeText(getApplicationContext(), "123",
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-
     }
 
+    //touch would do nothing
     public boolean onTouchEvent(MotionEvent event) {
         finish();
         return true;
     }
+
+
+    public void PhotoAlbum() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},RESULT_EXTERNAL_STORAGE_RESULT);
+        }
+
+
+        else{
+            //invoke image gallery by intent
+            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+            //where do we get the data
+            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+            String pictureDirectoryPath = pictureDirectory.getPath();
+            //URI representation
+            Uri data = Uri.parse(pictureDirectoryPath);
+
+            //set data and type, get all image type
+            galleryIntent.setDataAndType(data,"image/*");
+
+            startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
+        }
+    }
+
+    public void PhotoCamera() {
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            requestPermissions(new String[]{Manifest.permission.CAMERA},TAKE_PICTURE);
+        }
+        else {
+            Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, TAKE_PICTURE);
+        }
+
+
+    }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -114,66 +127,6 @@ public class SelectPicPopupWindow extends Activity {
         }
     }
 
-
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.ID_button_Camera:
-//                PhotoCamera();
-//                Toast.makeText(getApplicationContext(), "Camera", Toast.LENGTH_SHORT).show();
-//                break;
-//            case R.id.ID_button_Local:
-//                PhotoAlbum();
-//                Toast.makeText(getApplicationContext(), "local", Toast.LENGTH_SHORT).show();
-//                break;
-//            default:
-//                break;
-//        }
-//        finish();
-//
-//    }
-
-    public void PhotoAlbum() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},RESULT_EXTERNAL_STORAGE_RESULT);
-        }
-
-        else{
-            //invoke image gallery by intent
-            Intent galleryIntent = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
-            //where do we get the data
-            File pictureDirectory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-            String pictureDirectoryPath = pictureDirectory.getPath();
-            //URI representation
-            Uri data = Uri.parse(pictureDirectoryPath);
-
-            //set data and type, get all image type
-            galleryIntent.setDataAndType(data,"image/*");
-
-            startActivityForResult(galleryIntent,RESULT_LOAD_IMAGE);
-        }
-    }
-
-
-    public void PhotoCamera() {
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            requestPermissions(new String[]{Manifest.permission.CAMERA},TAKE_PICTURE);
-        }
-        else {
-
-            Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-            startActivityForResult(cameraIntent, TAKE_PICTURE);
-        }
-
-
-    }
-
-    public static void targetControl(ImageView profilePicture, ImageView profilePictureSlidingMenu) {
-       profilePicture_new=profilePicture;
-        profilePictureSlidingMenu_new=profilePictureSlidingMenu;
-    }
-
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 
@@ -186,7 +139,6 @@ public class SelectPicPopupWindow extends Activity {
 
                     String sdStatus = Environment.getExternalStorageState();
                     //check sd
-                    Uri selectedImage = data.getData();
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
                         return;
                     }
@@ -219,17 +171,11 @@ public class SelectPicPopupWindow extends Activity {
                         if (data.getData() != null) {
 
                             try {
-                               // Uri selectedImage = data.getData();
-                                System.out.println("vc"+selectedImage);
+                                Uri selectedImage = data.getData();
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage);
                                 Bitmap cameraBitmap=imageUnity.compressBySize(inputStream);
-                                System.out.println("fdf=================" + data.getDataString());
-                                //File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
                                 cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
-                                //img.setImageBitmap(cameraBitmap);
-                                PostProfilePicture(cameraBitmap);
-                                System.out.println("success======" + cameraBitmap.getWidth() + cameraBitmap.getHeight());
-                                finish();
+                                ReturnImage(cameraBitmap);
 
 
                             } catch (FileNotFoundException e) {
@@ -242,23 +188,20 @@ public class SelectPicPopupWindow extends Activity {
                         }
                         else
                         {
-
                             try {
                                 Bitmap cameraBitmap= (Bitmap) data.getExtras().get("data");
                                 Uri selectedImage2 =imageUnity.getImageUri(this,cameraBitmap);
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage2);
-
                                 cameraBitmap=imageUnity.compressBySize(inputStream);
                                 //cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
 
-                                PostProfilePicture(cameraBitmap);
+                                ReturnImage(cameraBitmap);
                                 finish();
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 }
@@ -281,23 +224,8 @@ public class SelectPicPopupWindow extends Activity {
                         //getting an input stream from the image data
                         inputStream = getContentResolver().openInputStream(selectedImage);
                         Bitmap  bitmap=imageUnity.compressBySize(inputStream);
-                        //Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
-                        PostProfilePicture(bitmap);
-                        //get url
-
-                       // File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
-
-                       // System.out.println("xxxx: "+imageFile);
-///////////////////////////////////////////////////////////////////
-
-
-                        /////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-                        finish();
+                        bitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),bitmap);
+                        ReturnImage(bitmap);
 
 
                     } catch (FileNotFoundException e) {
@@ -317,51 +245,20 @@ public class SelectPicPopupWindow extends Activity {
     }
 
 
-    public void PostProfilePicture(Bitmap bitmap)
-    {
-        imageUnity = new ImageUnity();
-        bitmap = imageUnity.toRoundBitmap(bitmap);
-
-        ValueMessager.profileBitmap = bitmap;
-        ValueMessager.userProfileBitmap = bitmap;
-
-        writeData(ValueMessager.profileBitmap);
-
-        profilePicture_new.setImageBitmap(bitmap);
-        profilePictureSlidingMenu_new.setImageBitmap(bitmap);
-        sendImage(bitmap, ValueMessager.email.toString());
-    }
+private void ReturnImage(Bitmap  bitmap)
+{
+    Intent i = new Intent();
+    i.putExtra("BitmapImage",bitmap);
+    i.putExtra("test_String","456");
+    setResult(RESULT_OK, i);
+    finish();
+}
 
 
 
-    public void writeData(Bitmap image){
 
-        try {
-            FileOutputStream fileOutputStream = openFileOutput("profile_data_picture",MODE_PRIVATE);
-            image.compress(Bitmap.CompressFormat.PNG, 100, fileOutputStream);
 
-            fileOutputStream.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
-    public void sendImage(Bitmap newImg,String username) {
 
-        SendImageController controller = new SendImageController() {
-            @Override
-            public void onResponse(Boolean result) {
-                super.onResponse(result);
-                if (result) {
-                    System.out.println("yes");
-                } else {
-                    System.out.println("no");
-                }
-            }
-        };
-        controller.setBitmap(newImg);
-        controller.execute("http://para.co.nz/api/ClientProfile/UploadImage/"+username);
-    }
+    /////////////////////end
 }
