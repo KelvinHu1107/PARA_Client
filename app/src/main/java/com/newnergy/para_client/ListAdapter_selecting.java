@@ -34,7 +34,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
                                CharSequence[] providerUserName,Double[] budget, CharSequence[] acceptTime, Integer[] providerId, int[] serviceId, Double[] providerRating,
                                  int[] status) {
 
-        super(context, R.layout.pending_list_sample, objectName);
+        super(context, R.layout.pending_list_sample720x1080, objectName);
 
         this.c = context;
         this.firstName = firstName;
@@ -85,7 +85,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
 
         if (convertView == null) {
             inflaterSelecting = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflaterSelecting.inflate(R.layout.client_selecting_list_sample, null);
+            convertView = inflaterSelecting.inflate(R.layout.client_selecting_list_sample720x1080, null);
         }
 
         //assign id to items , convert view

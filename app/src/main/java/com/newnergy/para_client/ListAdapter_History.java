@@ -37,10 +37,11 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
 
 
+
     public ListAdapter_History(Context context, String[] objectName, CharSequence[] createDate, int[] serviceId, Integer[] providerId, CharSequence[] providerPhoto,
                                CharSequence[] getTitle, Integer[] status, Double[] budget) {
 
-        super(context, R.layout.client_history_list_sample, objectName);
+        super(context, R.layout.client_history_list_sample720x1080, objectName);
 
         this.c = context;
         this.serviceId = serviceId;
@@ -83,7 +84,10 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
         if (convertView == null) {
             inflaterPending = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflaterPending.inflate(R.layout.client_history_list_sample, null);
+            if(ValueMessager.resolution1080x720)
+            convertView = inflaterPending.inflate(R.layout.client_history_list_sample720x1080, null);
+            else if(ValueMessager.resolution800x480)
+                convertView = inflaterPending.inflate(R.layout.client_history_list_sample480x800, null);
         }
 
         //assign id to items , convert view
@@ -106,7 +110,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
         currentDate = currentTime.getTime();
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat finalFormat = new SimpleDateFormat("dd-MMMM HH:mm");
+        SimpleDateFormat finalFormat = new SimpleDateFormat("dd-M");
         try {
             date = format.parse(createDate[position].toString());
             calculatedDate = finalFormat.format(date);

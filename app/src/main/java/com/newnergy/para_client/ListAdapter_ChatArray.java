@@ -112,14 +112,11 @@ public class ListAdapter_ChatArray extends ArrayAdapter<ChatMessage> {
             container.setGravity(messageObj.left? Gravity.LEFT:Gravity.RIGHT);
             if(messageObj.bitmap == null)
             {
-                System.out.println("111111111111");
                 picture.setImageBitmap(null);
-
                 picture.setVisibility(View.INVISIBLE);
                 layout.setVisibility(View.VISIBLE);
             }
             else{
-                System.out.println("2222222222222222"+messageObj.bitmap);
                 picture.setImageBitmap(messageObj.bitmap);
                 picture.setVisibility(View.VISIBLE);
                 layout.setVisibility(View.INVISIBLE);

@@ -76,6 +76,13 @@ public class ImageUnity {
 
     }
 
+    public Uri getImageUri(Context inContext, Bitmap inImage) {
+        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
+        inImage.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+        String path = MediaStore.Images.Media.insertImage(inContext.getContentResolver(), inImage, "Title", null);
+        return Uri.parse(path);
+    }
+
 
     public String getRealPathFromURI(Uri contentURI, Context inContext)
     {
@@ -150,6 +157,7 @@ public class ImageUnity {
 
         byte[] data = baos.toByteArray();
         BitmapFactory.Options opts = new BitmapFactory.Options();
+        //TODO:inJustDecodeBounds
         opts.inJustDecodeBounds = true;
         Bitmap bitmap = BitmapFactory.decodeByteArray(data, 0, data.length, opts);
         double imageSize = data.length/1024;

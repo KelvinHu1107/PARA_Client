@@ -1,10 +1,10 @@
 package com.newnergy.para_client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -26,10 +26,10 @@ public class Client_History extends AppCompatActivity {
     ClientData[] dataList;
     private List<ClientPendingListViewModel> list;
     private ClientProfileViewModel profileList;
-    private ImageView profilePicture;
-    private RoundImage roundImage;
-    private TextView profileName;
     private Double[] budget;
+    Context context = this;
+    Loading_Dialog myLoading;
+
 
     public void getData(){
         DataTransmitController c =new DataTransmitController(){
@@ -41,10 +41,12 @@ public class Client_History extends AppCompatActivity {
                 list = convert.convertJsonToArrayList(result);
 
                 initList();
+                myLoading.CloseLoadingDialog();
 
 
             }
         };
+        myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientJobService/ClientGetHistory/"+ValueMessager.email,"","GET");
     }
 
@@ -172,9 +174,11 @@ public class Client_History extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_history);
 
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
+
         listView = (ListView) findViewById(R.id.listView_history);
         btnFunction();
         getData();
-        //getProfileData();
     }
 }

@@ -97,7 +97,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                                             signalRHubConnection.startSignalR();
 
                                             getData(ValueMessager.email.toString());
-                                            myLoading.CloseLoadingDialog();
+
 
                                         } else {
 
@@ -145,11 +145,15 @@ public class Client_LoginActivity extends AppCompatActivity {
             public void onResponse(Bitmap bitmap) {
                 super.onResponse(bitmap);
                 if (bitmap == null) {
+                    myLoading.CloseLoadingDialog();
+                    Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
+                    startActivity(nextPage_IncomingServices);
                     return;
                 }
 
                 ValueMessager.userProfileBitmap = imageUnity.toRoundBitmap(bitmap);
 
+                myLoading.CloseLoadingDialog();
                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                 startActivity(nextPage_IncomingServices);
             }
@@ -221,15 +225,15 @@ public class Client_LoginActivity extends AppCompatActivity {
         int width = metric.widthPixels;
         int height = metric.heightPixels;
 
-        if(width == 720 && height == 1080)
+        if(width == 720)
             ValueMessager.resolution1080x720 = true;
-        else if(width == 480 && height == 800)
+        else if(width == 480)
             ValueMessager.resolution800x480 = true;
-        else if(width == 1920 && height == 1080)
+        else if(width == 1080)
             ValueMessager.resolution1920x1080 = true;
 
 
-        System.out.println("xxxxxxxxxx"+ width+"yyy===="+height);
+        System.out.println("xxxxxxxxxx"+ ValueMessager.resolution800x480+"yyy===="+ValueMessager.resolution1080x720+"haahahahahahahha"+ValueMessager.resolution1920x1080);
 
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
@@ -363,7 +367,7 @@ public class Client_LoginActivity extends AppCompatActivity {
 
                                 getData(EtEmail.getText().toString());
 
-                                myLoading.CloseLoadingDialog();
+
                             } else {
                                 Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
                                 myLoading.CloseLoadingDialog();

@@ -36,6 +36,7 @@ public class ProviderProfileDataConvert {
                 jsvm.setPassword(object.getString("Password"));
                 jsvm.setIntroduction(object.getString("Introduction"));
 				jsvm.setRating(object.getDouble("Rating"));
+                jsvm.setProviderType(object.getString("ProviderType"));
 //                jsvm.setLicenceNum(object.getString("LicenceNum"));
 //                jsvm.setProviderAddressId(object.getInt("ProviderAddressId"));
 //                jsvm.setCompanyAddressId(object.getInt("CompanyAddressId"));

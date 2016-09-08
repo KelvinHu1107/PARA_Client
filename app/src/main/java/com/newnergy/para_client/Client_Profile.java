@@ -208,8 +208,6 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
             Intent nextPage_Setting = new Intent(Client_Profile.this, Client_SlidingMenu_Setting.class);
             startActivity(nextPage_Setting);
 
-        } else if (id == R.id.nav_slideshow) {
-
         } else if (id == R.id.nav_manage) {
 
             ValueMessager.aboutUsLastPage = 4;
@@ -217,7 +215,10 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
             Intent nextPage_AboutUs = new Intent(Client_Profile.this, Client_AboutUs.class);
             startActivity(nextPage_AboutUs);
 
-        }
+        } else if (id == R.id.nav_logOut){
+        Intent intent = new Intent(Client_Profile.this, Client_LoginActivity.class);
+        startActivity(intent);
+    }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout_profile);
         drawer.closeDrawer(GravityCompat.START);

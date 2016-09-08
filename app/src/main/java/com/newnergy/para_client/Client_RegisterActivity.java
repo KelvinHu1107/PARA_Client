@@ -44,13 +44,17 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private TextView tvPhoneLeft;
     private TextView tvWarningMessage;
     JSONObject response;
-    Context context;
+    Context context = this;
+    Loading_Dialog myLoading;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_register);
+
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         initComponent();
         tvWarningMessage.setVisibility(View.INVISIBLE);
@@ -229,10 +233,13 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                                 ValueMessager.userFirstName = firstName;
                                                 ValueMessager.userLastName = lastName;
 
+                                                myLoading.CloseLoadingDialog();
+
                                                 Intent intent = new Intent(Client_RegisterActivity.this, Client_Incoming_Services.class);
                                                 startActivity(intent);
 
                                             } else {
+                                                myLoading.CloseLoadingDialog();
                                                 Toast.makeText(Client_RegisterActivity.this, "Unsuccessful ", Toast.LENGTH_LONG).show();
                                             }
                                         }
@@ -245,6 +252,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                 }
                             }
                         };
+                        myLoading.ShowLoadingDialog();
                         checkDuplicateUsername.execute("http://para.co.nz/api/ClientAccount/CheckDuplicateUsername", "{'username':'" + emailAddress + "'}", "POST");
 
                     } else {

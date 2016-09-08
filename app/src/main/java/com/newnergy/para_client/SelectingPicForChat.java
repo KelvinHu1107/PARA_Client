@@ -133,8 +133,8 @@ public class SelectingPicForChat extends Activity {
             requestPermissions(new String[]{Manifest.permission.CAMERA},TAKE_PICTURE);
         }
         else {
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivityForResult(intent, TAKE_PICTURE);
+            Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, TAKE_PICTURE);
         }
 
 
@@ -206,16 +206,29 @@ public class SelectingPicForChat extends Activity {
                             } catch (IOException e) {
                                 e.printStackTrace();
                             }
-                           /// System.out.println("fdf=================" + data.getDataString());
-                            //File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
+                        }
 
-                            //img.setImageBitmap(cameraBitmap);
+                        else
+                        {
 
-                            //System.out.println("fdf=================" + data.getDataString());
+                            try {
+                                Bitmap cameraBitmap= (Bitmap) data.getExtras().get("data");
+                                Uri selectedImage2 =imageUnity.getImageUri(this,cameraBitmap);
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImage2);
 
+                                cameraBitmap=imageUnity.compressBySize(inputStream);
 
+                                cameraBitmap = imageUnity.ResizeBitmap(cameraBitmap,300);
 
+                                ValueMessager.bitmapBuffer = cameraBitmap;
+                                ValueMessager.chatAddMessageFlag = 1;
 
+                                finish();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     }

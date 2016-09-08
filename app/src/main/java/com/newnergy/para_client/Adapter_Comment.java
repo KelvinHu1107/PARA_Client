@@ -47,7 +47,7 @@ public class Adapter_Comment extends ArrayAdapter<String> {
 
 
     public Adapter_Comment(Context context, String[] objectName, CharSequence[] name, CharSequence[] createDate, CharSequence[] commentTitle, CharSequence[] description) {
-        super(context, R.layout.client_incoming_services_list_sample, objectName);
+        super(context, R.layout.client_incoming_services_list_sample720x1080, objectName);
 
         this.c = context;
         this.name = name;
@@ -82,7 +82,7 @@ public class Adapter_Comment extends ArrayAdapter<String> {
 
         if (convertView == null) {
             inflater = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.client_incoming_services_list_sample, null);
+            convertView = inflater.inflate(R.layout.client_incoming_services_list_sample720x1080, null);
         }
         //assign id to items , convert view
         final ViewHolder holder = new ViewHolder();

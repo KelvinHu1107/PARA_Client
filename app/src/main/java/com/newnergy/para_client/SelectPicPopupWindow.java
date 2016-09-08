@@ -161,8 +161,10 @@ public class SelectPicPopupWindow extends Activity {
             requestPermissions(new String[]{Manifest.permission.CAMERA},TAKE_PICTURE);
         }
         else {
-            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
-            startActivityForResult(intent, TAKE_PICTURE);
+//            Intent intent = new Intent("android.media.action.IMAGE_CAPTURE");
+//            startActivityForResult(intent, TAKE_PICTURE);
+            Intent cameraIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+            startActivityForResult(cameraIntent, TAKE_PICTURE);
         }
 
 
@@ -185,6 +187,7 @@ public class SelectPicPopupWindow extends Activity {
 
                     String sdStatus = Environment.getExternalStorageState();
                     //check sd
+                    Uri selectedImage = data.getData();
                     if (!sdStatus.equals(Environment.MEDIA_MOUNTED)) {
                         return;
                     }
@@ -214,10 +217,11 @@ public class SelectPicPopupWindow extends Activity {
                         } catch (IOException e) {
                             e.printStackTrace();
                         }
-                        if (data != null) {
+                        if (data.getData() != null) {
 
                             try {
-                                Uri selectedImage = data.getData();
+                               // Uri selectedImage = data.getData();
+                                System.out.println("vc"+selectedImage);
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage);
                                 Bitmap cameraBitmap=imageUnity.compressBySize(inputStream);
                                 System.out.println("fdf=================" + data.getDataString());
@@ -235,6 +239,26 @@ public class SelectPicPopupWindow extends Activity {
                                 e.printStackTrace();
                             }
                             //Bitmap cameraBitmap = (Bitmap) data.getExtras().get("data");
+
+                        }
+                        else
+                        {
+
+                            try {
+                                Bitmap cameraBitmap= (Bitmap) data.getExtras().get("data");
+                                Uri selectedImage2 =imageUnity.getImageUri(this,cameraBitmap);
+                                InputStream inputStream = getContentResolver().openInputStream(selectedImage2);
+
+                                cameraBitmap=imageUnity.compressBySize(inputStream);
+                                //cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
+
+                                PostProfilePicture(cameraBitmap);
+                                finish();
+                            } catch (FileNotFoundException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
 
                         }
                     }

@@ -38,7 +38,10 @@ public class Client_Chat extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(ValueMessager.resolution1080x720)
         setContentView(R.layout.client_chat);
+        else if(ValueMessager.resolution800x480)
+            setContentView(R.layout.client_chat480x800);
 
         Intent i = getIntent();
 
@@ -205,8 +208,6 @@ public class Client_Chat extends AppCompatActivity {
 
         adapter.add(new ChatMessage(side = false, chatText.getText().toString(), calenderTime, 0, bitmap));
         chatText.setText("");
-
-
 
         return true;
     }

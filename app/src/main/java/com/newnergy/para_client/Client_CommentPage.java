@@ -51,7 +51,7 @@ public class Client_CommentPage extends AppCompatActivity {
             public void onClick(View v) {
                 switch (ValueMessager.commentLastPage) {
                     case 0 :
-                        Intent nextPage_IncomingList = new Intent(Client_CommentPage.this, Client_Incoming_Services.class);
+                        Intent nextPage_IncomingList = new Intent(Client_CommentPage.this, Client_Further_Info.class);
                         startActivity(nextPage_IncomingList);
                         break;
 

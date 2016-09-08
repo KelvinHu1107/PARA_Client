@@ -26,8 +26,17 @@ public class ProviderProfileViewModel {
     private String LicenceNum;
     private Integer CompanyId;
     private Integer LicenceId;
+    private String ProviderType;
 
     private Double Rating;
+
+    public String getProviderType() {
+        return ProviderType;
+    }
+
+    public void setProviderType(String providerType) {
+        ProviderType = providerType;
+    }
 
     public Double getRating() {
         return Rating;

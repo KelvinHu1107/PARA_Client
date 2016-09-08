@@ -30,7 +30,7 @@ public class ListAdapter_Comment extends ArrayAdapter<String> {
     public ListAdapter_Comment(Context context, String[] objectName, CharSequence[] firstName, CharSequence[] lastName,CharSequence[] comment,
                                CharSequence[] createDate,Double[] rating) {
 
-        super(context, R.layout.client_comment_list_sample, objectName);
+        super(context, R.layout.client_comment_list_sample720x1080, objectName);
 
         this.c = context;
         this.firstName = firstName;
@@ -52,7 +52,7 @@ public class ListAdapter_Comment extends ArrayAdapter<String> {
 
         if (convertView == null) {
             inflaterComment = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflaterComment.inflate(R.layout.client_comment_list_sample, null);
+            convertView = inflaterComment.inflate(R.layout.client_comment_list_sample720x1080, null);
         }
 
         //assign id to items , convert view
