@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -154,11 +153,12 @@ public class Client_LoginActivity extends AppCompatActivity {
                 ValueMessager.userProfileBitmap = imageUnity.toRoundBitmap(bitmap);
 
                 myLoading.CloseLoadingDialog();
+
                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                 startActivity(nextPage_IncomingServices);
             }
         };
-        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ list.getProfilePicture(), "","POST");
+        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ list.getProfilePicture(), "","GET");
     }
 
     public void getData(String userName){
@@ -233,7 +233,7 @@ public class Client_LoginActivity extends AppCompatActivity {
             ValueMessager.resolution1920x1080 = true;
 
 
-        System.out.println("xxxxxxxxxx"+ ValueMessager.resolution800x480+"yyy===="+ValueMessager.resolution1080x720+"haahahahahahahha"+ValueMessager.resolution1920x1080);
+        System.out.println("xxxxxxxxxx"+ width+"yyy===="+height);
 
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
@@ -386,40 +386,6 @@ public class Client_LoginActivity extends AppCompatActivity {
     public void onClickRegisterTv(View v) {
         Intent intent = new Intent(Client_LoginActivity.this, Client_RegisterActivity.class);
         startActivity(intent);
-    }
-
-    public void changeImage(View v) {
-
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap bitmap) {
-                super.onResponse(bitmap);
-                if (bitmap == null) {
-
-                }
-                vx.setImageBitmap(bitmap);
-            }
-        };
-        controller.execute("http://para.co.nz/api/Image/GetImage/asp.net.png", "", "POST");
-    }
-
-    public void sendImage(View v) {
-        Bitmap xxx = ((BitmapDrawable) yx.getDrawable()).getBitmap();
-        SendImageController controller = new SendImageController() {
-            @Override
-            public void onResponse(Boolean result) {
-                super.onResponse(result);
-                if (result) {
-                    Toast.makeText(Client_LoginActivity.this, "success", Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(Client_LoginActivity.this, "Unsuccessful ", Toast.LENGTH_LONG).show();
-
-                }
-
-            }
-        };
-        controller.setBitmap(xxx);
-        controller.execute("http://para.co.nz/api/image/uploadImage");
     }
 
 }

@@ -2,7 +2,6 @@ package com.newnergy.para_client;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,20 +62,22 @@ public class ListAdapter_History extends ArrayAdapter<String> {
 
 
 
-    public void getImageData(String profilePhotoUrl, final ImageView imageView, CharSequence picturePath) {
-
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap mBitmap) {
-                super.onResponse(mBitmap);
-                if (mBitmap == null) {
-                    return;
-                }
-                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
-            }
-        };
-        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ profilePhotoUrl, "","POST");
-    }
+//    public void getImageData(String profilePhotoUrl, final ImageView imageView, CharSequence picturePath) {
+//
+//        GetImageController controller = new GetImageController() {
+//            @Override
+//            public void onResponse(Bitmap mBitmap) {
+//                super.onResponse(mBitmap);
+//                if (mBitmap == null) {
+//                    return;
+//                }
+//                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
+//
+//                mBitmap.recycle();
+//            }
+//        };
+//        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ profilePhotoUrl, "","POST");
+//    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -122,7 +123,9 @@ public class ListAdapter_History extends ArrayAdapter<String> {
         //format date string
 
         //每一個position assign item
-        getImageData(providerPhoto[position].toString(),holder.imgIv, providerPhoto[position]);
+        //getImageData(providerPhoto[position].toString(),holder.imgIv, providerPhoto[position]);
+
+        imageUnity.setImage(c, holder.imgIv, "http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+providerPhoto[position].toString());
         holder.nameTv.setText(budget[position].toString());
         holder.timeTv.setText(calculatedDate);
         holder.textTv.setText(getTitle[position]);

@@ -134,11 +134,11 @@ public class ServerConnection {
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setDoInput(true);
-            conn.setDoOutput(true);
-            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-            dataOutputStream.writeBytes(urlParameters);
-            dataOutputStream.flush();
-            dataOutputStream.close();
+//            conn.setDoOutput(true);
+//            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+//            dataOutputStream.writeBytes(urlParameters);
+//            dataOutputStream.flush();
+//            dataOutputStream.close();
             conn.connect();
             int reposeCode = conn.getResponseCode();
             if (reposeCode == 200) {

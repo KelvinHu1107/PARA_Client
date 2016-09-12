@@ -3,6 +3,7 @@ package com.newnergy.para_client;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
@@ -13,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
+import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,6 +38,15 @@ public class Client_Confirm2 extends AppCompatActivity {
     Context context = this;
     Loading_Dialog myLoading;
 
+    public static Bitmap readBitMap(Context context, int resId){
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is,null,opt);
+    }
+
     public void getProviderImageData(String profilePhotoUrl, final ImageView imageView) {
 
         GetImageController controller = new GetImageController() {
@@ -43,7 +54,7 @@ public class Client_Confirm2 extends AppCompatActivity {
             public void onResponse(Bitmap mBitmap) {
                 super.onResponse(mBitmap);
                 if (mBitmap == null) {
-                    imageView.setImageResource(R.drawable.client_photo_round);
+                    imageView.setImageBitmap(readBitMap(context,R.drawable.client_photo_round));
                 }
                 imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
                 ValueMessengerTaskInfo.providerProfilePhoto = imageUnity.toRoundBitmap(mBitmap);
@@ -64,6 +75,8 @@ public class Client_Confirm2 extends AppCompatActivity {
                     return;
                 }
                 imageView.setImageBitmap(mBitmap);
+
+
             }
         };
         controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
@@ -135,7 +148,8 @@ public class Client_Confirm2 extends AppCompatActivity {
 
 
 
-                getProviderImageData(jsm.getProviderProfilePhoto(), providerPic);
+                //getProviderImageData(jsm.getProviderProfilePhoto(), providerPic);
+                imageUnity.setImage(context, providerPic, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+jsm.getProviderProfilePhoto());
 
                 ratingBar.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -145,19 +159,19 @@ public class Client_Confirm2 extends AppCompatActivity {
                 });
 
                 if(jsm.getStatus() == 0){
-                    progressBar.setImageResource(R.drawable.client_select_01);
+                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_01 ));
                 }
                 else if(jsm.getStatus() == 1){
-                    progressBar.setImageResource(R.drawable.client_select_02);
+                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_02 ));
                 }
                 else if(jsm.getStatus() == 2){
-                    progressBar.setImageResource(R.drawable.client_wait_02);
+                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_02 ));
                 }
                 else if(jsm.getStatus() == 3){
-                    progressBar.setImageResource(R.drawable.client_select_03);
+                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_03 ));
                 }
                 else if(jsm.getStatus() == 4){
-                    progressBar.setImageResource(R.drawable.client_select_04);
+                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_04 ));
                 }
 
                 if(jsm.getServicePhotoUrl().length != 0) {
@@ -173,8 +187,13 @@ public class Client_Confirm2 extends AppCompatActivity {
                     photoId[4] = R.id.imageView_confirm_photo5;
                     photoAddress = jsm.getServicePhotoUrl();
 
+
+                    System.out.println("qqqqqqqqqqqqqqqqqq"+context+"ccccccccccccc"+photo[0]+photoAddress[0]);
+
                     for(int i=0; i<jsm.getServicePhotoUrl().length; i++) {
-                        getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
+                        //getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
+
+                        imageUnity.setImage(context, photo[i] = (ImageView) findViewById(photoId[i]), "http://para.co.nz/api/JobService/GetServiceImage/"+photoAddress[i]);
                     }
 
                     myLoading.CloseLoadingDialog();

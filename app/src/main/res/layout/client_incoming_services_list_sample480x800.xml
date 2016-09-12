@@ -12,11 +12,13 @@
         android:layout_height="75dp"
         android:nestedScrollingEnabled="false">
 
-        <ImageView
-            android:layout_width="75dp"
-            android:layout_height="75dp"
+        <com.newnergy.para_client.CircleImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:id="@+id/imageView_pic"
-            android:padding="12.5dp" />
+            android:padding="12.5dp"
+            android:layout_gravity="center"
+            android:src="@drawable/client_photo_round" />
 
         <LinearLayout
             android:orientation="vertical"

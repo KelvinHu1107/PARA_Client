@@ -19,13 +19,11 @@ import java.util.regex.Pattern;
 
 public class Client_EditOrder extends AppCompatActivity {
 
-    private static final int RESULT_LOAD_IMAGE = 1;
-    private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
+
     private TextView title, cancel, save, warning;
     private Spinner s;
     private EditText jobTitle, budget, street, suburb, city, description;
     private ImageButton addPhoto;
-    private Bitmap bitmap;
     ClientPendingDetailViewModel jsm;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
     String[] photoAddress;
@@ -74,8 +72,11 @@ public class Client_EditOrder extends AppCompatActivity {
                     photoId[4] = R.id.imageView_OP_photo5;
                     photoAddress = jsm.getServicePhotoUrl();
 
-                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++)
-                        getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
+                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++) {
+                        imageUnity.setImage(context, photo[i] = (ImageView) findViewById(photoId[i]), "http://para.co.nz/api/JobService/GetServiceImage/" + photoAddress[i]);
+                        photo[i].setDrawingCacheEnabled(true);
+                        bitmapArray.add(photo[i].getDrawingCache());
+                    }
                 }
 
                 btnFunction();
@@ -141,12 +142,19 @@ public class Client_EditOrder extends AppCompatActivity {
         photoId[3] = R.id.imageView_OP_photo4;
         photoId[4] = R.id.imageView_OP_photo5;
 
-        for(int i=0; i<bitmapArray.size(); i++) {
-            photo[i] = (ImageView) findViewById(photoId[i]);
-            if(bitmapArray.get(i) != null)
-            photo[i].setImageBitmap(bitmapArray.get(i));
+        if(bitmapArray.size() < 5) {
+            for (int i = 0; i < bitmapArray.size(); i++) {
+                photo[i] = (ImageView) findViewById(photoId[i]);
+                if (bitmapArray.get(i) != null)
+                    photo[i].setImageBitmap(bitmapArray.get(i));
             }
-
+        } else{
+            for (int i = 0; i < 5; i++) {
+                photo[i] = (ImageView) findViewById(photoId[i]);
+                if (bitmapArray.get(i) != null)
+                    photo[i].setImageBitmap(bitmapArray.get(i));
+            }
+        }
     }
 
     public void btnFunction(){
@@ -208,6 +216,7 @@ public class Client_EditOrder extends AppCompatActivity {
 
                         for(int i=0; i<bitmapArray.size(); i++){
                             sendImage(bitmapArray.get(i),ValueMessengerTaskInfo.id);
+                            bitmapArray.remove(i);
                         }
                         myLoading.CloseLoadingDialog();
                     }
@@ -315,6 +324,7 @@ public class Client_EditOrder extends AppCompatActivity {
         myLoading.getContext(this);
 
         getData();
+
 
     }
 }

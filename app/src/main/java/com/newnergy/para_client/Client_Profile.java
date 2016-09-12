@@ -23,7 +23,7 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
     public ImageButton pending,message,main;
     public LinearLayout changeName,changePhone,changeAddress;
     public TextView name,email,phone,address;
-    public ImageView profilePicture;
+    public CircleImageView profilePicture;
     public Button button;
     private ClientProfileViewModel list;
     private ImageView profilePictureSlidingMenu;
@@ -103,7 +103,7 @@ public class Client_Profile extends AppCompatActivity implements NavigationView.
         email = (TextView) findViewById(R.id.textView_profileEmail);
         phone = (TextView) findViewById(R.id.textView_profilePhone);
         address = (TextView) findViewById(R.id.textView_profileAddress);
-        profilePicture = (ImageView) findViewById(R.id.imageView_profile_profileImage);
+        profilePicture = (CircleImageView) findViewById(R.id.imageView_profile_profileImage);
         profilePictureSlidingMenu = (ImageView) findViewById(R.id.imageView_sideMenu_pic);
         profileName = (TextView) findViewById(R.id.textView_slidingMenu_name);
 

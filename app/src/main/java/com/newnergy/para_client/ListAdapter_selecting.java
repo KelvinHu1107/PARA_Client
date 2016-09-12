@@ -3,6 +3,7 @@ package com.newnergy.para_client;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import java.io.InputStream;
 
 /**
  * Created by Kelvin on 2016/8/11.
@@ -59,25 +62,33 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
 
     }
 
-
-
-    public void getImageData(String profilePhotoUrl, final ImageView imageView) {
-
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap mBitmap) {
-                super.onResponse(mBitmap);
-                if (mBitmap == null) {
-                    imageView.setImageResource(R.drawable.client_photo_round);
-                }
-
-                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
-                ValueMessengerTaskInfo.providerProfilePhoto = imageUnity.toRoundBitmap(mBitmap);
-
-            }
-        };
-        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");
+    public static Bitmap readBitMap(Context context, int resId){
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.RGB_565;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        InputStream is = context.getResources().openRawResource(resId);
+        return BitmapFactory.decodeStream(is,null,opt);
     }
+
+//    public void getImageData(String profilePhotoUrl, final ImageView imageView) {
+//
+//        GetImageController controller = new GetImageController() {
+//            @Override
+//            public void onResponse(Bitmap mBitmap) {
+//                super.onResponse(mBitmap);
+//                if (mBitmap == null) {
+//                    imageView.setImageBitmap(readBitMap(c,R.drawable.client_photo_round));
+//                }
+//
+//                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
+//                 = imageUnity.toRoundBitmap(mBitmap);
+//
+//                mBitmap.recycle();
+//            }
+//        };
+//        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");
+//    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -103,7 +114,10 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
 
         holderPending.priceTv.setText(budget[position].toString());
 
-        getImageData(providerPhoto[position].toString(), holderPending.providerPhoto);
+        //getImageData(providerPhoto[position].toString(), holderPending.providerPhoto);
+        imageUnity.setImage(c, holderPending.providerPhoto, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+providerPhoto[position].toString());
+        holderPending.providerPhoto.setDrawingCacheEnabled(true);
+
 
         holderPending.ratingBar.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -117,6 +131,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
+                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
                 ValueMessagerFurtherInfo.lastPage = 5;
 
@@ -130,6 +145,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
+                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
                 ValueMessagerFurtherInfo.lastPage = 5;
 
@@ -143,6 +159,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
+                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
                 ValueMessagerFurtherInfo.lastPage = 5;
 
@@ -156,6 +173,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
+                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
                 ValueMessagerFurtherInfo.lastPage = 5;
 
@@ -169,6 +187,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
+                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessengerTaskInfo.providerOfferedPrice = budget[position];
                 ValueMessengerTaskInfo.providerFirstName = firstName[position];
                 ValueMessengerTaskInfo.providerLastName = lastName[position];

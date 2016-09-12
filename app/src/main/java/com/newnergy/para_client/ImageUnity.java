@@ -271,6 +271,7 @@ public class ImageUnity {
                 .load(url)
                 //.fit()
                 .into(v);
+
     }
 
 }
