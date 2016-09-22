@@ -3,7 +3,6 @@ package com.newnergy.para_client;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -12,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -44,10 +44,8 @@ public class Client_LoginActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText EtEmail;
     private EditText EtPassword;
-    private TextView TvToolbarDone;
     private TextView tvWarningMessage;
-    private TextView tvEmail;
-    private TextView tvPassword;
+    private LinearLayout linearLayout;
     private LoginButton facebookLogIn;
     private CallbackManager callbackManager = null;
     private AccessTokenTracker mtracker = null;
@@ -217,7 +215,7 @@ public class Client_LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ValueMessager.userLogInByFb = false;
         FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.client_login);
+        setContentView(R.layout.client_login_page);
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -229,8 +227,10 @@ public class Client_LoginActivity extends AppCompatActivity {
             ValueMessager.resolution1080x720 = true;
         else if(width == 480)
             ValueMessager.resolution800x480 = true;
-        else if(width == 1080)
+        //else if(width == 1080)
+        else
             ValueMessager.resolution1920x1080 = true;
+
 
 
         System.out.println("xxxxxxxxxx"+ width+"yyy===="+height);
@@ -301,11 +301,9 @@ public class Client_LoginActivity extends AppCompatActivity {
         EtEmail = (EditText) findViewById(R.id.et_login_email);
         EtPassword = (EditText) findViewById(R.id.et_login_password);
         toolbar = (Toolbar) findViewById(R.id.toolbar_login_template);
-        TvToolbarDone = (TextView) findViewById(R.id.toolbar_done);
         tvWarningMessage = (TextView) findViewById(R.id.textView_logIn_warning);
-        tvEmail = (TextView) findViewById(R.id.textView_login_emailLeft);
-        tvPassword = (TextView) findViewById(R.id.textView_login_passwordLeft);
         facebookLogIn = (LoginButton) findViewById(R.id.imageButton_faceBook_logIn);
+        linearLayout = (LinearLayout) findViewById(R.id.linearLayout_logIn);
 
         facebookLogIn.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
@@ -317,7 +315,7 @@ public class Client_LoginActivity extends AppCompatActivity {
 
     private void setToolbarComponent() {
         setSupportActionBar(toolbar);
-        TvToolbarDone.setOnClickListener(login(TvToolbarDone));
+        linearLayout.setOnClickListener(login(linearLayout));
     }
 
     public View.OnClickListener login(View v) {
@@ -332,8 +330,6 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtPassword.setHint("Can not be empty");
                     EtEmail.setHint("Can not be empty");
-                    tvEmail.setTextColor(Color.parseColor("#f3736f"));
-                    tvPassword.setTextColor(Color.parseColor("#f3736f"));
 
                 }
 
@@ -342,7 +338,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setText("* Password can not be empty");
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtPassword.setHint("Can not be empty");
-                    tvPassword.setTextColor(Color.parseColor("#f3736f"));
+
                 }
 
                 else if (email.equals("")) {
@@ -350,7 +346,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                     tvWarningMessage.setText("* Email can not be empty");
                     tvWarningMessage.setVisibility(View.VISIBLE);
                     EtEmail.setHint("Can not be empty");
-                    tvEmail.setTextColor(Color.parseColor("#f3736f"));
+
                 }
 
                 else {

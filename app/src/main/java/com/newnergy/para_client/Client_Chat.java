@@ -42,6 +42,8 @@ public class Client_Chat extends AppCompatActivity {
         setContentView(R.layout.client_chat);
         else if(ValueMessager.resolution800x480)
             setContentView(R.layout.client_chat480x800);
+        else
+            setContentView(R.layout.client_chat);
 
         Intent i = getIntent();
 
@@ -100,6 +102,7 @@ public class Client_Chat extends AppCompatActivity {
         send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(chatText.getText().toString() != "")
                 sendChatMessage();
             }
         });
@@ -132,15 +135,12 @@ public class Client_Chat extends AppCompatActivity {
 
                         message = model.getMessageContent();
 
-                        xHandler.post(new Runnable() {
-                            @Override
-                            public void run() {
 
-                                adapter.add(new ChatMessage(side = true, message, time, 0, bitmap));// type0: string, 1:picture, 2:voice
-                                chatText.setText("");
+                        adapter.add(new ChatMessage(side = true, message, time, 0, bitmap));// type0: string, 1:picture, 2:voice
 
-                            }
-                        });
+                        chatText.setText("");
+
+
                     }
                 },ChatGetMessageViewModel.class);
 
@@ -177,7 +177,7 @@ public class Client_Chat extends AppCompatActivity {
 //                                });
                             }
                         };
-                        controller.execute("http://para.co.nz/api/ChatClient/GetChatImage/"+message, "", "POST");
+                        controller.execute("http://para.co.nz/api/ChatClient/GetChatImage/"+message, "", "GET");
                     }
                 },ChatGetMessageViewModel.class);
 

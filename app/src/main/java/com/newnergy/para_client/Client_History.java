@@ -143,26 +143,9 @@ public class Client_History extends AppCompatActivity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                switch (ValueMessager.historyLastPage) {
 
-                    case 1:
-                        Intent nextPage_IncomingServices = new Intent(Client_History.this, Client_Incoming_Services.class);
+                        Intent nextPage_IncomingServices = new Intent(Client_History.this, Client_Setting.class);
                         startActivity(nextPage_IncomingServices);
-                        break;
-                    case 2:
-                        Intent nextPage_Message = new Intent(Client_History.this, Client_Message.class);
-                        startActivity(nextPage_Message);
-                        break;
-                    case 3:
-                        Intent nextPage_Pending = new Intent(Client_History.this, Client_Pending.class);
-                        startActivity(nextPage_Pending);
-                        break;
-                    case 4:
-                        Intent nextPage_Profile = new Intent(Client_History.this, Client_Profile.class);
-                        startActivity(nextPage_Profile);
-                        break;
-                }
-
             }
         });
     }

@@ -35,21 +35,7 @@ public class Client_EditOrder extends AppCompatActivity {
     Loading_Dialog myLoading;
 
 
-    public void getImageData(String profilePhotoUrl, final ImageView imageView) {
 
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap mBitmap) {
-                super.onResponse(mBitmap);
-                if (mBitmap == null) {
-                    return;
-                }
-                imageView.setImageBitmap(mBitmap);
-                bitmapArray.add(mBitmap);
-            }
-        };
-        controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
-    }
 
     public void getData() {
         DataTransmitController c = new DataTransmitController() {

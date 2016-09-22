@@ -9,8 +9,9 @@
 
     <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollView3" >
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView3"
+        android:layout_weight="1">
 
         <LinearLayout
             android:orientation="vertical"
@@ -370,5 +371,59 @@
 
         </LinearLayout>
     </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayout11"
+        android:layout_height="45dp"
+        android:paddingBottom="2dp"
+        android:background="#ffffff">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_main_post"
+            android:layout_weight="1"
+            android:src="@drawable/main_02"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton8"
+            android:layout_weight="1"
+            android:src="@drawable/post_02"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_message_post"
+            android:src="@drawable/message_01"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_pending_post"
+            android:layout_weight="1"
+            android:src="@drawable/pending_01"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_setting_post"
+            android:src="@drawable/client_setting_01"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
 
 </LinearLayout>

@@ -169,9 +169,9 @@ public class SelectPicPopupWindow extends Activity {
 
     }
 
-    public static void targetControl(ImageView profilePicture, ImageView profilePictureSlidingMenu) {
+    public static void targetControl(ImageView profilePicture) {
        profilePicture_new=profilePicture;
-        profilePictureSlidingMenu_new=profilePictureSlidingMenu;
+
     }
 
     @Override
@@ -252,7 +252,8 @@ public class SelectPicPopupWindow extends Activity {
                                 //cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
 
                                 PostProfilePicture(cameraBitmap);
-                                finish();
+                                Intent intent = new Intent(SelectPicPopupWindow.this, Client_Profile.class);
+                                startActivity(intent);
                             } catch (FileNotFoundException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -287,17 +288,9 @@ public class SelectPicPopupWindow extends Activity {
 
                        // File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
 
-                       // System.out.println("xxxx: "+imageFile);
-///////////////////////////////////////////////////////////////////
+                        Intent intent = new Intent(SelectPicPopupWindow.this, Client_Profile.class);
+                        startActivity(intent);
 
-
-                        /////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-                        finish();
 
 
                     } catch (FileNotFoundException e) {
@@ -326,9 +319,6 @@ public class SelectPicPopupWindow extends Activity {
         ValueMessager.userProfileBitmap = bitmap;
 
         writeData(ValueMessager.profileBitmap);
-
-        profilePicture_new.setImageBitmap(bitmap);
-        profilePictureSlidingMenu_new.setImageBitmap(bitmap);
         sendImage(bitmap, ValueMessager.email.toString());
     }
 

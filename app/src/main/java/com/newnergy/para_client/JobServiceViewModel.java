@@ -21,9 +21,15 @@ public class JobServiceViewModel {
     private String HomePhone;
     private Double Budget;
     private String Type;
+    private String CompleteDate;
 
+    public String getCompleteDate() {
+        return CompleteDate;
+    }
 
-
+    public void setCompleteDate(String completeDate) {
+        CompleteDate = completeDate;
+    }
 
     public Double getBudget() {
         return Budget;

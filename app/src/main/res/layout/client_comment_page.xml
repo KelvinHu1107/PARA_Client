@@ -7,12 +7,7 @@
         layout="@layout/toolbar_rating">
     </include>
 
-    <LinearLayout tools:context="com.newnergy.para_client.Client_Pending"
-        tools:showIn="@layout/app_bar_pending"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="#ffffff"

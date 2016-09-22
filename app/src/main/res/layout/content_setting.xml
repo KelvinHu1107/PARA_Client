@@ -1,0 +1,257 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar_profile"
+        layout="@layout/toolbar_profile">
+    </include>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" >
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="#ffffff" >
+
+                    <com.newnergy.para_client.CircleImageView
+                        android:layout_width="65dp"
+                        android:layout_height="65dp"
+                        android:id="@+id/imageView_setting_profileImage"
+                        android:layout_gravity="center_horizontal"
+                        android:src="@drawable/client_photo_round"
+                        android:layout_marginTop="12.5dp"
+                        android:layout_marginBottom="12.5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Name"
+                        android:id="@+id/textView_setting_name"
+                        android:layout_gravity="center"
+                        android:layout_marginBottom="30dp"
+                        android:textSize="16sp"
+                        android:textColor="#333333" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/border_radius"
+                        android:layout_marginLeft="12.5dp"
+                        android:layout_marginRight="12.5dp" >
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:id="@+id/setting_payment_bar">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Payment method"
+                                android:id="@+id/textView2"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:paddingLeft="12.5dp"
+                                android:paddingTop="12.5dp"
+                                android:paddingBottom="12.5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="1" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageButton16"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/arrow"
+                                android:background="#ffffff"
+                                android:layout_marginRight="12.5dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imageView16"
+                            android:background="@drawable/divide_line_profile_xh_720x1280"
+                            android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:id="@+id/setting_history_bar">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="History"
+                                android:id="@+id/textView10"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:paddingLeft="12.5dp"
+                                android:paddingTop="12.5dp"
+                                android:paddingBottom="12.5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="4" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageButton17"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/arrow"
+                                android:background="#ffffff"
+                                android:layout_marginRight="12.5dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imageView17"
+                            android:background="@drawable/divide_line_profile_xh_720x1280"
+                            android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:id="@+id/setting_about_bar">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="About &amp; help"
+                                android:id="@+id/textView12"
+                                android:textColor="#000000"
+                                android:textSize="15sp"
+                                android:padding="12.5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="4" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageButton18"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/arrow"
+                                android:background="#ffffff"
+                                android:layout_marginRight="12.5dp" />
+                        </LinearLayout>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/imageView18"
+                            android:background="@drawable/divide_line_profile_xh_720x1280"
+                            android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:id="@+id/setting_logOut_bar">
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:text="Log out"
+                                android:id="@+id/textView14"
+                                android:textSize="15sp"
+                                android:textColor="#000000"
+                                android:paddingLeft="12.5dp"
+                                android:paddingTop="12.5dp"
+                                android:paddingBottom="12.5dp"
+                                android:layout_gravity="center_vertical"
+                                android:layout_weight="4" />
+
+                            <ImageButton
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:id="@+id/imageButton19"
+                                android:layout_gravity="center_vertical"
+                                android:src="@drawable/arrow"
+                                android:background="#ffffff"
+                                android:layout_marginRight="12.5dp" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/linearLayout"
+        android:layout_height="45dp"
+        android:paddingBottom="2dp">
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_ProfileToMain"
+            android:layout_weight="1"
+            android:src="@drawable/main_02"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_ProfileToMessage"
+            android:src="@drawable/post_01"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_ProfileToPending"
+            android:layout_weight="1"
+            android:src="@drawable/message_01"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton_ProfileToPayment"
+            android:src="@drawable/pending_01"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+
+        <ImageButton
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageButton28"
+            android:src="@drawable/client_setting_02"
+            android:layout_weight="1"
+            android:background="#ffffff"
+            android:layout_gravity="bottom" />
+    </LinearLayout>
+</LinearLayout>

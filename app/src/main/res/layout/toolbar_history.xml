@@ -17,22 +17,24 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Back"
+            android:text="&lt; Back"
             android:id="@+id/textView_cancel_history"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="History"
             android:id="@+id/profile_history_title"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_gravity="center_vertical"
             android:textColor="#ffffff"
             android:layout_weight="4"
             android:gravity="center_horizontal"
             android:layout_marginBottom="3dp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_marginRight="10dp" />
 
         <TextView
             android:layout_width="wrap_content"

@@ -28,7 +28,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
     private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
     private TextView cancel, save, error;
     private EditText jobTitle, budget, street, suburb, city, description;
-    private ImageButton addPhoto;
+    private ImageButton addPhoto, main, message, pending, profile;
     private Bitmap bitmap;
     private ImageView photo1, photo2, photo3, photo4, photo5;
     private Spinner spinner;
@@ -96,6 +96,10 @@ public class Client_PlaceOrder extends AppCompatActivity {
         city = (EditText) findViewById(R.id.editText_PO_city);
         description = (EditText) findViewById(R.id.editText_PO_description);
         addPhoto = (ImageButton) findViewById(R.id.imageButton_addPhoto);
+        main = (ImageButton) findViewById(R.id.imageButton_main_post);
+        message = (ImageButton) findViewById(R.id.imageButton_message_post);
+        pending = (ImageButton) findViewById(R.id.imageButton_pending_post);
+        profile = (ImageButton) findViewById(R.id.imageButton_setting_post);
         photo1 = (ImageView) findViewById(R.id.imageView_OP_photo1);
         photo2 = (ImageView) findViewById(R.id.imageView_OP_photo2);
         photo3 = (ImageView) findViewById(R.id.imageView_OP_photo3);
@@ -125,6 +129,38 @@ public class Client_PlaceOrder extends AppCompatActivity {
                 Intent uploadImage = new Intent(Client_PlaceOrder.this, SelectPicPopupWindowUploadImage.class);
                 startActivityForResult(uploadImage,REQUESTCODE);
 
+            }
+        });
+
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                startActivity(intent);
+            }
+        });
+
+        message.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Client_PlaceOrder.this, Client_Message.class);
+                startActivity(intent);
+            }
+        });
+
+        pending.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Client_PlaceOrder.this, Client_Pending.class);
+                startActivity(intent);
+            }
+        });
+
+        profile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Client_PlaceOrder.this, Client_Setting.class);
+                startActivity(intent);
             }
         });
 
