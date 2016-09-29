@@ -10,7 +10,25 @@ public class ClientUpdateServiceViewModel {
     private Integer Status;
     private String Type;
     private String Description;
-    private Double Price;
+    private Double Price, deposit;
+    private boolean IsSecure;
+
+    public boolean getIsSecure() {
+        return IsSecure;
+    }
+
+    public boolean setIsSecure(boolean price) {
+        IsSecure = price;
+        return IsSecure;
+    }
+
+    public Double getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Double price) {
+        deposit = price;
+    }
 
     public Double getPrice() {
         return Price;

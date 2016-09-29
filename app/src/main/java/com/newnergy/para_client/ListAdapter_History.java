@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -21,7 +20,7 @@ import java.util.Date;
  */
 public class ListAdapter_History extends ArrayAdapter<String> {
     // declaration
-    CharSequence[] name;
+
     CharSequence[] createDate;
     int[]  serviceId;
     CharSequence[] providerPhoto;
@@ -30,17 +29,13 @@ public class ListAdapter_History extends ArrayAdapter<String> {
     Double[] budget;
     Context c;
     LayoutInflater inflaterPending;
+    private ProviderProfileViewModel list;
     ImageUnity imageUnity = new ImageUnity();
-
-
-
-
-
 
     public ListAdapter_History(Context context, String[] objectName, CharSequence[] createDate, int[] serviceId, Integer[] providerId, CharSequence[] providerPhoto,
                                CharSequence[] getTitle, Integer[] status, Double[] budget) {
 
-        super(context, R.layout.client_history_list_sample720x1080, objectName);
+        super(context, R.layout.history_list_sample, objectName);
 
         this.c = context;
         this.serviceId = serviceId;
@@ -53,31 +48,11 @@ public class ListAdapter_History extends ArrayAdapter<String> {
     }
 
     public class ViewHolder {
-        TextView nameTv, textTv, timeTv;
+        TextView nameTv, textTv, timeTv, budgetTv;
         ImageView imgIv;
-        HorizontalScrollView scrollViewTv;
         LinearLayout linearLayout;
 
     }
-
-
-
-//    public void getImageData(String profilePhotoUrl, final ImageView imageView, CharSequence picturePath) {
-//
-//        GetImageController controller = new GetImageController() {
-//            @Override
-//            public void onResponse(Bitmap mBitmap) {
-//                super.onResponse(mBitmap);
-//                if (mBitmap == null) {
-//                    return;
-//                }
-//                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
-//
-//                mBitmap.recycle();
-//            }
-//        };
-//        controller.execute("http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+ profilePhotoUrl, "","POST");
-//    }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
@@ -86,22 +61,20 @@ public class ListAdapter_History extends ArrayAdapter<String> {
         if (convertView == null) {
             inflaterPending = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             if(ValueMessager.resolution1080x720)
-            convertView = inflaterPending.inflate(R.layout.client_history_list_sample720x1080, null);
+            convertView = inflaterPending.inflate(R.layout.history_list_sample, null);
             else if(ValueMessager.resolution800x480)
-                convertView = inflaterPending.inflate(R.layout.client_history_list_sample480x800, null);
+                convertView = inflaterPending.inflate(R.layout.history_list_sample, null);
         }
 
         //assign id to items , convert view
         final ViewHolder holder = new ViewHolder();
-        holder.nameTv = (TextView) convertView.findViewById(R.id.textView_budget_history);// budget
+        holder.nameTv = (TextView) convertView.findViewById(R.id.textView_name_history);
         holder.imgIv = (ImageView) convertView.findViewById(R.id.imageView_pic_history);
-        holder.textTv = (TextView) convertView.findViewById(R.id.textView_history_jobTitle);
-        holder.timeTv = (TextView) convertView.findViewById(R.id.textView_history_time);
+        holder.textTv = (TextView) convertView.findViewById(R.id.textView_title_history);
+        holder.timeTv = (TextView) convertView.findViewById(R.id.textView_date_history);
         holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout_history);
+        holder.budgetTv = (TextView) convertView.findViewById(R.id.textView_price_history);
 
-
-
-        //format date string
         Calendar currentTime = Calendar.getInstance();
         Long diff, diffDayLong;
         int diffDay, day = 24*60*60*1000, hour = 60*60*1000;
@@ -111,7 +84,7 @@ public class ListAdapter_History extends ArrayAdapter<String> {
         currentDate = currentTime.getTime();
 
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-        SimpleDateFormat finalFormat = new SimpleDateFormat("dd-M");
+        SimpleDateFormat finalFormat = new SimpleDateFormat("dd-MMMM");
         try {
             date = format.parse(createDate[position].toString());
             calculatedDate = finalFormat.format(date);
@@ -120,15 +93,24 @@ public class ListAdapter_History extends ArrayAdapter<String> {
             e.printStackTrace();
         }
 
-        //format date string
+        imageUnity.setImage(c, holder.imgIv, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+providerPhoto[position].toString());
 
-        //每一個position assign item
-        //getImageData(providerPhoto[position].toString(),holder.imgIv, providerPhoto[position]);
-
-        imageUnity.setImage(c, holder.imgIv, "http://para.co.nz/api/ClientProfile/GetClientProfileImage/"+providerPhoto[position].toString());
-        holder.nameTv.setText(budget[position].toString());
         holder.timeTv.setText(calculatedDate);
-        holder.textTv.setText(getTitle[position]);
+
+        DataTransmitController controller =new DataTransmitController(){
+            @Override
+            public void onResponse(String result) {
+                super.onResponse(result);
+
+                list = ProviderProfileDataConvert.convertJsonToModel(result);
+
+                holder.budgetTv.setText("$ "+budget[position].toString());
+                holder.textTv.setText(getTitle[position]);
+                holder.nameTv.setText(list.getFirstName()+" "+list.getLastName());
+
+            }
+        };
+        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderDetailById/"+providerId[position],"","GET");
 
 
 
@@ -174,7 +156,6 @@ public class ListAdapter_History extends ArrayAdapter<String> {
             }
         });
 
-        // <Scrollable list layout>end
         return convertView;
     }
 }

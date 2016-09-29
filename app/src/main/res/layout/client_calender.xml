@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingTop="50dp">
+
+    <DatePicker
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MyDatePickerStyle"
+        android:id="@+id/datePicker_calender"
+        android:background="#ffffff"
+        android:layout_gravity="center"
+        android:calendarTextColor="#000000"
+        android:calendarViewShown="false"
+        android:yearListSelectorColor="#999999" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/textView_warning"
+        android:layout_gravity="center"
+        android:textColor="#f3736f"
+        android:text="Due date can not be a privious date!"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:layout_marginTop="10dp" />
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/linearLayout_calender_popUp_comfirm"
+            android:background="@drawable/border_radius_blue4a72b3_stroke"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:layout_marginLeft="35dp"
+            android:layout_marginRight="12.5dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comfirm"
+                android:id="@+id/textView104"
+                android:layout_gravity="center"
+                android:textColor="#4a72b3"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="52dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/linearLayout_calender_popUp_cancel"
+            android:background="@drawable/border_radius_blue4a72b3_stroke"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_weight="1"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="35dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cancel"
+                android:id="@+id/textView100"
+                android:layout_gravity="center"
+                android:textColor="#4a72b3"
+                android:textStyle="bold"
+                android:textSize="18sp" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

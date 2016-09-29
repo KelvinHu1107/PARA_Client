@@ -135,12 +135,15 @@ public class Client_Chat extends AppCompatActivity {
 
                         message = model.getMessageContent();
 
+                        xHandler.post(new Runnable() {
+                            @Override
+                            public void run() {
 
-                        adapter.add(new ChatMessage(side = true, message, time, 0, bitmap));// type0: string, 1:picture, 2:voice
+                                adapter.add(new ChatMessage(side = true, message, time, 0, bitmap));// type0: string, 1:picture, 2:voice
+                                chatText.setText("");
 
-                        chatText.setText("");
-
-
+                            }
+                        });
                     }
                 },ChatGetMessageViewModel.class);
 
@@ -167,6 +170,8 @@ public class Client_Chat extends AppCompatActivity {
                                 if (mBitmap == null) {
                                     System.out.println("didnt get pic form chat server!!!");
                                 }
+
+
                                 adapter.add(new ChatMessage(side = true, "", time, 1, mBitmap));// type0: string, 1:picture, 2:voice
 //                                Handler xHandler=new Handler(Looper.getMainLooper());
 //                                xHandler.post(new Runnable() {

@@ -33,7 +33,6 @@ public class ProviderProfileDataConvert {
                 jsvm.setCompanyAddressStreet(object.getString("CompanyAddressStreet"));
                 jsvm.setCompanyAddressSuburb(object.getString("CompanyAddressSuburb"));
                 jsvm.setProfilePicture(object.getString("ProfilePicture"));
-                jsvm.setPassword(object.getString("Password"));
                 jsvm.setIntroduction(object.getString("Introduction"));
 				jsvm.setRating(object.getDouble("Rating"));
                 jsvm.setProviderType(object.getString("ProviderType"));
@@ -74,7 +73,6 @@ public class ProviderProfileDataConvert {
             jsvm.setCompanyAddressStreet(object.getString("CompanyAddressStreet"));
             jsvm.setCompanyAddressSuburb(object.getString("CompanyAddressSuburb"));
             jsvm.setProfilePicture(object.getString("ProfilePicture"));
-            jsvm.setPassword(object.getString("Password"));
             jsvm.setProviderAddressId(object.getInt("ProviderAddressId"));
             jsvm.setCompanyAddressId(object.getInt("CompanyAddressId"));
             jsvm.setIntroduction(object.getString("Introduction"));
@@ -96,9 +94,7 @@ public class ProviderProfileDataConvert {
             System.out.println("not username");
             return "{}";
         }
-        if (model.getPassword() != null) {
-            json.append("\"Password\":\"" + model.getPassword() + "\",");
-        }
+
         if (model.getFirstName() != null) {
             json.append("\"FirstName\":\"" + model.getFirstName() + "\",");
         }

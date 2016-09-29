@@ -34,6 +34,13 @@ public class PlaceServiceDataConvert {
         if (model.getType() != null) {
             json.append("\"Type\":\"" + model.getType() + "\",");
         }
+            json.append("\"IsSecure\":\"" + model.getIsSecure() + "\",");
+
+        if (model.getDueDate() != null) {
+            json.append("\"DueDate\":\"" + model.getDueDate() + "\",");
+        }
+
+
         json.deleteCharAt(json.length() - 1);
         json.append("}");
         return json.toString();

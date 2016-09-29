@@ -331,13 +331,11 @@ public class Client_Incoming_Services extends AppCompatActivity
         }
     */
 
-
     public void listReflash() {
         adapter = new Adapter(this, objectName, name, createDate, clientDueDate, id, street, suburb, city, profilePhoto, getTitle, userName, companyPhone, rating, type);
         lv.setAdapter(adapter);
         lv.setOnRefreshListener(this);
     }
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -356,8 +354,6 @@ public class Client_Incoming_Services extends AppCompatActivity
 
     }
 
-
-    //////////////////
     private void UpdateAdapter() {
 
 
@@ -375,9 +371,6 @@ public class Client_Incoming_Services extends AppCompatActivity
         myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ProviderProfile/GetAllProviders", "", "GET");
     }
-
-
-    ////////////////////////////////////
 
     @Override
     public void onDownPullRefresh() {

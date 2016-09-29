@@ -7,12 +7,31 @@ public class PlaceOrderServiceViewModel {
     private String Description ;
     private String Title;
     private String ClientEmail;
-    //private Nullable<System.DateTime> DueDate { get; set; }
     private String Street ;
     private String Suburb ;
     private String City ;
     private Double Budget ;
     private String Type;
+    private String DueDate;
+    private boolean IsSecure;
+
+    public String getDueDate() {
+        return DueDate;
+    }
+
+    public void setDueDate(String text) {
+        DueDate = text;
+    }
+
+    public boolean getIsSecure() {
+        return IsSecure;
+    }
+
+    public boolean setIsSecure(boolean description) {
+        IsSecure = description;
+
+        return IsSecure;
+    }
 
     public String getDescription() {
         return Description;

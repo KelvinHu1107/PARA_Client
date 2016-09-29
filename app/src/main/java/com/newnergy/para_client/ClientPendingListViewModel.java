@@ -11,6 +11,15 @@ public class ClientPendingListViewModel {
     private Integer Status ;
     private Integer ProviderId ;
     private String CreateDate;
+    private String CompleteDate;
+
+    public String getCompleteDate() {
+        return CompleteDate;
+    }
+
+    public void setCompleteDate(String completeDate) {
+        CompleteDate = completeDate;
+    }
 
     public String getCreateDate() {
         return CreateDate;

@@ -4,12 +4,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -24,16 +25,16 @@ import java.util.regex.Pattern;
 
 public class Client_PlaceOrder extends AppCompatActivity {
 
-    private static final int RESULT_LOAD_IMAGE = 1;
-    private static final int RESULT_EXTERNAL_STORAGE_RESULT = 1;
-    private TextView cancel, save, error;
+
+    private TextView cancel, save, error, date;
     private EditText jobTitle, budget, street, suburb, city, description;
     private ImageButton addPhoto, main, message, pending, profile;
-    private Bitmap bitmap;
-    private ImageView photo1, photo2, photo3, photo4, photo5;
+    private ImageView photo1, photo2, photo3, photo4, photo5, picYes, picNo;
     private Spinner spinner;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
+    private LinearLayout yes, no, taskDue;
     private static final int REQUESTCODE=3;
+    private boolean isFundAdded = true;
     ImageUnity imageUnity = new ImageUnity();
     Context context = this;
     Loading_Dialog myLoading;
@@ -89,6 +90,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
         cancel = (TextView) findViewById(R.id.textView_cancel_placeOrder);
         error = (TextView) findViewById(R.id.textView_PO_error);
         save = (TextView) findViewById(R.id.textView_save_placeOrder);
+        date = (TextView) findViewById(R.id.textView_placeOrder_date);
         jobTitle = (EditText) findViewById(R.id.editText_PO_workTitle);
         budget = (EditText) findViewById(R.id.editText_PO_budget);
         street = (EditText) findViewById(R.id.editText_PO_street);
@@ -105,7 +107,12 @@ public class Client_PlaceOrder extends AppCompatActivity {
         photo3 = (ImageView) findViewById(R.id.imageView_OP_photo3);
         photo4 = (ImageView) findViewById(R.id.imageView_OP_photo4);
         photo5 = (ImageView) findViewById(R.id.imageView_OP_photo5);
+        picYes = (ImageView) findViewById(R.id.imageView_addFund_true);
+        picNo = (ImageView) findViewById(R.id.imageView_addFund_false);
         spinner = (Spinner) findViewById(R.id.spinner_OP);
+        yes = (LinearLayout) findViewById(R.id.linearLayout_placeOrder_addFund_true);
+        no = (LinearLayout) findViewById(R.id.linearLayout_placeOrder_addFund_false);
+        taskDue = (LinearLayout) findViewById(R.id.linearLayout_taskDue);
 
         photo1.setVisibility(View.INVISIBLE);
         photo2.setVisibility(View.INVISIBLE);
@@ -114,6 +121,9 @@ public class Client_PlaceOrder extends AppCompatActivity {
         photo5.setVisibility(View.INVISIBLE);
 
         error.setVisibility(View.INVISIBLE);
+
+        if(ValueMessager.selectedDay != "")
+        date.setText(ValueMessager.selectedDay+"/"+ValueMessager.selectedMonth+"/"+ValueMessager.selectedYear);
 
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -164,6 +174,33 @@ public class Client_PlaceOrder extends AppCompatActivity {
             }
         });
 
+        yes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFundAdded = true;
+                picYes.setImageResource(R.drawable.dot);
+                picNo.setImageResource(R.drawable.circle);
+            }
+        });
+
+        no.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isFundAdded = false;
+                picYes.setImageResource(R.drawable.circle);
+                picNo.setImageResource(R.drawable.dot);
+            }
+        });
+
+        taskDue.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Intent intent = new Intent(Client_PlaceOrder.this, Client_Calender.class);
+                startActivity(intent);
+
+            }
+        });
 
         save.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,9 +217,15 @@ public class Client_PlaceOrder extends AppCompatActivity {
                         for(int i=0; i<bitmapArray.size(); i++){
                            sendImage(bitmapArray.get(i),result);
                         }
+                        ValueMessengerTaskInfo.id = result;
                         myLoading.CloseLoadingDialog();
                     }
                 };
+
+                if(date.getText() == ""){
+                    error.setVisibility(View.VISIBLE);
+                    error.setText("Date must be set!");
+                }
 
                 if(jobTitle.getText().toString().equals(""))
                 {
@@ -195,6 +238,12 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     budget.setHint("Budget allows numbers only!");
                     error.setVisibility(View.VISIBLE);
                     error.setText("Budget allows numbers only!");
+                }
+
+                else if (Double.parseDouble(budget.getText().toString()) < 10){
+                    budget.setHint("Budget can not be lower than $10!");
+                    error.setVisibility(View.VISIBLE);
+                    error.setText("Budget can not be lower than $10!");
                 }
 
                 else if(street.getText().toString().equals(""))
@@ -229,8 +278,8 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     error.setText("Description can not be empty!");
                 }
 
-                if(jobTitle.getText().toString().equals("")||street.getText().toString().equals("")||suburb.getText().toString().equals("")
-                        ||city.getText().toString().equals("")||description.getText().toString().equals("") || !isBudget(budget.getText().toString())){
+                if(jobTitle.getText().toString().equals("")||street.getText().toString().equals("")||suburb.getText().toString().equals("") || date.getText() ==""
+                        ||city.getText().toString().equals("")||description.getText().toString().equals("") || !isBudget(budget.getText().toString()) || Double.parseDouble(budget.getText().toString()) < 10 ){
                     return;
                 }
                 else {
@@ -245,12 +294,19 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     placeOrderServiceViewModel.setSuburb(suburb.getText().toString());
                     placeOrderServiceViewModel.setCity(city.getText().toString());
                     placeOrderServiceViewModel.setDescription(description.getText().toString());
+                    placeOrderServiceViewModel.setIsSecure(isFundAdded);
+                    placeOrderServiceViewModel.setDueDate(ValueMessager.selectedDate);
 
                     String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
                     myLoading.ShowLoadingDialog();
                     c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
 
-                    Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    ValueMessager.selectedDay = "";
+                    ValueMessager.selectedMonth = "";
+                    ValueMessager.selectedYear = "";
+                    ValueMessager.selectedDate = "";
+
+                    Intent nextPage_History = new Intent(Client_PlaceOrder.this, Client_Pending.class);
                     startActivity(nextPage_History);
                 }
             }

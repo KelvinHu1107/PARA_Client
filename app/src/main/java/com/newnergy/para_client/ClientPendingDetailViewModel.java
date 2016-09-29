@@ -25,9 +25,28 @@ public class ClientPendingDetailViewModel {
     private String[] ServicePhotoUrl;
     private String ProviderUsername;
     private String CreateDate;
+    private Double deposit;
     private Double Rating;
     private String ProviderFirstname;
     private String ProviderLastname;
+    private boolean IsSecure;
+
+    public boolean getIsSecure() {
+        return IsSecure;
+    }
+
+    public boolean setIsSecure(boolean rating) {
+        IsSecure = rating;
+        return IsSecure;
+    }
+
+    public Double getDeposit() {
+        return deposit;
+    }
+
+    public void setDeposit(Double rating) {
+        deposit = rating;
+    }
 
     public Double getRating() {
         return Rating;

@@ -25,14 +25,13 @@ public class Client_History extends AppCompatActivity {
     private  String[] objectName ;
     ClientData[] dataList;
     private List<ClientPendingListViewModel> list;
-    private ClientProfileViewModel profileList;
     private Double[] budget;
     Context context = this;
     Loading_Dialog myLoading;
 
 
     public void getData(){
-        DataTransmitController c =new DataTransmitController(){
+        DataTransmitController c = new DataTransmitController(){
             @Override
             public void onResponse(String result) {
                 super.onResponse(result);
@@ -42,7 +41,6 @@ public class Client_History extends AppCompatActivity {
 
                 initList();
                 myLoading.CloseLoadingDialog();
-
 
             }
         };
@@ -60,9 +58,9 @@ public class Client_History extends AppCompatActivity {
         profilePhoto = new CharSequence[list.size()];
         getTitle = new CharSequence[list.size()];
         providerPhoto = new CharSequence[list.size()];
-        createDate = new CharSequence[list.size()];
         status = new Integer[list.size()];
         budget = new Double[list.size()];
+        createDate = new CharSequence[list.size()];
 
 
         for(int i=0; i< list.size() ; i++) {
@@ -72,7 +70,7 @@ public class Client_History extends AppCompatActivity {
             providerPhoto[i] = list.get(i).getProviderProfilePhoto();
             getTitle[i] = list.get(i).getTitle();
             status[i] = list.get(i).getStatus();
-            createDate[i] = list.get(i).getCreateDate();
+            createDate[i] = list.get(i).getCompleteDate();
             budget[i] = list.get(i).getBudget();
 
         }

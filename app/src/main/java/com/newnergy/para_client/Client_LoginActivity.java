@@ -77,7 +77,7 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
 
-                            intent = new Intent(Client_LoginActivity.this, Client_RegisterActivity.class);
+                            intent = new Intent(Client_LoginActivity.this, Client_RegisterFaceBook.class);
                             intent.putExtra("jsondata",object.toString());
 
 
@@ -99,6 +99,8 @@ public class Client_LoginActivity extends AppCompatActivity {
                                         } else {
 
                                             ValueMessager.registerByFb = true;
+                                            ValueMessager.email = ValueMessager.userEmailBuffer;
+                                            writeData("userEmail", ValueMessager.email.toString());
                                             myLoading.CloseLoadingDialog();
                                             startActivity(intent);
                                         }

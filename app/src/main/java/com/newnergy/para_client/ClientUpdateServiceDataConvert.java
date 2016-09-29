@@ -29,6 +29,13 @@ public class ClientUpdateServiceDataConvert {
         if (model.getPrice() != null) {
             json.append("\"Price\":\"" + model.getPrice() + "\",");
         }
+
+            json.append("\"IsSecure\":\"" + model.getIsSecure() + "\",");
+
+        if (model.getDeposit() != null) {
+            json.append("\"ClientExtraDeposit\":\"" + model.getDeposit() + "\",");
+        }
+
         json.deleteCharAt(json.length() - 1);
         json.append("}");
         return json.toString();

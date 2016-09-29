@@ -22,7 +22,7 @@ import java.util.Date;
 public class Client_Confirm2 extends AppCompatActivity {
 
     private TextView cancel, providerName;
-    private TextView title, jobTitle, save, date, budgetTv, description, address, price;
+    private TextView title, jobTitle, save, date, budgetTv, description, address, price, city;
     private ImageView[] photo;
     private ImageView progressBar, providerPic;
     ClientPendingDetailViewModel jsm;
@@ -102,6 +102,7 @@ public class Client_Confirm2 extends AppCompatActivity {
                 providerName = (TextView) findViewById(R.id.textView_confirm2_name);
                 address = (TextView) findViewById(R.id.textView_comfirm2_address);
                 price = (TextView) findViewById(R.id.textView_confirm2_price);
+                city = (TextView) findViewById(R.id.textView_comfirm2_address_city);
                 progressBar = (ImageView) findViewById(R.id.imageView_progressBar_confirm2);
                 providerPic = (ImageView) findViewById(R.id.imageView_confirm2_pic);
                 ratingBar = (RatingBar) findViewById(R.id.ratingBar_confirm2);
@@ -110,9 +111,9 @@ public class Client_Confirm2 extends AppCompatActivity {
 
                 cancel.setText("Back");
 
-                jobDone.setVisibility(View.VISIBLE);
-                if(jsm.getStatus() == 2 || jsm.getStatus() == 4)
-                    jobDone.setVisibility(View.INVISIBLE);
+//                jobDone.setVisibility(View.VISIBLE);
+//                if(jsm.getStatus() == 2 || jsm.getStatus() == 4)
+//                    jobDone.setVisibility(View.INVISIBLE);
 
                 jobTitle.setText(jsm.getTitle());
                 ValueMessager.edit_workTitle = jsm.getTitle();
@@ -136,7 +137,8 @@ public class Client_Confirm2 extends AppCompatActivity {
 
                 providerName.setText(jsm.getProviderFirstname()+" ,"+jsm.getProviderLastname());
                 ValueMessager.edit_budget = jsm.getBudget().toString();
-                address.setText(jsm.getServiceStreet()+", "+jsm.getServiceSuburb()+" "+jsm.getServiceCity());
+                address.setText(jsm.getServiceStreet()+", "+jsm.getServiceSuburb());
+                city.setText(jsm.getServiceCity());
                 ValueMessager.edit_street = jsm.getServiceStreet();
                 ValueMessager.edit_subrub = jsm.getServiceSuburb();
                 ValueMessager.edit_city = jsm.getServiceCity();
@@ -235,21 +237,21 @@ public class Client_Confirm2 extends AppCompatActivity {
                     title.setText("Job completed");
                     save.setText("        ");
                 }
-                jobDone.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-
-                        if(jsm.getStatus() == 3)
-                        {
-
-                            ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
-                            ValueMessengerTaskInfo.providerId = jsm.getProviderId();
-
-                            Intent intent = new Intent(Client_Confirm2.this, Client_Rating.class);
-                            startActivity(intent);
-                        }
-                    }
-                });
+//                jobDone.setOnClickListener(new View.OnClickListener() {
+//                    @Override
+//                    public void onClick(View v) {
+//
+//                        if(jsm.getStatus() == 3)
+//                        {
+//
+//                            ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
+//                            ValueMessengerTaskInfo.providerId = jsm.getProviderId();
+//
+//                            Intent intent = new Intent(Client_Confirm2.this, Client_Rating.class);
+//                            startActivity(intent);
+//                        }
+//                    }
+//                });
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -284,7 +286,7 @@ public class Client_Confirm2 extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.client_confirm2);
+        setContentView(R.layout.client_pending_info_completed);
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
 

@@ -31,6 +31,7 @@ public class ClientPendingDetailDataConvert {
             jsvm.setServiceAddressId(object.getInt("ServiceAddressId"));
             jsvm.setProviderAddressId(object.getInt("ProviderAddressId"));
             jsvm.setDescription(object.getString("Description"));
+            jsvm.setDeposit(object.getDouble("ClientExtraDeposit"));
             jsvm.setType(object.getString("Type"));
             jsvm.setBudget(object.getDouble("Budget"));
             jsvm.setProviderUsername(object.getString("ProviderUsername"));
@@ -38,6 +39,7 @@ public class ClientPendingDetailDataConvert {
             jsvm.setProviderFirstname(object.getString("ProviderFirstname"));
             jsvm.setProviderLastname(object.getString("ProviderLastname"));
             jsvm.setRating(object.getDouble("Rating"));
+            jsvm.setIsSecure(object.getBoolean("IsSecure"));
             String[] servicePhotoUrls;
             JSONArray photoUrls = new JSONArray(object.getString("ServicePhotoUrl"));
             servicePhotoUrls = new String[photoUrls.length()];

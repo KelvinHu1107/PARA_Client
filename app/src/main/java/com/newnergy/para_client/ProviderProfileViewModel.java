@@ -19,7 +19,6 @@ public class ProviderProfileViewModel {
     private String CompanyAddressSuburb ;
     private int Id ;
     private String ProfilePicture ;
-    private String Password ;
     private Integer ProviderAddressId ;
     private Integer CompanyAddressId ;
     private String Introduction;
@@ -198,13 +197,7 @@ public class ProviderProfileViewModel {
         ProfilePicture = profilePicture;
     }
 
-    public String getPassword() {
-        return Password;
-    }
 
-    public void setPassword(String password) {
-        Password = password;
-    }
 
     public Integer getProviderAddressId() {
         return ProviderAddressId;
