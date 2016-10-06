@@ -10,8 +10,17 @@ public class ClientUpdateServiceViewModel {
     private Integer Status;
     private String Type;
     private String Description;
+    private String DueDate;
     private Double Price, deposit;
     private boolean IsSecure;
+
+    public String getDueDate() {
+        return DueDate;
+    }
+
+    public void setDueDate(String text) {
+        DueDate = text;
+    }
 
     public boolean getIsSecure() {
         return IsSecure;

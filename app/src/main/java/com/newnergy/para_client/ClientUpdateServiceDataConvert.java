@@ -36,6 +36,10 @@ public class ClientUpdateServiceDataConvert {
             json.append("\"ClientExtraDeposit\":\"" + model.getDeposit() + "\",");
         }
 
+        if (model.getDueDate() != null) {
+            json.append("\"DueDate\":\"" + model.getDueDate() + "\",");
+        }
+
         json.deleteCharAt(json.length() - 1);
         json.append("}");
         return json.toString();

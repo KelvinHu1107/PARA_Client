@@ -1,5 +1,6 @@
 package com.newnergy.para_client;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -21,6 +22,8 @@ public class Client_Rating extends AppCompatActivity {
     private RatingBar ratingBar;
     private EditText comment;
     private ImageButton confirm;
+    Context context = this;
+    Loading_Dialog myLoading;
 
 
     public String readData(String openFileName){
@@ -50,15 +53,9 @@ public class Client_Rating extends AppCompatActivity {
         comment = (EditText) findViewById(R.id.editText_rating_comment);
         confirm = (ImageButton) findViewById(R.id.imageButton_rating_confirm);
 
-        price.setText(ValueMessager.edit_budget);
+        cancel.setText("");
 
-        cancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Client_Rating.this, Client_Confirm2.class);
-                startActivity(intent);
-            }
-        });
+        price.setText(ValueMessager.edit_budget);
 
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,10 +75,13 @@ public class Client_Rating extends AppCompatActivity {
                                 public void onResponse(Boolean result) {
                                     super.onResponse(result);
 
-                                    System.out.println("xxxxxx"+result);
+
                                     if(result){
                                         ValueMessager.commentLastPage = 1;
                                         ValueMessengerTaskInfo.providerUserName = ValueMessagerFurtherInfo.userName.toString();
+
+                                        myLoading.CloseLoadingDialog();
+
                                         Intent intent = new Intent(Client_Rating.this, Client_CommentPage.class);
                                         startActivity(intent);
                                     }
@@ -102,6 +102,7 @@ public class Client_Rating extends AppCompatActivity {
                 addRatingViewModel.setClientUsername(readData("userEmail"));
 
                 String data = convert.ModelToJson(addRatingViewModel);
+                myLoading.ShowLoadingDialog();
                 controller.execute("http://para.co.nz/api/ProviderRating/AddRating", data, "POST");
 
 
@@ -117,6 +118,9 @@ public class Client_Rating extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_rating);
+
+        myLoading=new Loading_Dialog();
+        myLoading.getContext(this);
 
         btnFunction();
     }

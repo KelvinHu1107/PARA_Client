@@ -10,7 +10,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -21,16 +20,15 @@ import java.util.Date;
 
 public class Client_Confirm2 extends AppCompatActivity {
 
-    private TextView cancel, providerName;
-    private TextView title, jobTitle, save, date, budgetTv, description, address, price, city;
+    private TextView providerName;
+    private TextView title, jobTitle, date, budgetTv, description, address, city;
     private ImageView[] photo;
-    private ImageView progressBar, providerPic;
+    private ImageView progressBar, providerPic, cancel, save;
+    private Button pay;
     ClientPendingDetailViewModel jsm;
     Date dateData;
-    ListView list;
     String[] objectName;
     int[] serviceId, status, photoId;
-    Context c;
     String[] photoAddress;
     RatingBar ratingBar;
     Button jobDone;
@@ -75,8 +73,6 @@ public class Client_Confirm2 extends AppCompatActivity {
                     return;
                 }
                 imageView.setImageBitmap(mBitmap);
-
-
             }
         };
         controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
@@ -92,24 +88,22 @@ public class Client_Confirm2 extends AppCompatActivity {
                 jsm = clientPendingDetailDataConvert.convertJsonToModel(result);
 
 
-                cancel = (TextView) findViewById(R.id.textView_cancel_confirm);
-                title = (TextView) findViewById(R.id.toolbar_confirm_title);
+                cancel = (ImageView) findViewById(R.id.imageView_back);
+                title = (TextView) findViewById(R.id.tree_field_title);
                 jobTitle = (TextView) findViewById(R.id.textView_comfirm2_jobTitle);
-                save = (TextView) findViewById(R.id.textView_save_comfirm);
+                save = (ImageView) findViewById(R.id.imageView_ok);
                 date = (TextView) findViewById(R.id.textView_comfirm2_postDate);
                 budgetTv = (TextView) findViewById(R.id.textView_comfirm2_budget);
                 description = (TextView) findViewById(R.id.textView_comfirm2_description);
                 providerName = (TextView) findViewById(R.id.textView_confirm2_name);
                 address = (TextView) findViewById(R.id.textView_comfirm2_address);
-                price = (TextView) findViewById(R.id.textView_confirm2_price);
                 city = (TextView) findViewById(R.id.textView_comfirm2_address_city);
                 progressBar = (ImageView) findViewById(R.id.imageView_progressBar_confirm2);
                 providerPic = (ImageView) findViewById(R.id.imageView_confirm2_pic);
                 ratingBar = (RatingBar) findViewById(R.id.ratingBar_confirm2);
-                jobDone = (Button) findViewById(R.id.button_confirm2);
+                pay = (Button) findViewById(R.id.button_pay);
 
-
-                cancel.setText("Back");
+                save.setVisibility(View.INVISIBLE);
 
 //                jobDone.setVisibility(View.VISIBLE);
 //                if(jsm.getStatus() == 2 || jsm.getStatus() == 4)
@@ -132,7 +126,6 @@ public class Client_Confirm2 extends AppCompatActivity {
 
                 ValueMessager.edit_workType = jsm.getType();
                 budgetTv.setText(jsm.getBudget().toString());
-                price.setText(jsm.getBudget().toString());
                 ratingBar.setRating(Float.parseFloat(jsm.getRating().toString()));
 
                 providerName.setText(jsm.getProviderFirstname()+" ,"+jsm.getProviderLastname());
@@ -189,53 +182,27 @@ public class Client_Confirm2 extends AppCompatActivity {
                     photoId[4] = R.id.imageView_confirm_photo5;
                     photoAddress = jsm.getServicePhotoUrl();
 
-
                     System.out.println("qqqqqqqqqqqqqqqqqq"+context+"ccccccccccccc"+photo[0]+photoAddress[0]);
 
                     for(int i=0; i<jsm.getServicePhotoUrl().length; i++) {
                         //getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
-
                         imageUnity.setImage(context, photo[i] = (ImageView) findViewById(photoId[i]), "http://para.co.nz/api/JobService/GetServiceImage/"+photoAddress[i]);
                     }
-
-                    myLoading.CloseLoadingDialog();
-
                 }
-
-
 
                 if(ValueMessengerTaskInfo.providerId < 0){
 
                 }
                 else{
-
                     ValueMessengerTaskInfo.providerId = jsm.getProviderId();
-
-                }
-
-                if(ValueMessengerTaskInfo.itemStatus == 0){
-                    title.setText("Job opened");
-                    save.setText("Edit");
-                }
-
-                if(ValueMessengerTaskInfo.itemStatus == 1){
-                    title.setText("Worker selecting");
-                    save.setText("        ");
-                }
-
-                if(ValueMessengerTaskInfo.itemStatus == 2){
-                    title.setText("Waiting confirmation");
-                    save.setText("        ");
                 }
 
                 if(ValueMessengerTaskInfo.itemStatus == 3){
-                    title.setText("Job assigned");
-                    save.setText("        ");
+                    title.setText("Assigned");
                 }
 
-                if(ValueMessengerTaskInfo.itemStatus == 2){
-                    title.setText("Job completed");
-                    save.setText("        ");
+                if(ValueMessengerTaskInfo.itemStatus == 4){
+                    title.setText("Completed");
                 }
 //                jobDone.setOnClickListener(new View.OnClickListener() {
 //                    @Override
@@ -252,6 +219,20 @@ public class Client_Confirm2 extends AppCompatActivity {
 //                        }
 //                    }
 //                });
+
+                pay.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        providerPic.setDrawingCacheEnabled(true);
+                        ValueMessengerTaskInfo.providerProfilePhoto = providerPic.getDrawingCache();
+                        ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
+                        ValueMessengerTaskInfo.providerId = jsm.getProviderId();
+                        ValueMessengerTaskInfo.providerFirstName = jsm.getProviderFirstname();
+                        ValueMessengerTaskInfo.providerLastName = jsm.getProviderLastname();
+                        Intent intent = new Intent(Client_Confirm2.this, Client_PayProvider.class);
+                        startActivity(intent);
+                    }
+                });
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -274,9 +255,9 @@ public class Client_Confirm2 extends AppCompatActivity {
                     }
                 });
 
+                myLoading.CloseLoadingDialog();
             }
         };
-
         myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientJobService/GetJobService/"+ ValueMessengerTaskInfo.id,"","GET");
     }

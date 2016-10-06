@@ -29,7 +29,16 @@ public class ClientPendingDetailViewModel {
     private Double Rating;
     private String ProviderFirstname;
     private String ProviderLastname;
+    private String DueDate;
     private boolean IsSecure;
+
+    public String getDueDate() {
+        return DueDate;
+    }
+
+    public void setDueDate(String text) {
+        DueDate = text;
+    }
 
     public boolean getIsSecure() {
         return IsSecure;

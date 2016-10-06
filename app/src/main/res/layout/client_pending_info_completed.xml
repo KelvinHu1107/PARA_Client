@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
     <include
-        android:id="@+id/toolbar_security_code"
-        layout="@layout/toolbar_confirm">
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
     </include>
 
     <ScrollView
@@ -25,7 +25,7 @@
                 android:layout_height="50dp"
                 android:id="@+id/imageView_progressBar_confirm2"
                 android:layout_gravity="center"
-                android:src="@drawable/client_select_04"
+                android:src="@drawable/client_select_01"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="25dp"
                 android:layout_marginRight="15dp" />
@@ -47,46 +47,27 @@
                     android:background="@drawable/gery_button_light">
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                        android:layout_height="50dp"
+                        android:background="@drawable/border_radius_grey_button">
 
-                        <LinearLayout
-                            android:orientation="horizontal"
+                        <TextView
                             android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_horizontal">
-
-                            <TextView
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:text="Title"
-                                android:id="@+id/textView_comfirm2_jobTitle"
-                                android:textColor="#ffffff"
-                                android:textSize="20sp"
-                                android:textStyle="bold"
-                                android:gravity="center_vertical|center_horizontal"
-                                android:layout_marginTop="12.5dp"
-                                android:layout_marginBottom="12.5dp" />
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:gravity="center_vertical|center_horizontal">
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView7" />
-
-                            <ImageView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageView39" />
-                        </LinearLayout>
+                            android:layout_height="wrap_content"
+                            android:text="New Text"
+                            android:id="@+id/textView_comfirm2_jobTitle"
+                            android:layout_weight="1"
+                            android:textColor="#ffffff"
+                            android:textSize="18sp"
+                            android:layout_gravity="center"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:singleLine="true"
+                            android:lines="1"
+                            android:layout_marginRight="12.5dp"
+                            android:textStyle="bold" />
                     </LinearLayout>
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -98,7 +79,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Credit card payment"
-                        android:id="@+id/textView73"
+                        android:id="@+id/textView116"
                         android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
@@ -129,8 +110,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Cash payment"
-                        android:id="@+id/textView75"
+                        android:text="Other payment"
+                        android:id="@+id/textView114"
                         android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
@@ -142,7 +123,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="New Text"
-                        android:id="@+id/textView76"
+                        android:id="@+id/textView115"
                         android:layout_weight="1"
                         android:textColor="#666666"
                         android:textSize="18sp"
@@ -161,7 +142,7 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Date"
+                        android:text="Complete date"
                         android:id="@+id/textView49"
                         android:layout_weight="1"
                         android:textSize="18sp"
@@ -195,7 +176,7 @@
                         android:layout_height="wrap_content"
                         android:text="Location"
                         android:id="@+id/textView41"
-                        android:layout_weight="3"
+                        android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
                         android:layout_gravity="center"
@@ -224,8 +205,8 @@
                     android:id="@+id/textView_comfirm2_address_city"
                     android:textColor="#666666"
                     android:textSize="18sp"
-                    android:layout_marginRight="12.5dp"
                     android:gravity="right"
+                    android:layout_marginRight="12.5dp"
                     android:layout_marginBottom="12.5dp" />
 
                 <ImageView
@@ -266,8 +247,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center_vertical|center_horizontal"
-                android:background="@drawable/border_radius_grey_button"
-                android:layout_marginTop="12.5dp"
+                android:background="@drawable/border_radius_green378e43_button"
+                android:layout_marginTop="5dp"
                 android:layout_marginBottom="12.5dp"
                 android:layout_marginLeft="12.5dp"
                 android:layout_marginRight="12.5dp">
@@ -287,13 +268,8 @@
             <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="1"
-                android:background="@drawable/border_radius"
-                android:layout_marginLeft="12.5dp"
-                android:layout_marginRight="12.5dp"
-                android:layout_marginTop="15dp"
-                android:layout_marginBottom="15dp">
+                android:layout_height="63dp"
+                android:weightSum="1" >
 
                 <com.newnergy.para_client.CircleImageView
                     android:layout_width="50dp"
@@ -310,11 +286,11 @@
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:layout_weight="1">
+                    android:layout_weight="1" >
 
                     <LinearLayout
                         android:orientation="horizontal"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="match_parent"
                         android:layout_weight="1" >
 
@@ -332,26 +308,29 @@
                     <RatingBar
                         style="@style/ratingBar_median"
                         android:id="@+id/ratingBar_confirm2"
-                        android:layout_height="30dp"
+                        android:layout_height="match_parent"
                         android:layout_width="wrap_content"
                         android:numStars="5"
                         android:rating="5"
                         android:isIndicator="false"
                         android:stepSize="0.5"
+                        android:layout_weight="1"
                         android:layout_marginTop="5dp"
-                        android:layout_marginLeft="5dp"
-                        android:paddingBottom="4.5dp" />
+                        android:layout_marginLeft="5dp" />
                 </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="Price"
-                    android:id="@+id/textView_confirm2_price"
-                    android:textColor="#009900"
-                    android:textSize="18sp"
-                    android:gravity="center_vertical"
-                    android:layout_margin="12.5dp" />
+                <Button
+                    android:layout_width="70dp"
+                    android:layout_height="30dp"
+                    android:text="View bill"
+                    android:id="@+id/button_pay"
+                    android:textAllCaps="false"
+                    android:background="@drawable/border_radius_blue_button"
+                    android:textColor="#ffffff"
+                    android:layout_gravity="center"
+                    android:layout_marginRight="12.5dp"
+                    android:layout_marginBottom="20dp"
+                    android:layout_marginTop="20dp" />
             </LinearLayout>
 
             <LinearLayout

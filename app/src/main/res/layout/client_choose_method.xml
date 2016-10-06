@@ -3,25 +3,29 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffffff">
+    <include
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
+    </include>
 
     <com.newnergy.para_client.CircleImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/imageView43"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:id="@+id/imageView_pic"
         android:layout_gravity="center"
         android:src="@drawable/client_photo_round"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="12.5dp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Name"
-        android:id="@+id/textView77"
+        android:id="@+id/textView_name"
         android:layout_gravity="center"
         android:textSize="18sp"
         android:textColor="#000000"
         android:layout_marginTop="5dp"
-        android:layout_marginBottom="25dp" />
+        android:layout_marginBottom="15dp" />
 
     <ImageView
         android:layout_width="wrap_content"
@@ -40,7 +44,7 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="Total amount"
+            android:text="Budget"
             android:id="@+id/textView80"
             android:layout_weight="1"
             android:textSize="20sp"
@@ -52,7 +56,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="$500"
-            android:id="@+id/textView81"
+            android:id="@+id/textView_budget"
             android:layout_weight="1"
             android:textSize="20sp"
             android:textColor="#666666"
@@ -82,7 +86,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="$0"
-            android:id="@+id/textView78"
+            android:id="@+id/textView_deposit"
             android:layout_weight="1"
             android:textSize="20sp"
             android:textColor="#009900"
@@ -111,15 +115,16 @@
             android:id="@+id/textView82"
             android:layout_weight="1"
             android:textSize="20sp"
-            android:textColor="#666666"
+            android:textColor="#000000"
             android:paddingLeft="40dp"
-            android:gravity="left" />
+            android:gravity="left"
+            android:textStyle="bold" />
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:text="$500"
-            android:id="@+id/textView83"
+            android:id="@+id/textView_total"
             android:layout_weight="1"
             android:textSize="20sp"
             android:textColor="#666666"
@@ -133,7 +138,6 @@
         android:layout_height="wrap_content"
         android:background="@drawable/border_radius"
         android:layout_marginLeft="12.5dp"
-        android:layout_marginTop="12.5dp"
         android:layout_marginRight="12.5dp"
         android:layout_marginBottom="12.5dp">
 
@@ -141,6 +145,7 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:id="@+id/linearLayout_creditCard"
             android:layout_marginTop="12.5dp"
             android:padding="15dp">
 
@@ -153,7 +158,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:id="@+id/imageView47"
+                    android:id="@+id/imageView_creditCard"
                     android:src="@drawable/dot"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp" />
@@ -206,6 +211,7 @@
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
+            android:id="@+id/linearLayout_others"
             android:layout_height="match_parent"
             android:padding="15dp">
 
@@ -218,7 +224,7 @@
                 <ImageView
                     android:layout_width="20dp"
                     android:layout_height="20dp"
-                    android:id="@+id/imageView49"
+                    android:id="@+id/imageView_others"
                     android:src="@drawable/circle"
                     android:layout_gravity="center"
                     android:layout_marginRight="10dp" />
@@ -231,6 +237,15 @@
                     android:textSize="15sp"
                     android:textColor="#000000"
                     android:layout_gravity="center" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageView46"
+                    android:layout_gravity="center"
+                    android:src="@drawable/info_secured_funds"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp" />
             </LinearLayout>
 
             <LinearLayout
@@ -240,32 +255,18 @@
                 android:layout_weight="1"
                 android:gravity="right">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="$436.5"
-                    android:id="@+id/textView88"
-                    android:textColor="#000000"
-                    android:textSize="15sp"
-                    android:layout_gravity="center" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="(48.5)"
-                    android:id="@+id/textView89"
-                    android:textColor="#009900"
-                    android:textSize="15sp"
-                    android:layout_gravity="center" />
+                <Spinner
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/spinner_choose"
+                    android:entries="@array/PayMethod"
+                    android:spinnerMode="dropdown"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:popupBackground="#ffffff"
+                    android:theme="@style/AppTheme.PopupOverlay" />
             </LinearLayout>
 
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView46"
-                android:layout_weight="1"
-                android:src="@drawable/button_information_xh_720x1280"
-                android:paddingLeft="20dp" />
         </LinearLayout>
     </LinearLayout>
 
@@ -306,5 +307,20 @@
         android:textSize="15sp"
         android:gravity="center_horizontal"
         android:layout_marginTop="5dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:text="Pay"
+        android:id="@+id/textView_confirm"
+        android:layout_gravity="center"
+        android:layout_marginTop="12.5dp"
+        android:textColor="#ffffff"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:background="@drawable/border_radius_blue_button"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_marginLeft="80dp"
+        android:layout_marginRight="80dp" />
 
 </LinearLayout>

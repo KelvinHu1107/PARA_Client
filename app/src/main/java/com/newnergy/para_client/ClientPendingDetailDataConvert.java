@@ -40,6 +40,7 @@ public class ClientPendingDetailDataConvert {
             jsvm.setProviderLastname(object.getString("ProviderLastname"));
             jsvm.setRating(object.getDouble("Rating"));
             jsvm.setIsSecure(object.getBoolean("IsSecure"));
+            jsvm.setDueDate(object.getString("DueDate"));
             String[] servicePhotoUrls;
             JSONArray photoUrls = new JSONArray(object.getString("ServicePhotoUrl"));
             servicePhotoUrls = new String[photoUrls.length()];

@@ -56,8 +56,22 @@ public class Client_Calender extends Activity {
                 ValueMessager.selectedMonth = String.valueOf(datePicker.getMonth());
                 ValueMessager.selectedYear = String.valueOf(datePicker.getYear());
 
-                Intent intent = new Intent(Client_Calender.this, Client_PlaceOrder.class);
-                startActivity(intent);
+                switch (ValueMessager.lastPageCalender){
+                    case "EditDraft":
+                        Intent intent = new Intent(Client_Calender.this, Client_EditDraft.class);
+                        startActivity(intent);
+                        break;
+
+                    case "EditOrder":
+                        Intent intent2 = new Intent(Client_Calender.this, Client_EditOrder.class);
+                        startActivity(intent2);
+                        break;
+
+                    case "PlaceOrder":
+                        Intent intent3 = new Intent(Client_Calender.this, Client_PlaceOrder.class);
+                        startActivity(intent3);
+                        break;
+                }
             }
         });
 
@@ -65,12 +79,24 @@ public class Client_Calender extends Activity {
             @Override
             public void onClick(View v) {
 
-                Intent intent = new Intent(Client_Calender.this, Client_PlaceOrder.class);
-                startActivity(intent);
+                switch (ValueMessager.lastPageCalender){
+                    case "EditDraft":
+                        Intent intent = new Intent(Client_Calender.this, Client_EditDraft.class);
+                        startActivity(intent);
+                        break;
 
+                    case "EditOrder":
+                        Intent intent2 = new Intent(Client_Calender.this, Client_EditOrder.class);
+                        startActivity(intent2);
+                        break;
+
+                    case "PlaceOrder":
+                        Intent intent3 = new Intent(Client_Calender.this, Client_PlaceOrder.class);
+                        startActivity(intent3);
+                        break;
+                }
             }
         });
-
 
     }
 }

@@ -4,8 +4,8 @@
     android:layout_height="match_parent"
     android:background="#ffffff">
     <include
-        android:id="@+id/toolbar_security_code"
-        layout="@layout/toolbar_confirm">
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
     </include>
 
     <ScrollView
@@ -44,7 +44,7 @@
                     android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/gery_button_light">
+                    android:background="@drawable/border_radius_greydedddd">
 
                     <LinearLayout
                         android:orientation="horizontal"
@@ -116,13 +116,15 @@
                             android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
-                            android:gravity="center_vertical|center_horizontal">
+                            android:gravity="center_vertical|center_horizontal"
+                            android:layout_marginBottom="5dp">
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:id="@+id/imageView_comfirm_addFund"
-                                android:src="@drawable/button_information_xh_720x1280" />
+                                android:src="@drawable/add_funds"
+                                android:padding="10dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -132,12 +134,15 @@
                                 android:textStyle="bold"
                                 android:textSize="16sp"
                                 android:textColor="#009900"
-                                android:layout_marginBottom="5dp" />
+                                android:layout_gravity="center" />
 
                             <ImageView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:id="@+id/imageView39" />
+                                android:id="@+id/imageView39"
+                                android:layout_marginLeft="5dp"
+                                android:src="@drawable/info_secured_funds"
+                                android:padding="10dp" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
@@ -253,24 +258,72 @@
             <LinearLayout
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_vertical|center_horizontal"
-                android:background="@drawable/border_radius_grey_button"
-                android:layout_marginTop="25dp"
-                android:layout_marginBottom="12.5dp"
-                android:layout_marginLeft="12.5dp"
-                android:layout_marginRight="12.5dp">
+                android:layout_height="match_parent">
 
-                <TextView
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:background="@drawable/border_radius_greyb0b0b0"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="12.5dp"
+                    android:layout_marginLeft="12.5dp"
+                    android:layout_marginRight="12.5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Task Offering"
+                        android:id="@+id/textView_bottom"
+                        android:textSize="18dp"
+                        android:textStyle="bold"
+                        android:textColor="#ffffff"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="5dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Task Offering"
-                    android:id="@+id/textView18"
-                    android:textSize="18dp"
-                    android:textStyle="bold"
-                    android:textColor="#ffffff"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="5dp" />
+                    android:layout_margin="12.5dp" >
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/imageView49"
+                        android:src="@drawable/button_information_xh_720x1280"
+                        android:layout_gravity="center"
+                        android:layout_margin="5dp" />
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:background="@drawable/border_radius" >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Your payment option has been rejected"
+                            android:id="@+id/textView83"
+                            android:textSize="15sp"
+                            android:textColor="#000000"
+                            android:layout_marginTop="12.5dp"
+                            android:layout_marginBottom="2dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Please select another payment option"
+                            android:id="@+id/textView113"
+                            android:textSize="15sp"
+                            android:textColor="#000000"
+                            android:layout_marginBottom="12.5dp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
 
             <ListView
@@ -314,6 +367,15 @@
                     android:id="@+id/imageView_confirm_photo5"
                     android:layout_margin="5dp" />
             </LinearLayout>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView_delete"
+                android:layout_gravity="center"
+                android:src="@drawable/trash_bin"
+                android:layout_marginTop="12.5dp"
+                android:layout_marginBottom="25dp" />
 
         </LinearLayout>
     </ScrollView>

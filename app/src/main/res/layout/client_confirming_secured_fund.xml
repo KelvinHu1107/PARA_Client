@@ -9,16 +9,29 @@
         android:layout_height="match_parent"
         android:background="@drawable/border_radius_blue_stroke"
         android:layout_marginTop="150dp"
-        android:layout_marginBottom="150dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginRight="50dp">
+        android:layout_marginBottom="100dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView_close"
+                android:src="@drawable/close_window"
+                android:padding="15dp" />
+        </LinearLayout>
 
         <com.newnergy.para_client.CircleImageView
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:id="@+id/imageView_confirming_pic"
             android:layout_gravity="center"
-            android:layout_marginTop="25dp"
             android:layout_marginBottom="5dp"
             android:src="@drawable/client_photo_round" />
 
@@ -65,7 +78,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:text="Continue"
             android:id="@+id/textView_continue"
             android:background="@drawable/border_radius_blue_button"

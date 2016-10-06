@@ -145,14 +145,21 @@
             android:id="@+id/imageView_addFund_visa">
 
             <ImageView
-                android:layout_width="20dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:id="@+id/imageView52"
-                android:src="@drawable/dot"
+                android:src="@drawable/visa_client"
                 android:layout_gravity="center"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="1dp"
                 android:layout_marginTop="10dp"
                 android:layout_marginBottom="10dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView7"
+                android:src="@drawable/master_client"
+                android:layout_gravity="center" />
 
         </LinearLayout>
 
@@ -175,21 +182,17 @@
             android:gravity="right" >
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imageView53"
-                android:src="@drawable/pen"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView_edit"
+                android:src="@drawable/credit_card_edit"
                 android:layout_marginRight="5dp"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:paddingTop="12.5dp"
+                android:paddingBottom="12.5dp"
+                android:paddingRight="12.5dp"
+                android:paddingLeft="12.5dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Edit"
-                android:id="@+id/textView101"
-                android:textSize="15sp"
-                android:textColor="#666666"
-                android:layout_gravity="center" />
         </LinearLayout>
     </LinearLayout>
 

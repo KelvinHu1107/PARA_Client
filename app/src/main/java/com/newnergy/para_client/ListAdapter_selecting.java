@@ -94,21 +94,27 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
 
-        if (convertView == null) {
+        if(ValueMessengerTaskInfo.itemStatus == 3){
+            inflaterSelecting = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflaterSelecting.inflate(R.layout.client_selecting_list_sample_assigned, null);
+        }
+        else {
             inflaterSelecting = (LayoutInflater) c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflaterSelecting.inflate(R.layout.client_selecting_list_sample720x1080, null);
         }
 
-        //assign id to items , convert view
+            //assign id to items , convert view
+
+
+
+
+
         final ViewHolder holderPending = new ViewHolder();
         holderPending.nameTv = (TextView) convertView.findViewById(R.id.textView_selectingName);
         holderPending.providerPhoto = (ImageView) convertView.findViewById(R.id.imageView_selectingProviderPhoto);
         holderPending.priceTv = (TextView) convertView.findViewById(R.id.textView_selectingPrice);
         holderPending.linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout_selecting);
         holderPending.confirm = (Button) convertView.findViewById(R.id.button_selecting_confirm);
-        holderPending.ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar_selecting);
-
-        holderPending.ratingBar.setRating(Float.parseFloat(providerRating[position].toString()));
 
         holderPending.nameTv.setText(firstName[position]+" "+lastName[position]);
 
@@ -118,13 +124,32 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
         imageUnity.setImage(c, holderPending.providerPhoto, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+providerPhoto[position].toString());
         holderPending.providerPhoto.setDrawingCacheEnabled(true);
 
+        if(ValueMessengerTaskInfo.itemStatus != 3) {
 
-        holderPending.ratingBar.setOnTouchListener(new View.OnTouchListener() {
-            @Override
-            public boolean onTouch(View v, MotionEvent event) {
-                return true;
-            }
-        });
+            holderPending.ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar_selecting);
+            holderPending.ratingBar.setRating(Float.parseFloat(providerRating[position].toString()));
+            holderPending.ratingBar.setOnTouchListener(new View.OnTouchListener() {
+                @Override
+                public boolean onTouch(View v, MotionEvent event) {
+                    return true;
+                }
+            });
+
+            holderPending.priceTv.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View v) {
+
+                    ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
+                    ValueMessagerFurtherInfo.userName = providerUserName[position];
+                    ValueMessagerFurtherInfo.lastPage = 5;
+
+                    Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
+                    c.startActivity(nextPage_Confirm);
+                }
+            });
+
+        }
 
         holderPending.providerPhoto.setOnClickListener(new View.OnClickListener() {
 
@@ -168,19 +193,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             }
         });
 
-        holderPending.priceTv.setOnClickListener(new View.OnClickListener() {
 
-            @Override
-            public void onClick(View v) {
-
-                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
-                ValueMessagerFurtherInfo.userName = providerUserName[position];
-                ValueMessagerFurtherInfo.lastPage = 5;
-
-                Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
-                c.startActivity(nextPage_Confirm);
-            }
-        });
 
         holderPending.confirm.setOnClickListener(new View.OnClickListener() {
 
@@ -193,8 +206,7 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
                 ValueMessengerTaskInfo.providerLastName = lastName[position];
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
 
-
-                Intent nextPage_Confirm = new Intent(c,Client_PopUpWindow.class);
+                Intent nextPage_Confirm = new Intent(c, Client_AcceptOffer.class);
                 c.startActivity(nextPage_Confirm);
             }
         });

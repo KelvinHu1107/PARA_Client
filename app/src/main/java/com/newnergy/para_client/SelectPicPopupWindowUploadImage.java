@@ -253,12 +253,5 @@ private void ReturnImage(Bitmap  bitmap)
     setResult(RESULT_OK, i);
     finish();
 }
-
-
-
-
-
-
-
     /////////////////////end
 }

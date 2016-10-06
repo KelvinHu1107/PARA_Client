@@ -19,14 +19,15 @@
             android:layout_height="wrap_content"
             android:text="Cancel"
             android:id="@+id/textView_cancel_rating"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textSize="18sp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="Job completed"
             android:id="@+id/profile_rating_title"
-            android:textSize="16sp"
+            android:textSize="20sp"
             android:layout_gravity="center_vertical"
             android:textColor="#ffffff"
             android:layout_weight="4"

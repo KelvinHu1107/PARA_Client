@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -15,8 +16,9 @@ public class Client_AddFund extends AppCompatActivity {
 
     CircleImageView circleImageView;
     EditText editText;
-    TextView back, title, save, name, previousNum, warning;
+    TextView title, name, previousNum, warning;
     ClientPendingDetailViewModel jsm;
+    ImageView back, save;
     Context context = this;
     Loading_Dialog myLoading;
 
@@ -120,9 +122,9 @@ public class Client_AddFund extends AppCompatActivity {
 
         circleImageView = (CircleImageView) findViewById(R.id.imageView_addFund_pic);
         name = (TextView) findViewById(R.id.textView_addFund_name);
-        back = (TextView) findViewById(R.id.toolbar_register_back);
+        back = (ImageView) findViewById(R.id.imageView_back);
         title = (TextView) findViewById(R.id.tree_field_title);
-        save = (TextView) findViewById(R.id.toolbar_register_next);
+        save = (ImageView) findViewById(R.id.imageView_ok);
         warning = (TextView) findViewById(R.id.textView_addFund_warning);
         previousNum = (TextView) findViewById(R.id.textView_addFund_previous);
         editText = (EditText) findViewById(R.id.editText_addFund);
@@ -130,7 +132,6 @@ public class Client_AddFund extends AppCompatActivity {
         circleImageView.setImageBitmap(ValueMessager.userProfileBitmap);
         name.setText(ValueMessager.userFirstName+", "+ValueMessager.userLastName);
         title.setText("Add fund");
-        save.setText("Save");
 
         getData();
     }

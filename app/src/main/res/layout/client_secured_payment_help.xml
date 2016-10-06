@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Help"
+            android:id="@+id/textView81"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:layout_marginRight="5dp"
+            android:textColor="#ffffff" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView43"
+            android:layout_gravity="center"
+            android:src="@drawable/info_help_header" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="right">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="GOT IT"
+            android:id="@+id/textView_gotIt"
+            android:padding="12.5dp"
+            android:textColor="#ffffff" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:layout_marginTop="30dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is secured payment?"
+            android:id="@+id/textView88"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Secured payment is a deposit that PARA receives on behalf"
+            android:id="@+id/textView89"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="12.5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="of both client and provider, for their mutual pledge to their "
+            android:id="@+id/textView101"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="agreement on the task. It&apos;s at least 10% of the agreed budget."
+            android:id="@+id/textView108"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="1dp" />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView47"
+        android:layout_marginTop="12.5dp"
+        android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="What is secured payment good about?"
+            android:id="@+id/textView109"
+            android:textColor="#ffffff"
+            android:textSize="15sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="You should be aware of that the more amount of secure "
+            android:id="@+id/textView110"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="12.5dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="paymnet you add for posting task, you would have a higher "
+            android:id="@+id/textView111"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="1dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="chance recruiting proper service providers."
+            android:id="@+id/textView112"
+            android:textColor="#ffffff"
+            android:textSize="12sp"
+            android:layout_marginTop="1dp" />
+    </LinearLayout>
+</LinearLayout>

@@ -13,15 +13,13 @@
         android:layout_gravity="center_horizontal"
         android:layout_marginRight="@dimen/toolbar_right_marge">
 
-        <TextView
-            android:id="@+id/toolbar_register_back"
+        <ImageView
             android:layout_width="wrap_content"
-            android:layout_weight="1"
             android:layout_height="wrap_content"
-            android:text="&lt; Back"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/toolbar_font_color"
-            android:textSize="18sp" />
+            android:id="@+id/imageView_back"
+            android:src="@drawable/go_back"
+            android:layout_gravity="center"
+            android:padding="12.5dp" />
 
         <TextView
             android:id="@+id/tree_field_title"
@@ -35,15 +33,13 @@
             android:gravity="center"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/toolbar_register_next"
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:text="Next"
-            android:gravity="right"
-            android:layout_gravity="center_vertical"
-            android:textColor="@color/toolbar_font_color"
-            android:textSize="18sp" />
+            android:id="@+id/imageView_ok"
+            android:layout_gravity="center"
+            android:src="@drawable/confirm_tick"
+            android:padding="12.5dp" />
+
     </LinearLayout>
 </android.support.v7.widget.Toolbar>

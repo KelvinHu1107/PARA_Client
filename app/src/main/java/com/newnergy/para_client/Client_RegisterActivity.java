@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,8 +35,8 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private EditText EtPhoneNumber;
     private EditText EtFirstName;
     private EditText EtLastName;
-    private TextView tvToolbarNext;
-    private TextView tvToolbarBack;
+    private ImageView tvToolbarNext;
+    private ImageView tvToolbarBack;
     private TextView tvEmailLeft;
     private TextView tvPasswordLeft;
     private TextView tvConfirmLeft;
@@ -108,8 +109,8 @@ public class Client_RegisterActivity extends AppCompatActivity {
         EtPhoneNumber = (EditText) findViewById(R.id.et_register_phone);
         EtFirstName = (EditText) findViewById(R.id.et_register_first_name);
         EtLastName = (EditText) findViewById(R.id.et_register_last_name);
-        tvToolbarNext = (TextView) findViewById(R.id.toolbar_register_next);
-        tvToolbarBack = (TextView) findViewById(R.id.toolbar_register_back);
+        tvToolbarNext = (ImageView) findViewById(R.id.imageView_back);
+        tvToolbarBack = (ImageView) findViewById(R.id.imageView_ok);
         tvWarningMessage = (TextView) findViewById(R.id.textView_register_warning);
         tvEmailLeft = (TextView) findViewById(R.id.textView_email_left);
         tvPasswordLeft = (TextView) findViewById(R.id.textView_password_left);

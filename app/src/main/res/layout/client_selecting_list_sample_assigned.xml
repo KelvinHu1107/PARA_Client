@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="75dp"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/linearLayout2"
+        android:layout_gravity="center"
+        android:background="@drawable/border_radius"
+        android:layout_marginBottom="3dp"
+        android:layout_marginLeft="12.5dp"
+        android:layout_marginRight="12.5dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:id="@+id/linearLayout_selecting"
+            android:layout_weight="10">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:weightSum="1">
+
+                <ImageView
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:src="@drawable/client_photo_round"
+                    android:id="@+id/imageView_selectingProviderPhoto"
+                    android:layout_gravity="center"
+                    android:layout_marginBottom="3dp"
+                    android:layout_marginTop="3dp"
+                    android:layout_marginLeft="12.5dp"
+                    android:layout_marginRight="3dp" />
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="Name"
+                            android:id="@+id/textView_selectingName"
+                            android:textSize="15sp"
+                            android:textColor="#333333"
+                            android:gravity="center_vertical"
+                            android:layout_marginLeft="12.5dp" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="No Secured fund"
+                        android:id="@+id/textView107"
+                        android:layout_weight="1"
+                        android:textColor="#666666"
+                        android:gravity="center_vertical"
+                        android:paddingLeft="12.5dp" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:layout_width="70dp"
+            android:layout_height="30dp"
+            android:text="View bill"
+            android:id="@+id/button_selecting_confirm"
+            android:textAllCaps="false"
+            android:background="@drawable/border_radius_blue_button"
+            android:textColor="#ffffff"
+            android:layout_gravity="center"
+            android:layout_marginRight="12.5dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp" />
+
+    </LinearLayout>
+
+</LinearLayout>
