@@ -10,10 +10,19 @@ public class PlaceOrderServiceViewModel {
     private String Street ;
     private String Suburb ;
     private String City ;
-    private Double Budget ;
+    private Double Budget;
+    private Double ClientDeposit;
     private String Type;
     private String DueDate;
     private boolean IsSecure;
+
+    public Double getClientDeposit() {
+        return ClientDeposit;
+    }
+
+    public void setClientDeposit(Double deposit) {
+        ClientDeposit = deposit;
+    }
 
     public String getDueDate() {
         return DueDate;

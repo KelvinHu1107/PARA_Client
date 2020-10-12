@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -18,23 +19,53 @@ import java.io.IOException;
 public class Client_Profile extends AppCompatActivity{
 
     public LinearLayout changePassword,changeName,changePhone,changeAddress;
-    public TextView name,email,phone,address, title, back;
+    public TextView name,email,phone,address, title;
     public CircleImageView profilePicture;
     public Button button;
+    public ImageView back, save;
     private ClientProfileViewModel list;
     Loading_Dialog myLoading;
     Context context = this;
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        RefreshTokenController controller = new RefreshTokenController(){
+            @Override
+            public void response(boolean result) {
 
+                DataTransmitController c = new DataTransmitController() {
+                    @Override
+                    public void onResponse(String result) {
+                        super.onResponse(result);
+                        myLoading.CloseLoadingDialog();
 
+                        String outSide[] = result.trim().split("\"");
+
+                        String info1[] = ValueMessager.currentVersion.trim().split("\\.");
+                        String info2[] = outSide[1].trim().split("\\.");
+
+                        if(!info1[0].equals(info2[0])){
+                            Intent intent = new Intent(Client_Profile.this, Client_PopUp_Version.class);
+                            startActivity(intent);
+                        }
+                    }
+                };
+                c.execute("http://para.co.nz/api/version/getversion", "", "GET");
+            }
+        };
+
+        myLoading.ShowLoadingDialog();
+        controller.refreshToken(ValueMessager.email.toString(), ValueMessager.refreshToken);
+
+    }
 
     public void getData(){
         DataTransmitController c =new DataTransmitController(){
             @Override
             public void onResponse(String result) {
                 super.onResponse(result);
-
-                System.out.println("yyyyyyy"+ result);
 
                 list = ClientDataConvert.convertJsonToModel(result);
                 btnFunction();
@@ -49,7 +80,6 @@ public class Client_Profile extends AppCompatActivity{
 
     public void refreshData() {
 
-
         ValueMessager.phone = list.getCellPhone();
         ValueMessager.email= list.getUsername();
 
@@ -60,9 +90,6 @@ public class Client_Profile extends AppCompatActivity{
             ValueMessager.address_city = list.getClientAddressCity();
         }
 
-        //setup profile value from value messenger
-
-
         profilePicture.setImageBitmap(ValueMessager.userProfileBitmap);
 
         name.setText(ValueMessager.userFirstName + " " + ValueMessager.userLastName);
@@ -72,13 +99,17 @@ public class Client_Profile extends AppCompatActivity{
         if(ValueMessager.phone != null)
             phone.setText(ValueMessager.phone);
 
-        address.setText(ValueMessager.address_street +", "+ValueMessager.address_suburb+", "+ValueMessager.address_city);
-
-
+        if(ValueMessager.address_street.toString().equals("") || ValueMessager.address_street.toString().equals(null))
+        {
+            address.setText("");
+        }else {
+            address.setText(ValueMessager.address_street + ", " + ValueMessager.address_suburb + ", " + ValueMessager.address_city);
+            if(address.getText().length()>30){
+                address.setText(ValueMessager.address_street);
+            }
+        }
         myLoading.CloseLoadingDialog();
     }
-
-
 
     public void btnFunction() {
 
@@ -90,16 +121,18 @@ public class Client_Profile extends AppCompatActivity{
         email = (TextView) findViewById(R.id.textView_profileEmail);
         phone = (TextView) findViewById(R.id.textView_profilePhone);
         address = (TextView) findViewById(R.id.textView_profileAddress);
-        title = (TextView) findViewById(R.id.profile_change_notification_title);
-        back = (TextView) findViewById(R.id.textView_cancel_notification);
+        title = (TextView) findViewById(R.id.tree_field_title);
+        back = (ImageView) findViewById(R.id.imageView_back);
+        save = (ImageView) findViewById(R.id.imageView_ok);
         profilePicture = (CircleImageView) findViewById(R.id.imageView_profile_profileImage);
 
         title.setText("Account");
-        back.setText("< Back");
+        save.setVisibility(View.INVISIBLE);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Intent intent = new Intent(Client_Profile.this, Client_Setting.class);
                 startActivity(intent);
             }
@@ -136,6 +169,8 @@ public class Client_Profile extends AppCompatActivity{
             @Override
             public void onClick(View v) {
 
+                Intent intent = new Intent(Client_Profile.this, Client_ChangePassword.class);
+                startActivity(intent);
             }
         });
 
@@ -150,8 +185,6 @@ public class Client_Profile extends AppCompatActivity{
             }
         });
     }
-
-    //write data into internal storage
 
     public void writeData(Bitmap image){
 
@@ -176,7 +209,7 @@ public class Client_Profile extends AppCompatActivity{
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
 
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_profile);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar_register_template);
         setSupportActionBar(toolbar);
 
         getData();

@@ -36,14 +36,14 @@ public class Client_PayProvider extends AppCompatActivity {
                 title = (TextView) findViewById(R.id.tree_field_title);
                 circleImageView = (CircleImageView) findViewById(R.id.imageView_pic);
                 name = (TextView) findViewById(R.id.textView_name);
-                budget = (TextView) findViewById(R.id.textView_budget);
-                deposit = (TextView) findViewById(R.id.textView_deposit);
+//                budget = (TextView) findViewById(R.id.textView_budget);
+//                deposit = (TextView) findViewById(R.id.textView_deposit);
                 total = (TextView) findViewById(R.id.textView_total);
                 confirm = (TextView) findViewById(R.id.textView_confirm);
-                creditCard = (LinearLayout) findViewById(R.id.linearLayout_creditCard);
+//                creditCard = (LinearLayout) findViewById(R.id.linearLayout_creditCard);
                 others = (LinearLayout) findViewById(R.id.linearLayout_others);
-                creditCardPic = (ImageView) findViewById(R.id.imageView_creditCard);
-                othersPic = (ImageView) findViewById(R.id.imageView_others);
+//                creditCardPic = (ImageView) findViewById(R.id.imageView_creditCard);
+//                othersPic = (ImageView) findViewById(R.id.imageView_others);
                 spinner = (Spinner) findViewById(R.id.spinner_choose);
 
                 save.setVisibility(View.INVISIBLE);

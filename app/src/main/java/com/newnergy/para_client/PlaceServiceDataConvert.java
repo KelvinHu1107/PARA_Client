@@ -31,13 +31,18 @@ public class PlaceServiceDataConvert {
         if (model.getBudget() != null) {
             json.append("\"Budget\":\"" + model.getBudget() + "\",");
         }
+
+        if (model.getClientDeposit() != null) {
+            json.append("\"ClientExtraDeposit\":\"" + model.getClientDeposit() + "\",");
+        }
+
         if (model.getType() != null) {
             json.append("\"Type\":\"" + model.getType() + "\",");
         }
             json.append("\"IsSecure\":\"" + model.getIsSecure() + "\",");
 
         if (model.getDueDate() != null) {
-            json.append("\"DueDate\":\"" + model.getDueDate() + "\",");
+            json.append("\"Prediction\":\"" + model.getDueDate() + "\",");
         }
 
 

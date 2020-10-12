@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:id="@+id/linearLayout_history"
+            android:layout_width="match_parent"
+            android:onClick="myClickHandler"
+            android:layout_height="match_parent"
+            android:clickable="false">
+
+            <com.newnergy.para_client.CircleImageView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:id="@+id/imageView_pic_history"
+                android:src="@drawable/client_photo_round"
+                android:layout_margin="3dp"
+                android:clickable="false"
+                android:layout_weight="1.4" />
+
+
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Title"
+
+                        android:id="@+id/textView_history_jobTitle"
+                        android:textColor="#333333"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
+                        android:layout_marginLeft="10dp"
+                        android:gravity="center_vertical"
+                        android:layout_weight="1" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="Budget"
+                        android:id="@+id/textView_budget_history"
+                        android:textColor="#666666"
+                        android:textSize="16sp"
+                        android:gravity="center_vertical|center_horizontal"
+                        android:singleLine="true"
+                        android:lines="1"
+                        android:layout_marginTop="3dp"
+                        android:layout_weight="1.3" />
+
+
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Time"
+                            android:id="@+id/textView_history_time"
+                            android:onClick="myClickHandler"
+                            android:textColor="#333333"
+                            android:textSize="15sp"
+                            android:layout_marginTop="3dp"
+                            android:lines="1"
+                            android:singleLine="true"
+                            android:gravity="center_vertical|center_horizontal"
+                            android:textStyle="bold"
+                            android:layout_weight="1.3"
+                            android:paddingRight="5dp" />
+
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView25"
+        android:src="@drawable/divide_line_furtherinfo_xh_720x1280"
+        android:background="#ffffff" />
+</LinearLayout>

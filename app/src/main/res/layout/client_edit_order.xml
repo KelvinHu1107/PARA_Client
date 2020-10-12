@@ -132,25 +132,17 @@
                         android:gravity="left|center_vertical|center_horizontal"
                         android:layout_marginLeft="12.5dp" />
 
-                    <TextView
+                    <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/textView_placeOrder_date"
-                        android:layout_weight="1"
-                        android:textColor="#666666"
-                        android:textSize="18sp"
-                        android:gravity="center_vertical|center_horizontal" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/imageView42"
+                        android:id="@+id/spinner_dueDate"
+                        android:entries="@array/DueDate"
+                        android:spinnerMode="dropdown"
                         android:layout_gravity="center"
-                        android:src="@drawable/arrow"
-                        android:layout_marginRight="12.5dp"
-                        android:layout_weight="2"
-                        android:paddingTop="12.5dp"
-                        android:paddingBottom="12.5dp" />
+                        android:layout_margin="12.5dp"
+                        android:layout_weight="1"
+                        android:popupBackground="#ffffff"
+                        android:theme="@style/AppTheme.PopupOverlay" />
 
                 </LinearLayout>
 
@@ -395,7 +387,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Not specified"
+                            android:text="Tender"
                             android:id="@+id/textView125"
                             android:textSize="16sp"
                             android:textColor="#000000"
@@ -451,7 +443,8 @@
                     android:layout_marginLeft="12.5dp"
                     android:layout_marginRight="12.5dp"
                     android:layout_marginTop="25dp"
-                    android:layout_marginBottom="25dp" >
+                    android:layout_marginBottom="25dp"
+                    android:id="@+id/linearLayout_secure">
 
                     <LinearLayout
                         android:orientation="vertical"

@@ -5,15 +5,15 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.newnergy.para_client.Image_package.ImageUnity;
 
 import java.io.InputStream;
 
@@ -29,13 +29,13 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
     int[] serviceId, status;
     Context c;
     CharSequence[] providerUserName;
-    Double[] budget, providerRating;
+    Double[] budget, providerRating, providerDeposit;
     LayoutInflater inflaterSelecting;
     ImageUnity imageUnity = new ImageUnity();
 
     public ListAdapter_Selecting(Context context, String[] objectName, CharSequence[] firstName, CharSequence[] lastName,CharSequence[] providerPhoto,
                                CharSequence[] providerUserName,Double[] budget, CharSequence[] acceptTime, Integer[] providerId, int[] serviceId, Double[] providerRating,
-                                 int[] status) {
+                                 int[] status, Double[] providerDeposit) {
 
         super(context, R.layout.pending_list_sample720x1080, objectName);
 
@@ -50,16 +50,15 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
         this.serviceId = serviceId;
         this.providerRating = providerRating;
         this.status = status;
+        this.providerDeposit = providerDeposit;
 
     }
 
     public class ViewHolder {
         TextView nameTv, priceTv;
-        ImageView providerPhoto;
-        LinearLayout linearLayout;
+        ImageView providerPhoto, star1, star2, star3, star4, star5;
+        LinearLayout linearLayout, starContainer, accept;
         Button confirm;
-        RatingBar ratingBar;
-
     }
 
     public static Bitmap readBitMap(Context context, int resId){
@@ -105,44 +104,110 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
 
             //assign id to items , convert view
 
-
-
-
-
         final ViewHolder holderPending = new ViewHolder();
         holderPending.nameTv = (TextView) convertView.findViewById(R.id.textView_selectingName);
         holderPending.providerPhoto = (ImageView) convertView.findViewById(R.id.imageView_selectingProviderPhoto);
         holderPending.priceTv = (TextView) convertView.findViewById(R.id.textView_selectingPrice);
         holderPending.linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout_selecting);
+        holderPending.accept = (LinearLayout) convertView.findViewById(R.id.linearLayout_accept);
         holderPending.confirm = (Button) convertView.findViewById(R.id.button_selecting_confirm);
-
+        holderPending.starContainer = (LinearLayout) convertView.findViewById(R.id.linearLayout_starContainer);
+        holderPending.star1 = (ImageView) convertView.findViewById(R.id.imageView_star1);
+        holderPending.star2 = (ImageView) convertView.findViewById(R.id.imageView_star2);
+        holderPending.star3 = (ImageView) convertView.findViewById(R.id.imageView_star3);
+        holderPending.star4 = (ImageView) convertView.findViewById(R.id.imageView_star4);
+        holderPending.star5 = (ImageView) convertView.findViewById(R.id.imageView_star5);
+        holderPending.confirm.setText("Accept");
         holderPending.nameTv.setText(firstName[position]+" "+lastName[position]);
-
         holderPending.priceTv.setText(budget[position].toString());
 
+        if(providerRating[position]>=0.0 && providerRating[position]<0.5){
+            holderPending.star1.setImageResource(R.drawable.median_empty_star);
+            holderPending.star2.setImageResource(R.drawable.median_empty_star);
+            holderPending.star3.setImageResource(R.drawable.median_empty_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=0.5 && providerRating[position]<1.0){
+            holderPending.star1.setImageResource(R.drawable.median_half_star);
+            holderPending.star2.setImageResource(R.drawable.median_empty_star);
+            holderPending.star3.setImageResource(R.drawable.median_empty_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=1.0 && providerRating[position]<1.5){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_empty_star);
+            holderPending.star3.setImageResource(R.drawable.median_empty_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=1.5 && providerRating[position]<2.0){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_half_star);
+            holderPending.star3.setImageResource(R.drawable.median_empty_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=2.0 && providerRating[position]<2.5){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_empty_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=2.5 && providerRating[position]<3.0){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_half_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=3.0 && providerRating[position]<3.5){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_full_star);
+            holderPending.star4.setImageResource(R.drawable.median_empty_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=3.5 && providerRating[position]<4.0){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_full_star);
+            holderPending.star4.setImageResource(R.drawable.median_half_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=4.0 && providerRating[position]<4.5){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_full_star);
+            holderPending.star4.setImageResource(R.drawable.median_full_star);
+            holderPending.star5.setImageResource(R.drawable.median_empty_star);
+        }else if(providerRating[position]>=4.5 && providerRating[position]<5.0){
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_full_star);
+            holderPending.star4.setImageResource(R.drawable.median_full_star);
+            holderPending.star5.setImageResource(R.drawable.median_half_star);
+        }else{
+            holderPending.star1.setImageResource(R.drawable.median_full_star);
+            holderPending.star2.setImageResource(R.drawable.median_full_star);
+            holderPending.star3.setImageResource(R.drawable.median_full_star);
+            holderPending.star4.setImageResource(R.drawable.median_full_star);
+            holderPending.star5.setImageResource(R.drawable.median_full_star);
+        }
+
+
         //getImageData(providerPhoto[position].toString(), holderPending.providerPhoto);
-        imageUnity.setImage(c, holderPending.providerPhoto, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+providerPhoto[position].toString());
+        if(providerPhoto[position].toString().equals("") || providerPhoto[position].toString().equals(null)){
+            holderPending.providerPhoto.setImageResource(R.drawable.client_photo_round);
+        }
+        else {
+            imageUnity.setImage(c, holderPending.providerPhoto, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/" + providerPhoto[position].toString());
+        }
         holderPending.providerPhoto.setDrawingCacheEnabled(true);
 
         if(ValueMessengerTaskInfo.itemStatus != 3) {
-
-            holderPending.ratingBar = (RatingBar) convertView.findViewById(R.id.ratingBar_selecting);
-            holderPending.ratingBar.setRating(Float.parseFloat(providerRating[position].toString()));
-            holderPending.ratingBar.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    return true;
-                }
-            });
 
             holderPending.priceTv.setOnClickListener(new View.OnClickListener() {
 
                 @Override
                 public void onClick(View v) {
 
-                    ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                     ValueMessagerFurtherInfo.userName = providerUserName[position];
-                    ValueMessagerFurtherInfo.lastPage = 5;
+                    ValueMessagerFurtherInfo.lastPage = "Selecting";
 
                     Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
                     c.startActivity(nextPage_Confirm);
@@ -156,9 +221,8 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
-                ValueMessagerFurtherInfo.lastPage = 5;
+                ValueMessagerFurtherInfo.lastPage = "Selecting";
 
                 Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
                 c.startActivity(nextPage_Confirm);
@@ -170,9 +234,8 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
-                ValueMessagerFurtherInfo.lastPage = 5;
+                ValueMessagerFurtherInfo.lastPage = "Selecting";
 
                 Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
                 c.startActivity(nextPage_Confirm);
@@ -184,9 +247,8 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
                 ValueMessagerFurtherInfo.userName = providerUserName[position];
-                ValueMessagerFurtherInfo.lastPage = 5;
+                ValueMessagerFurtherInfo.lastPage = "Selecting";
 
                 Intent nextPage_Confirm = new Intent(c,Client_Further_Info.class);
                 c.startActivity(nextPage_Confirm);
@@ -200,11 +262,13 @@ public class ListAdapter_Selecting extends ArrayAdapter<String> {
             @Override
             public void onClick(View v) {
 
-                ValueMessengerTaskInfo.providerProfilePhoto = holderPending.providerPhoto.getDrawingCache();
+                ValueMessagerFurtherInfo.userName = providerUserName[position];
+                ValueMessagerFurtherInfo.lastPage = "Selecting";
                 ValueMessengerTaskInfo.providerOfferedPrice = budget[position];
                 ValueMessengerTaskInfo.providerFirstName = firstName[position];
                 ValueMessengerTaskInfo.providerLastName = lastName[position];
-                ValueMessagerFurtherInfo.userName = providerUserName[position];
+                ValueMessengerTaskInfo.providerProfilePicUrl = providerPhoto[position].toString();
+                ValueMessengerTaskInfo.providerUserName = providerUserName[position];
 
                 Intent nextPage_Confirm = new Intent(c, Client_AcceptOffer.class);
                 c.startActivity(nextPage_Confirm);

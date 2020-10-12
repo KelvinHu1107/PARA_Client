@@ -19,6 +19,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.newnergy.para_client.Image_package.ImageUnity;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -206,7 +208,7 @@ public class SelectPicPopupWindow extends Activity {
                     String fileName = "/sdcard/myImage/" + str + ".jpg";
                     try {
                         b = new FileOutputStream(fileName);
-                        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, b);// save data into file
+                        //bitmap.compress(Bitmap.CompressFormat.JPEG, 80, b);// save data into file
                     } catch (FileNotFoundException e) {
                         e.printStackTrace();
                     } finally {
@@ -220,10 +222,10 @@ public class SelectPicPopupWindow extends Activity {
 
                             try {
                                // Uri selectedImage = data.getData();
-                                System.out.println("vc"+selectedImage);
+
                                 InputStream inputStream = getContentResolver().openInputStream(selectedImage);
                                 Bitmap cameraBitmap=imageUnity.compressBySize(inputStream);
-                                System.out.println("fdf=================" + data.getDataString());
+
                                 //File imageFile = new File(imageUnity.getRealPathFromURI(selectedImage,this));
                                 cameraBitmap=imageUnity.rotateBitmapByExif(imageUnity.getRealPathFromURI(selectedImage,this),cameraBitmap);
                                 //img.setImageBitmap(cameraBitmap);
@@ -340,15 +342,15 @@ public class SelectPicPopupWindow extends Activity {
 
     public void sendImage(Bitmap newImg,String username) {
 
-        SendImageController controller = new SendImageController() {
+        SendServiceImageController controller = new SendServiceImageController() {
             @Override
-            public void onResponse(Boolean result) {
+            public void onResponse(String result) {
                 super.onResponse(result);
-                if (result) {
-                    System.out.println("yes");
-                } else {
-                    System.out.println("no");
-                }
+//                if (result) {
+//                    System.out.println("yes");
+//                } else {
+//                    System.out.println("no");
+//                }
             }
         };
         controller.setBitmap(newImg);

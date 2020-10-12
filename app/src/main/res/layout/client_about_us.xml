@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text=" Terns and conditions"
+            android:id="@+id/textView_terns"
+            android:layout_margin="12.5dp"
+            android:background="@drawable/border_radius"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="About PARA Limited"
+            android:id="@+id/textView_aboutCompany"
+            android:layout_margin="12.5dp"
+            android:textSize="16sp"
+            android:textColor="#333333"
+            android:background="@drawable/border_radius"
+            android:gravity="center_vertical|center_horizontal"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</LinearLayout>

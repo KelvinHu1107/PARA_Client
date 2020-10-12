@@ -91,12 +91,12 @@ public class Adapter_Comment extends ArrayAdapter<String> {
         holder.img = (ImageView) convertView.findViewById(R.id.imageView_pic);
         holder.scrollViewTv = (HorizontalScrollView) convertView.findViewById(R.id.horizontalScrollView);
         holder.linearLayoutTv = (LinearLayout) convertView.findViewById(R.id.firstSection);
-        holder.rollbackTv = (ImageButton) convertView.findViewById(R.id.imageButton_rollback);
+        //holder.rollbackTv = (ImageButton) convertView.findViewById(R.id.imageButton_rollback);
         holder.listViewTv = (ListView) convertView.findViewById(R.id.listView2);
         holder.createDateTv = (TextView) convertView.findViewById(R.id.textView_status);
-        holder.ratingBarRb = (RatingBar) convertView.findViewById(R.id.rtbProductRating);
-        holder.furtherInfoBtn = (ImageButton) convertView.findViewById(R.id.imageButton_furtherInfo);
-        holder.dialButton = (ImageButton) convertView.findViewById(R.id.imageButton_dial_incomingServices);
+//        holder.ratingBarRb = (RatingBar) convertView.findViewById(R.id.rtbProductRating);
+//        holder.furtherInfoBtn = (ImageButton) convertView.findViewById(R.id.imageButton_furtherInfo);
+//        holder.dialButton = (ImageButton) convertView.findViewById(R.id.imageButton_dial_incomingServices);
         //assign id to items , convert view
 
         //format date string
@@ -178,7 +178,7 @@ public class Adapter_Comment extends ArrayAdapter<String> {
 
                 //passing ID from incoming jobs to further Info
                 ValueMessagerFurtherInfo.userName = userName[position];
-                ValueMessagerFurtherInfo.lastPage = 0; // last page = incoming jobs
+                ValueMessagerFurtherInfo.lastPage = "Comment"; // last page = incoming jobs
 
                 Intent nextPage_FurtherInfo = new Intent(c,Client_Further_Info.class);
                 c.startActivity(nextPage_FurtherInfo);

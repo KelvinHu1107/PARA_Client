@@ -26,6 +26,11 @@ public class ClientUpdateServiceDataConvert {
         if (model.getType() != null) {
             json.append("\"Type\":\"" + model.getType() + "\",");
         }
+
+        if (model.getPaymentMethod() != null) {
+            json.append("\"PaymentMethod\":\"" + model.getPaymentMethod() + "\",");
+        }
+
         if (model.getPrice() != null) {
             json.append("\"Price\":\"" + model.getPrice() + "\",");
         }
@@ -37,7 +42,7 @@ public class ClientUpdateServiceDataConvert {
         }
 
         if (model.getDueDate() != null) {
-            json.append("\"DueDate\":\"" + model.getDueDate() + "\",");
+            json.append("\"Prediction\":\"" + model.getDueDate() + "\",");
         }
 
         json.deleteCharAt(json.length() - 1);

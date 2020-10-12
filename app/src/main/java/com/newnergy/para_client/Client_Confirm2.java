@@ -5,36 +5,79 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.TextView;
+
+import com.newnergy.para_client.Image_package.ImageUnity;
+import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.newnergy.para_client.ValueMessagerFurtherInfo.userName;
+
 public class Client_Confirm2 extends AppCompatActivity {
 
-    private TextView providerName;
+    private TextView providerNameB4, providerName, rateNum, otherPayment;
     private TextView title, jobTitle, date, budgetTv, description, address, city;
     private ImageView[] photo;
-    private ImageView progressBar, providerPic, cancel, save;
-    private Button pay;
+    private ImageView progressBar, providerPicB4, providerPic, cancel, save;
+    private Button jobDone;
     ClientPendingDetailViewModel jsm;
     Date dateData;
     String[] objectName;
     int[] serviceId, status, photoId;
     String[] photoAddress;
     RatingBar ratingBar;
-    Button jobDone;
     ImageUnity imageUnity = new ImageUnity();
     Context context = this;
     Loading_Dialog myLoading;
+    LinearLayout container, b4Rate, rate, topSideContainer, securityContainer, viewPagerContainer;
+    ViewPager viewPager;
+    CustomPageAdapter customPageAdapter;
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        RefreshTokenController controller = new RefreshTokenController(){
+            @Override
+            public void response(boolean result) {
+
+                DataTransmitController c = new DataTransmitController() {
+                    @Override
+                    public void onResponse(String result) {
+                        super.onResponse(result);
+                        myLoading.CloseLoadingDialog();
+
+                        String outSide[] = result.trim().split("\"");
+
+                        String info1[] = ValueMessager.currentVersion.trim().split("\\.");
+                        String info2[] = outSide[1].trim().split("\\.");
+
+                        if(!info1[0].equals(info2[0])){
+                            Intent intent = new Intent(Client_Confirm2.this, Client_PopUp_Version.class);
+                            startActivity(intent);
+                        }
+                    }
+                };
+                c.execute("http://para.co.nz/api/version/getversion", "", "GET");
+            }
+        };
+
+        myLoading.ShowLoadingDialog();
+        controller.refreshToken(ValueMessager.email.toString(), ValueMessager.refreshToken);
+
+    }
 
     public static Bitmap readBitMap(Context context, int resId){
         BitmapFactory.Options opt = new BitmapFactory.Options();
@@ -45,40 +88,6 @@ public class Client_Confirm2 extends AppCompatActivity {
         return BitmapFactory.decodeStream(is,null,opt);
     }
 
-    public void getProviderImageData(String profilePhotoUrl, final ImageView imageView) {
-
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap mBitmap) {
-                super.onResponse(mBitmap);
-                if (mBitmap == null) {
-                    imageView.setImageBitmap(readBitMap(context,R.drawable.client_photo_round));
-                }
-                imageView.setImageBitmap(imageUnity.toRoundBitmap(mBitmap));
-                ValueMessengerTaskInfo.providerProfilePhoto = imageUnity.toRoundBitmap(mBitmap);
-
-            }
-        };
-        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+ profilePhotoUrl, "","POST");
-    }
-
-
-    public void getImageData(String profilePhotoUrl, final ImageView imageView) {
-
-        GetImageController controller = new GetImageController() {
-            @Override
-            public void onResponse(Bitmap mBitmap) {
-                super.onResponse(mBitmap);
-                if (mBitmap == null) {
-                    return;
-                }
-                imageView.setImageBitmap(mBitmap);
-            }
-        };
-        controller.execute("http://para.co.nz/api/JobService/GetServiceImage/"+ profilePhotoUrl, "","POST");
-    }
-
-
     public void getData(){
         DataTransmitController c=new DataTransmitController(){
             @Override
@@ -86,7 +95,6 @@ public class Client_Confirm2 extends AppCompatActivity {
                 super.onResponse(result);
                 ClientPendingDetailDataConvert clientPendingDetailDataConvert = new ClientPendingDetailDataConvert();
                 jsm = clientPendingDetailDataConvert.convertJsonToModel(result);
-
 
                 cancel = (ImageView) findViewById(R.id.imageView_back);
                 title = (TextView) findViewById(R.id.tree_field_title);
@@ -96,19 +104,23 @@ public class Client_Confirm2 extends AppCompatActivity {
                 budgetTv = (TextView) findViewById(R.id.textView_comfirm2_budget);
                 description = (TextView) findViewById(R.id.textView_comfirm2_description);
                 providerName = (TextView) findViewById(R.id.textView_confirm2_name);
+                otherPayment = (TextView) findViewById(R.id.textView_otherPayment);
+                providerNameB4 = (TextView) findViewById(R.id.textView_confirm2_nameb4Rate);
                 address = (TextView) findViewById(R.id.textView_comfirm2_address);
                 city = (TextView) findViewById(R.id.textView_comfirm2_address_city);
+                rateNum = (TextView) findViewById(R.id.textView_rateNum);
                 progressBar = (ImageView) findViewById(R.id.imageView_progressBar_confirm2);
                 providerPic = (ImageView) findViewById(R.id.imageView_confirm2_pic);
+                providerPicB4 = (ImageView) findViewById(R.id.imageView_confirm2_picB4Rate);
                 ratingBar = (RatingBar) findViewById(R.id.ratingBar_confirm2);
-                pay = (Button) findViewById(R.id.button_pay);
+                container = (LinearLayout) findViewById(R.id.linearLayout_botContainer);
+                b4Rate = (LinearLayout) findViewById(R.id.linearLayout_b4Rated);
+                rate = (LinearLayout) findViewById(R.id.linearLayout_rated);
+                jobDone = (Button) findViewById(R.id.button_pay);
+                viewPager = (ViewPager) findViewById(R.id.viewpager);
+                viewPagerContainer = (LinearLayout) findViewById(R.id.linearLayout_viewPager);
 
                 save.setVisibility(View.INVISIBLE);
-
-//                jobDone.setVisibility(View.VISIBLE);
-//                if(jsm.getStatus() == 2 || jsm.getStatus() == 4)
-//                    jobDone.setVisibility(View.INVISIBLE);
-
                 jobTitle.setText(jsm.getTitle());
                 ValueMessager.edit_workTitle = jsm.getTitle();
 
@@ -116,7 +128,7 @@ public class Client_Confirm2 extends AppCompatActivity {
                 SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
                 SimpleDateFormat finalFormat = new SimpleDateFormat("dd-MM-yyyy");
                 try {
-                    dateData = format.parse(jsm.getCreateDate().toString());
+                    dateData = format.parse(jsm.getCompleteDate().toString());
                     calculatedDate = finalFormat.format(dateData);
                     date.setText(calculatedDate);
                 } catch (ParseException e) {
@@ -125,13 +137,55 @@ public class Client_Confirm2 extends AppCompatActivity {
                 }
 
                 ValueMessager.edit_workType = jsm.getType();
-                budgetTv.setText(jsm.getBudget().toString());
-                ratingBar.setRating(Float.parseFloat(jsm.getRating().toString()));
+                if(jsm.getPaymentMethod().equals("Credit Card")) {
+                    budgetTv.setText("$"+jsm.getBudget().toString());
+                    otherPayment.setText("$0");
+                }
+                else{
+                    otherPayment.setText("$"+jsm.getBudget().toString());
+                    budgetTv.setText("$0");
+                }
 
-                providerName.setText(jsm.getProviderFirstname()+" ,"+jsm.getProviderLastname());
+                if(jsm.getStatus() == 8){
+                    container.removeView(rate);
+                    if(jsm.getProviderProfilePhoto().equals("")){
+                        providerPicB4.setImageResource(R.drawable.client_photo_round);
+                    }else {
+                        Picasso.with(context).load("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/" + jsm.getProviderProfilePhoto()).into(providerPicB4);
+                    }
+                    providerNameB4.setText(jsm.getProviderFirstname()+" "+jsm.getProviderLastname());
+                    jobDone.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            userName = jsm.getProviderUsername();
+                            ValueMessengerTaskInfo.providerId = jsm.getProviderId();
+                            ValueMessengerTaskInfo.providerProfilePicUrl = "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+jsm.getProviderProfilePhoto();
+                            ValueMessengerTaskInfo.providerFirstName = jsm.getProviderFirstname();
+                            ValueMessengerTaskInfo.providerLastName = jsm.getProviderLastname();
+
+                            Intent intent = new Intent(Client_Confirm2.this, Client_Rating.class);
+                            startActivity(intent);
+                        }
+                    });
+
+                }
+                else if(jsm.getStatus() == 9){
+                    container.removeView(b4Rate);
+
+                    if(jsm.getProviderProfilePhoto().equals("")){
+                        providerPic.setImageResource(R.drawable.client_photo_round);
+                    }else {
+                        Picasso.with(context).load("http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/" + jsm.getProviderProfilePhoto()).into(providerPic);
+                    }
+
+                    providerName.setText(jsm.getProviderFirstname()+" "+jsm.getProviderLastname());
+                    ratingBar.setRating(Float.parseFloat(jsm.getServiceRating().toString()));
+                    rateNum.setText(jsm.getServiceRating().toString());
+                }
+
                 ValueMessager.edit_budget = jsm.getBudget().toString();
-                address.setText(jsm.getServiceStreet()+", "+jsm.getServiceSuburb());
-                city.setText(jsm.getServiceCity());
+                address.setText(jsm.getServiceStreet());
+                city.setText(jsm.getServiceSuburb()+", "+jsm.getServiceCity());
                 ValueMessager.edit_street = jsm.getServiceStreet();
                 ValueMessager.edit_subrub = jsm.getServiceSuburb();
                 ValueMessager.edit_city = jsm.getServiceCity();
@@ -141,10 +195,20 @@ public class Client_Confirm2 extends AppCompatActivity {
 
                 ValueMessengerTaskInfo.itemStatus = jsm.getStatus();
 
+                rate.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
+                        providerPic.setDrawingCacheEnabled(true);
+                        ValueMessager.providerProfileBitmap = providerPic.getDrawingCache();
+                        ValueMessagerFurtherInfo.lastPage = "Confirm2";
+                        ValueMessager.providerRating = jsm.getRating();
 
+                        Intent nextPage_FurtherInfo = new Intent(Client_Confirm2.this, Client_Further_Info.class);
+                        startActivity(nextPage_FurtherInfo);
 
-                //getProviderImageData(jsm.getProviderProfilePhoto(), providerPic);
-                imageUnity.setImage(context, providerPic, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+jsm.getProviderProfilePhoto());
+                    }
+                });
 
                 ratingBar.setOnTouchListener(new View.OnTouchListener() {
                     @Override
@@ -152,42 +216,18 @@ public class Client_Confirm2 extends AppCompatActivity {
                         return true;
                     }
                 });
+                progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_04 ));
 
-                if(jsm.getStatus() == 0){
-                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_01 ));
-                }
-                else if(jsm.getStatus() == 1){
-                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_02 ));
-                }
-                else if(jsm.getStatus() == 2){
-                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_02 ));
-                }
-                else if(jsm.getStatus() == 3){
-                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_03 ));
-                }
-                else if(jsm.getStatus() == 4){
-                    progressBar.setImageBitmap(readBitMap(context,R.drawable.client_select_04 ));
-                }
 
                 if(jsm.getServicePhotoUrl().length != 0) {
 
-                    photoId = new int[5];
-                    photoAddress = new String[jsm.getServicePhotoUrl().length];
-                    photo = new ImageView[jsm.getServicePhotoUrl().length];
+                    ValueMessagerFurtherInfo.ServicePhotoUrl = jsm.getServicePhotoUrl();
+                    customPageAdapter = new CustomPageAdapter(context, "http://para.co.nz/api/JobService/GetServiceImage/", "Confirm2");
+                    customPageAdapter.setImageUrls(jsm.getServicePhotoUrl());
+                    viewPager.setAdapter(customPageAdapter);
 
-                    photoId[0] = R.id.imageView_confirm_photo1;
-                    photoId[1] = R.id.imageView_confirm_photo2;
-                    photoId[2] = R.id.imageView_confirm_photo3;
-                    photoId[3] = R.id.imageView_confirm_photo4;
-                    photoId[4] = R.id.imageView_confirm_photo5;
-                    photoAddress = jsm.getServicePhotoUrl();
-
-                    System.out.println("qqqqqqqqqqqqqqqqqq"+context+"ccccccccccccc"+photo[0]+photoAddress[0]);
-
-                    for(int i=0; i<jsm.getServicePhotoUrl().length; i++) {
-                        //getImageData(photoAddress[i], photo[i] = (ImageView) findViewById(photoId[i]));
-                        imageUnity.setImage(context, photo[i] = (ImageView) findViewById(photoId[i]), "http://para.co.nz/api/JobService/GetServiceImage/"+photoAddress[i]);
-                    }
+                }else{
+                    viewPagerContainer.removeView(viewPager);
                 }
 
                 if(ValueMessengerTaskInfo.providerId < 0){
@@ -197,42 +237,7 @@ public class Client_Confirm2 extends AppCompatActivity {
                     ValueMessengerTaskInfo.providerId = jsm.getProviderId();
                 }
 
-                if(ValueMessengerTaskInfo.itemStatus == 3){
-                    title.setText("Assigned");
-                }
-
-                if(ValueMessengerTaskInfo.itemStatus == 4){
-                    title.setText("Completed");
-                }
-//                jobDone.setOnClickListener(new View.OnClickListener() {
-//                    @Override
-//                    public void onClick(View v) {
-//
-//                        if(jsm.getStatus() == 3)
-//                        {
-//
-//                            ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
-//                            ValueMessengerTaskInfo.providerId = jsm.getProviderId();
-//
-//                            Intent intent = new Intent(Client_Confirm2.this, Client_Rating.class);
-//                            startActivity(intent);
-//                        }
-//                    }
-//                });
-
-                pay.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        providerPic.setDrawingCacheEnabled(true);
-                        ValueMessengerTaskInfo.providerProfilePhoto = providerPic.getDrawingCache();
-                        ValueMessagerFurtherInfo.userName = jsm.getProviderUsername();
-                        ValueMessengerTaskInfo.providerId = jsm.getProviderId();
-                        ValueMessengerTaskInfo.providerFirstName = jsm.getProviderFirstname();
-                        ValueMessengerTaskInfo.providerLastName = jsm.getProviderLastname();
-                        Intent intent = new Intent(Client_Confirm2.this, Client_PayProvider.class);
-                        startActivity(intent);
-                    }
-                });
+                title.setText("Completed");
 
                 cancel.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -250,19 +255,14 @@ public class Client_Confirm2 extends AppCompatActivity {
                                 break;
                             }
                         }
-
-
                     }
                 });
-
                 myLoading.CloseLoadingDialog();
             }
         };
         myLoading.ShowLoadingDialog();
         c.execute("http://para.co.nz/api/ClientJobService/GetJobService/"+ ValueMessengerTaskInfo.id,"","GET");
     }
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

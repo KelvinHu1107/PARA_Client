@@ -3,20 +3,21 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
-        android:id="@+id/toolbar_rating"
-        layout="@layout/toolbar_rating">
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
     </include>
 
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:id="@+id/linearLayout_main">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Please rate the service"
+            android:text="Leave your feedback"
             android:id="@+id/textView55"
             android:textColor="#333333"
             android:textSize="22sp"
@@ -25,31 +26,23 @@
             android:layout_marginTop="25dp"
             android:layout_marginBottom="12.5dp" />
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <com.newnergy.para_client.CircleImageView
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:id="@+id/imageView_pic"
+            android:layout_gravity="center"
+            android:src="@drawable/client_photo_round"
+            android:layout_marginTop="25dp" />
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Amount: $"
-                android:id="@+id/textView56"
-                android:textColor="#333333"
-                android:textSize="18sp"
-                android:layout_gravity="center"
-                android:layout_weight="1"
-                android:gravity="right" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="123"
-                android:id="@+id/textView_rating_price"
-                android:layout_weight="1"
-                android:textSize="18sp"
-                android:textColor="#333333" />
-        </LinearLayout>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Name"
+            android:id="@+id/textView_name"
+            android:layout_gravity="center"
+            android:layout_marginTop="12.5dp"
+            android:textColor="#000000"
+            android:textSize="20sp" />
 
         <RatingBar
             style="@style/foodRatingBar"

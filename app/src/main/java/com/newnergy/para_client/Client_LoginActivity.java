@@ -3,12 +3,15 @@ package com.newnergy.para_client;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -28,7 +31,15 @@ import com.facebook.ProfileTracker;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.newnergy.para_client.Chat.Chat_SingleChat_db;
+import com.newnergy.para_client.Chat.Chat_User_db;
+import com.newnergy.para_client.Image_package.ImageUnity;
+import com.newnergy.para_client.ResetPassword.Client_ResetPassword;
+import com.twitter.sdk.android.Twitter;
+import com.twitter.sdk.android.core.TwitterAuthConfig;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -40,7 +51,16 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+import io.fabric.sdk.android.Fabric;
+
+import static java.lang.System.currentTimeMillis;
+
 public class Client_LoginActivity extends AppCompatActivity {
+
+    // Note: Your consumer key and secret should be obfuscated in your source code before shipping.
+    private static final String TWITTER_KEY = "b2tHb2a4fF6yuRgj4xkAqy7U1";
+    private static final String TWITTER_SECRET = "123";
+
     private Toolbar toolbar;
     private EditText EtEmail;
     private EditText EtPassword;
@@ -56,6 +76,7 @@ public class Client_LoginActivity extends AppCompatActivity {
     ImageView vx;
     ImageView yx;
     Context context = this;
+    LinearLayout main, resetPassword;
     Loading_Dialog myLoading;
 
 
@@ -80,26 +101,28 @@ public class Client_LoginActivity extends AppCompatActivity {
                             intent = new Intent(Client_LoginActivity.this, Client_RegisterFaceBook.class);
                             intent.putExtra("jsondata",object.toString());
 
-
-                                Client_LoginController controller = new Client_LoginController() {
+                            LoginController controller = new LoginController() {
                                     @Override
-                                    public void onResponse(Boolean s) {
+                                    public void onResponse(String s) {
                                         super.onResponse(s);
-                                        if (s) {
-                                            ValueMessager.userLogInByFb = true;
-                                            ValueMessager.registerByFb = false;
-                                            ValueMessager.email = ValueMessager.userEmailBuffer;
-                                            writeData("userEmail", ValueMessager.email.toString());
-                                            SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
-                                            signalRHubConnection.startSignalR();
+                                        AccountDataConvert convert=new AccountDataConvert();
+                                        AccountViewModel model=convert.convertJsonToModel(s);
+                                        if (model.getSuccess()) {
 
-                                            getData(ValueMessager.email.toString());
+                                                writeData("userEmail",ValueMessager.email.toString());
 
+                                                ValueMessager.chat_db_Global =new Chat_SingleChat_db(Client_LoginActivity.this);
+                                                ValueMessager.chat_User_db_Global=new Chat_User_db(Client_LoginActivity.this);
+                                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
+                                                signalRHubConnection.startSignalR();
 
+                                                ValueMessager.accessToken = model.getAccessToken();
+                                                ValueMessager.tokenDueTime = model.getExpiresIn() + currentTimeMillis();
+                                                ValueMessager.refreshToken = model.getRefreshToken();
+
+                                                getData(ValueMessager.email.toString());
                                         } else {
-
                                             ValueMessager.registerByFb = true;
-                                            ValueMessager.email = ValueMessager.userEmailBuffer;
                                             writeData("userEmail", ValueMessager.email.toString());
                                             myLoading.CloseLoadingDialog();
                                             startActivity(intent);
@@ -108,7 +131,8 @@ public class Client_LoginActivity extends AppCompatActivity {
                                 };
                             try {
                                 myLoading.ShowLoadingDialog();
-                                controller.execute("http://para.co.nz/api/ClientAccount/CheckDuplicateUsername", "{'username':'" + object.getString("email") + "'}", "POST");
+                                ValueMessager.email = object.getString("email");
+                                controller.execute("http://para.co.nz/api/ClientAccount/IsFaceBook"+"/"+object.getString("email"),"", "POST");
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -122,8 +146,6 @@ public class Client_LoginActivity extends AppCompatActivity {
             request.setParameters(parameters);
             request.executeAsync();
             Profile.getCurrentProfile();
-
-
         }
 
         @Override
@@ -137,13 +159,14 @@ public class Client_LoginActivity extends AppCompatActivity {
         }
     };
 
-
     public void getProfileImageData() {
         GetImageController controller = new GetImageController() {
             @Override
             public void onResponse(Bitmap bitmap) {
                 super.onResponse(bitmap);
                 if (bitmap == null) {
+                    connect(ValueMessager.email.toString());
+                    getNotificationId();
                     myLoading.CloseLoadingDialog();
                     Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
                     startActivity(nextPage_IncomingServices);
@@ -151,7 +174,8 @@ public class Client_LoginActivity extends AppCompatActivity {
                 }
 
                 ValueMessager.userProfileBitmap = imageUnity.toRoundBitmap(bitmap);
-
+                connect(ValueMessager.email.toString());
+                getNotificationId();
                 myLoading.CloseLoadingDialog();
 
                 Intent nextPage_IncomingServices = new Intent(Client_LoginActivity.this, Client_Incoming_Services.class);
@@ -173,12 +197,9 @@ public class Client_LoginActivity extends AppCompatActivity {
                 ValueMessager.userLastName = list.getLastName();
 
                 getProfileImageData();
-
             }
         };
-
         c.execute("http://para.co.nz/api/ClientProfile/getClientDetail/"+userName,"","GET");
-
     }
 
     public String readData(String openFileName){
@@ -215,9 +236,6 @@ public class Client_LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ValueMessager.userLogInByFb = false;
-        FacebookSdk.sdkInitialize(getApplicationContext());
-        setContentView(R.layout.client_login_page);
 
         DisplayMetrics metric = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(metric);
@@ -229,13 +247,34 @@ public class Client_LoginActivity extends AppCompatActivity {
             ValueMessager.resolution1080x720 = true;
         else if(width == 480)
             ValueMessager.resolution800x480 = true;
-        //else if(width == 1080)
-        else
+        else if(width == 1080)
             ValueMessager.resolution1920x1080 = true;
-
-
+        else if(width == 540)
+            ValueMessager.resolution960x540 = true;
+        else
+            ValueMessager.resolution1080x720 = true;
 
         System.out.println("xxxxxxxxxx"+ width+"yyy===="+height);
+
+        TwitterAuthConfig authConfig = new TwitterAuthConfig(TWITTER_KEY, TWITTER_SECRET);
+        Fabric.with(this, new Twitter(authConfig));
+        ValueMessager.userLogInByFb = false;
+        FacebookSdk.sdkInitialize(getApplicationContext());
+
+        if(ValueMessager.resolution1080x720)
+            setContentView(R.layout.client_login_page720x1080);
+        else if(ValueMessager.resolution800x480)
+            setContentView(R.layout.client_login_page480x800);
+        else if(ValueMessager.resolution1920x1080)
+            setContentView(R.layout.client_login_page1080x1920);
+        else if(ValueMessager.resolution960x540)
+            setContentView(R.layout.client_login_page1080x1920);
+        else
+            setContentView(R.layout.client_login_page720x1080);
+
+        System.out.println("ttttttttt:"+ FirebaseInstanceId.getInstance().getToken());
+
+        ValueMessager.is_chat=false;
 
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
@@ -253,9 +292,7 @@ public class Client_LoginActivity extends AppCompatActivity {
         mprofileTracker = new ProfileTracker() {
             @Override
             protected void onCurrentProfileChanged(Profile oldProfile, Profile currentProfile) {
-
                 Log.v("Session Tracker", "oldProfile=" + oldProfile + "||" + "currentProfile" + currentProfile);
-
             }
         };
 
@@ -287,16 +324,13 @@ public class Client_LoginActivity extends AppCompatActivity {
 
         if (isLoggedIn()) {
             LoginManager.getInstance().logOut();
-
         }
-
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
     private void initComponent() {
@@ -306,14 +340,43 @@ public class Client_LoginActivity extends AppCompatActivity {
         tvWarningMessage = (TextView) findViewById(R.id.textView_logIn_warning);
         facebookLogIn = (LoginButton) findViewById(R.id.imageButton_faceBook_logIn);
         linearLayout = (LinearLayout) findViewById(R.id.linearLayout_logIn);
+        main = (LinearLayout) findViewById(R.id.linearLayout_main);
+        resetPassword = (LinearLayout) findViewById(R.id.linearLayout_resetPassword);
 
         facebookLogIn.setReadPermissions(Arrays.asList(
                 "public_profile", "email", "user_birthday", "user_friends"));
 
         facebookLogIn.registerCallback(callbackManager, callback);
 
-    }
+        resetPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(isConnected()) {
+                    Intent intent = new Intent(Client_LoginActivity.this, Client_ResetPassword.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(Client_LoginActivity.this, "No network connection available.", Toast.LENGTH_LONG).show();
+                }
+            }
+        });
 
+        main.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                InputMethodManager imm = (InputMethodManager)getSystemService(context.INPUT_METHOD_SERVICE);
+                boolean isOpen=imm.isActive();
+
+                if(isOpen){
+                    InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+                    inputMethodManager.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+                }
+
+            }
+        });
+
+    }
 
     private void setToolbarComponent() {
         setSupportActionBar(toolbar);
@@ -352,38 +415,116 @@ public class Client_LoginActivity extends AppCompatActivity {
                 }
 
                 else {
-                    Client_LoginController controller = new Client_LoginController() {
-                        @Override
-                        public void onResponse(Boolean s) {
-                            super.onResponse(s);
-                            if (s) {
-                                writeData("userEmail",EtEmail.getText().toString());
-                                ValueMessager.email = EtEmail.getText().toString();
 
-                                SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
-                                signalRHubConnection.startSignalR();
+                    if (isConnected()) {
 
-                                getData(EtEmail.getText().toString());
+                        LoginController controller = new LoginController() {
+                            @Override
+                            public void onResponse(String s) {
+                                super.onResponse(s);
+                                AccountDataConvert convert = new AccountDataConvert();
+                                AccountViewModel model = convert.convertJsonToModel(s);
+                                if (model.getSuccess()) {
+                                    writeData("userEmail", EtEmail.getText().toString());
+                                    ValueMessager.email = EtEmail.getText().toString();
 
+                                    ValueMessager.chat_db_Global = new Chat_SingleChat_db(Client_LoginActivity.this);
+                                    ValueMessager.chat_User_db_Global = new Chat_User_db(Client_LoginActivity.this);
+                                    SignalRHubConnection signalRHubConnection = new SignalRHubConnection();
+                                    signalRHubConnection.startSignalR();
 
-                            } else {
-                                Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
-                                myLoading.CloseLoadingDialog();
+                                    ValueMessager.accessToken = model.getAccessToken();
+                                    ValueMessager.tokenDueTime = model.getExpiresIn() + currentTimeMillis();
+                                    ValueMessager.refreshToken = model.getRefreshToken();
+
+                                    getData(EtEmail.getText().toString());
+                                } else {
+                                    Toast.makeText(Client_LoginActivity.this, "Invalid user name", Toast.LENGTH_LONG).show();
+                                    myLoading.CloseLoadingDialog();
+                                }
                             }
-                        }
-                    };
-                    myLoading.ShowLoadingDialog();
-                    controller.execute("http://para.co.nz/api/ClientAccount/validateAccount", "{'username':'" + email + "'," +
-                            "'password':'" + password + "'}", "POST");
+                        };
+                        myLoading.ShowLoadingDialog();
+                        ValueMessager.email = EtEmail.getText().toString();
+                        controller.execute("http://para.co.nz/api/ClientAccount/validateAccount", "{'username':'" + email + "'," +
+                                "'password':'" + password + "'}", "POST");
+                    }else{
+                        Toast.makeText(Client_LoginActivity.this, "No network connection available.", Toast.LENGTH_LONG).show();
+                    }
                 }
             }
         };
         return event;
     }
 
+    public void getNotificationId(){
+        DataTransmitController c = new DataTransmitController(){
+            @Override
+            public void onResponse(String result) {
+                super.onResponse(result);
+
+                JSONObject object = null;
+                try {
+                    object = new JSONObject(result);
+                    JSONArray notificationId = new JSONArray(object.getString("data"));
+
+                    for (int i = 0; i < notificationId.length(); i++) {
+                        JSONObject singleObject = new JSONObject(notificationId.get(i).toString());
+                        if(singleObject.getString("Type").equalsIgnoreCase("message")) {
+
+                            ValueMessager.listMessageId.add(singleObject.getString("MessageId"));
+                            String[] info = singleObject.getString("body").split("-");
+                            ValueMessager.listMessageFromUserName.add(info[1]);
+
+                        }else if(singleObject.getString("Type").equalsIgnoreCase("pending")){
+
+                            ValueMessager.listPendingId.add(singleObject.getString("MessageId"));
+                            ValueMessager.listPendingServiceId.add(singleObject.getString("MessageId"));
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                ValueMessager.notificationMessage = ValueMessager.listMessageId.size();
+                ValueMessager.notificationPending = ValueMessager.listPendingId.size();
+            }
+        };
+        c.execute("http://para.co.nz/api/NoticeAndroid/GetClientUnreadMessage/"+ ValueMessager.email,"","GET");
+    }
+
+    public void connect(String username) {
+        DataSendController controller = new DataSendController() {
+            @Override
+            public void onResponse(Boolean s) {
+                System.out.println();
+            }
+        };
+        String token = FirebaseInstanceId.getInstance().getToken();
+        String data="{\"Username\":\"" + username + "\","
+                +"\"NotificationToken\":\"" + token + "\"}";
+
+        controller.execute("http://para.co.nz/api/NoticeAndroid/AddNotificationClient",data,"POST");
+    }
+
+
     public void onClickRegisterTv(View v) {
-        Intent intent = new Intent(Client_LoginActivity.this, Client_RegisterActivity.class);
-        startActivity(intent);
+        if(isConnected()) {
+            Intent intent = new Intent(Client_LoginActivity.this, Client_RegisterActivity.class);
+            startActivity(intent);
+        }
+        else{
+            Toast.makeText(Client_LoginActivity.this, "No network connection available.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private boolean isConnected(){
+        ConnectivityManager cm = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+        if (networkInfo != null && networkInfo.isConnected()) {
+            return true;
+        }
+        return false;
     }
 
 }

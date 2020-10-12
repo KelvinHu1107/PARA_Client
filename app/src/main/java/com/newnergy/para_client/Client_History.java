@@ -5,30 +5,62 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.List;
 
 public class Client_History extends AppCompatActivity {
 
-
     ListAdapter_History adapter;
     ListView listView;
-    TextView back;
+    TextView title;
+    ImageView back, save;
     int[] serviceId;
     Integer[] providerId, status;
     CharSequence[] profilePhoto, providerPhoto;
     CharSequence[] getTitle, createDate;
-    private  String[] objectName ;
+    private  String[] objectName, address ;
     ClientData[] dataList;
     private List<ClientPendingListViewModel> list;
     private Double[] budget;
     Context context = this;
     Loading_Dialog myLoading;
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        RefreshTokenController controller = new RefreshTokenController(){
+            @Override
+            public void response(boolean result) {
+
+                DataTransmitController c = new DataTransmitController() {
+                    @Override
+                    public void onResponse(String result) {
+                        super.onResponse(result);
+                        myLoading.CloseLoadingDialog();
+
+                        String outSide[] = result.trim().split("\"");
+
+                        String info1[] = ValueMessager.currentVersion.trim().split("\\.");
+                        String info2[] = outSide[1].trim().split("\\.");
+
+                        if(!info1[0].equals(info2[0])){
+                            Intent intent = new Intent(Client_History.this, Client_PopUp_Version.class);
+                            startActivity(intent);
+                        }
+                    }
+                };
+                c.execute("http://para.co.nz/api/version/getversion", "", "GET");
+            }
+        };
+
+        myLoading.ShowLoadingDialog();
+        controller.refreshToken(ValueMessager.email.toString(), ValueMessager.refreshToken);
+
+    }
 
     public void getData(){
         DataTransmitController c = new DataTransmitController(){
@@ -38,10 +70,10 @@ public class Client_History extends AppCompatActivity {
 
                 ClientPendingDataConvert convert = new ClientPendingDataConvert();
                 list = convert.convertJsonToArrayList(result);
-
+                btnFunction();
                 initList();
-                myLoading.CloseLoadingDialog();
 
+                myLoading.CloseLoadingDialog();
             }
         };
         myLoading.ShowLoadingDialog();
@@ -58,7 +90,7 @@ public class Client_History extends AppCompatActivity {
         profilePhoto = new CharSequence[list.size()];
         getTitle = new CharSequence[list.size()];
         providerPhoto = new CharSequence[list.size()];
-        status = new Integer[list.size()];
+        address = new String[list.size()];
         budget = new Double[list.size()];
         createDate = new CharSequence[list.size()];
 
@@ -69,65 +101,17 @@ public class Client_History extends AppCompatActivity {
             providerId[i] = list.get(i).getProviderId();
             providerPhoto[i] = list.get(i).getProviderProfilePhoto();
             getTitle[i] = list.get(i).getTitle();
-            status[i] = list.get(i).getStatus();
+            address[i] = list.get(i).getAddress();
             createDate[i] = list.get(i).getCompleteDate();
             budget[i] = list.get(i).getBudget();
 
         }
 
-
-
-        for (int i = 0; i < list.size(); i++)
-            dataList[i] = new ClientData();
-
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
-
-        for (int i = 0; i < list.size(); i++) {
-
-            dataList[i].profilePhoto = providerPhoto[i];
-            dataList[i].getTitle = getTitle[i];
-            dataList[i].providerId = providerId[i];
-            dataList[i].serviceId = serviceId[i];
-            dataList[i].createDate = createDate[i];
-            dataList[i].status = status[i];
-            dataList[i].budget = budget[i];
-
-            try {
-                dataList[i].date = format.parse(createDate[i].toString());
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-        }
-
-        ClientData bufferList = new ClientData();
-
-        for (int i = 0; i < list.size()-1; i++) {
-            for (int j = 0; j < list.size()-1; j++) {
-                if (dataList[j].date.getTime() < dataList[j + 1].date.getTime()) {
-                    bufferList = dataList[j];
-                    dataList[j] = dataList[j + 1];
-                    dataList[j + 1] = bufferList;
-                }
-            }
-        }
-
-        //swap
-        for (int i = 0; i < list.size(); i++) {
-
-            createDate[i] = dataList[i].createDate;
-            serviceId[i] = dataList[i].serviceId;
-            providerId[i] = dataList[i].providerId;
-            providerPhoto[i] = dataList[i].profilePhoto;
-            getTitle[i] = dataList[i].getTitle;
-            status[i] = dataList[i].status;
-            budget[i] = dataList[i].budget;
-        }
-        //swap
-
-
-
-        adapter = new ListAdapter_History(this, objectName, createDate, serviceId, providerId, providerPhoto, getTitle, status, budget);
+        adapter = new ListAdapter_History(this, objectName, createDate, serviceId, providerId, providerPhoto, getTitle, address, budget);
         listView.setAdapter(adapter);
+
+
+
 
     }
     //init listView
@@ -135,8 +119,13 @@ public class Client_History extends AppCompatActivity {
     // assigning buttons
     public void btnFunction(){
 
-        back = (TextView) findViewById(R.id.textView_cancel_history);
+        save = (ImageView) findViewById(R.id.imageView_ok);
+        back = (ImageView) findViewById(R.id.imageView_back);
+        title = (TextView) findViewById(R.id.tree_field_title);
         listView = (ListView) findViewById(R.id.listView_history);
+
+        title.setText("History");
+        save.setVisibility(View.INVISIBLE);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +148,7 @@ public class Client_History extends AppCompatActivity {
         myLoading.getContext(this);
 
         listView = (ListView) findViewById(R.id.listView_history);
-        btnFunction();
+
         getData();
     }
 }

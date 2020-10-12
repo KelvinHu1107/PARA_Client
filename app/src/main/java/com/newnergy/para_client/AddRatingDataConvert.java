@@ -22,6 +22,10 @@ public class AddRatingDataConvert {
             json.append("\"Comment\":\""+model.getComment()+"\",");
         }
 
+        if(model.getServiceId()!=null){
+            json.append("\"ServiceId\":\""+model.getServiceId()+"\",");
+        }
+
         json.deleteCharAt(json.length()-1);
         json.append("}");
         return json.toString();

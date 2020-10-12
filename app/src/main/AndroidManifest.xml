@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.newnergy.para_client">
+
+    <uses-sdk android:minSdkVersion="8" />
+
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_INTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Camera power -->
+    <uses-permission android:name="android.permission.CAMERA" />
+
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+
+
+    <application
+        android:allowBackup="true"
+        android:name="android.support.multidex.MultiDexApplication"
+        android:icon="@mipmap/app_logo"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".Client_SplashScreen"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider549428541916989"
+            android:exported="true" />
+
+        <supports-screens
+            android:anyDensity="true"
+            android:largeScreens="true"
+            android:normalScreens="true"
+            android:resizeable="true"
+            android:smallScreens="true"
+            android:xlargeScreens="true" />
+
+        <activity
+            android:name=".Client_Incoming_Services"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_RegisterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_RegisterActiveActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Pending"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Chat.Client_Message"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Further_Info"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Profile"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile_changeName"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile_changePhone"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".profile_changeAddress"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Further_Info_sub"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_FurtherInfo_PictureDisplay"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_SlidingMenu_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_CreditCard"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_CreditCardNum"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_AboutUs"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Terns"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Confirm"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Confirm2"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_CardAddress"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_AboutCompany"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Setting_Notification"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Rating"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_History"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_HistoryFurther"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_PlaceOrder"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_Setting"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_CommentList"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_OfferJob"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MapsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Map_mark_activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_EditOrder"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_PopUpWindow"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_PaymentMethod"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_PopUp_LogOut"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SelectPicPopupWindowUploadImage"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity
+            android:name=".Client_LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_CommentPage"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:screenOrientation="portrait"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+        <activity
+            android:name=".Chat.Client_Chat"
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".SelectPicPopupWindow"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity
+            android:name=".Chat.SelectingPicForChat"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".Client_RegisterFaceBook" />
+        <activity android:name=".Client_AddFund" />
+        <activity
+            android:name=".Client_Calender"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDatePickerStyle" />
+        <activity
+            android:name=".Client_Confirming_SecuredFund"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".Client_AcceptOffer" />
+        <activity android:name=".Client_PayProvider" />
+        <activity
+            android:name=".Client_SecuredPaymentHelp"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".Client_EditDraft" />
+        <activity android:name=".Client_DealingBill" />
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="d2b37bdc90ab812c2f61bd01535a8232094feb66" />
+
+        <activity
+            android:name=".Client_Share"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".Client_ChooseMethod"
+            android:screenOrientation="portrait" />
+        <activity android:name=".Client_dealt_providerInfo" />
+        <activity
+            android:name=".Client_DisplayPic"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+
+        <service android:name=".Notification.MyFirebaseMessagingService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".Notification.MyFirebaseInstanceIDService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        >
+        <activity android:name=".ResetPassword.Client_ResetPassword" />
+        <activity android:name=".ResetPassword.Client_ResetPassword2" />
+        <activity android:name=".Client_ChangePassword" />
+        <activity
+            android:name=".SelectPicForPlaceOrder"
+            android:screenOrientation="portrait"
+            android:theme="@style/MyDialogStyleBottom" />
+        <activity android:name=".Client_PopUp_Version" />
+
+    </application>
+
+</manifest>

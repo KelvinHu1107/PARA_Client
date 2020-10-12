@@ -25,6 +25,7 @@ public class ClientPendingDataConvert {
                 jsvm.setBudget(object.getDouble("Budget"));
                 jsvm.setProviderProfilePhoto(object.getString("ProviderProfilePhoto"));
                 jsvm.setCreateDate(object.getString("CreatedDate"));
+                jsvm.setAddress(object.getString("AddressDetail"));
                 jsvm.setCompleteDate(object.getString("CompleteDate"));
 
                 result.add(jsvm);

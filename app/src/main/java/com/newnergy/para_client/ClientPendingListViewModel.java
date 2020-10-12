@@ -12,6 +12,15 @@ public class ClientPendingListViewModel {
     private Integer ProviderId ;
     private String CreateDate;
     private String CompleteDate;
+    private String address;
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String addressText) {
+        address = addressText;
+    }
 
     public String getCompleteDate() {
         return CompleteDate;

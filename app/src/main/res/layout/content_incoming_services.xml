@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar_incoming_services"
+        layout="@layout/toolbar_incoming_services">
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:id= "@+id/top_section"
+        android:layout_height="match_parent"
+        android:weightSum="1">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id= "@+id/incoming_jobs_header"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:background="#ffffff"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="12.5dp"
+            android:layout_marginTop="12.5dp">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_sort_by_type"
+                android:src="@drawable/c_type"
+                android:background="#ffffff"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_sort_by_date"
+                android:src="@drawable/c_rate01"
+                android:background="#ffffff"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="427dp"
+            android:layout_weight="1">
+
+            <com.newnergy.para_client.RefreshListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView2"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/divide_line_furtherinfo_xh_720x1280"
+            android:id="@+id/imageView16" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/incoming_jobs_footer"
+            android:layout_height="45dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton"
+                android:layout_weight="1"
+                android:src="@drawable/main_01"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_Post_Main"
+                android:layout_weight="1"
+                android:src="@drawable/post_01"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton_message_main"
+                    android:src="@drawable/message_01"
+                    android:layout_weight="1"
+                    android:background="#ffffff"
+                    android:layout_gravity="bottom" />
+
+                <TextView
+                    android:text=" 1 "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_footerMessage"
+                    android:background="@drawable/bubble_red"
+                    android:layout_marginLeft="45dp"
+                    android:textSize="8sp"
+                    android:padding="2dp"
+                    android:textStyle="normal|bold"
+                    android:visibility="invisible" />
+            </FrameLayout>
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton_pending_main"
+                    android:layout_weight="1"
+                    android:src="@drawable/pending_01"
+                    android:background="#ffffff"
+                    android:layout_gravity="bottom" />
+
+                <TextView
+                    android:text=" 1 "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_footerPending"
+                    android:background="@drawable/bubble_red"
+                    android:layout_marginLeft="45dp"
+                    android:textSize="8sp"
+                    android:padding="2dp"
+                    android:textStyle="normal|bold"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_profile_main"
+                android:src="@drawable/client_setting_01"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>

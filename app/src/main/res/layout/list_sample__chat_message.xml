@@ -13,9 +13,11 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-            android:id="@+id/chat_gravityContainer">
+            android:id="@+id/chat_gravityContainer"
+            android:layout_marginTop="12.5dp"
+            android:layout_marginBottom="12.5dp">
 
-        <ImageView
+        <com.newnergy.para_client.CircleImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
             android:id="@+id/imageView_chat_profile_pic_left"
@@ -45,8 +47,7 @@
         android:orientation="vertical"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@drawable/border_radius_blue_button"
-        android:id="@+id/linearLayout_message1"
+                android:id="@+id/linearLayout_message1"
                 android:layout_alignParentStart="false"
         android:layout_alignParentEnd="false"
         android:layout_alignParentTop="false"
@@ -63,12 +64,14 @@
             android:layout_height="wrap_content"
             android:text="Chat text"
             android:id="@+id/textView_chatMessage1"
-            android:textColor="#333333"
+            android:textColor="#ffffff"
             android:textSize="15sp"
             android:layout_margin="5dp"
             android:maxWidth="200dp"
             android:layout_gravity="left"
-            android:gravity="left" />
+            android:gravity="left"
+            android:background="@drawable/border_radius_blue_button"
+            android:padding="12.5dp" />
     </LinearLayout>
 
             <ImageView
@@ -91,7 +94,7 @@
                 android:textSize="10sp"
                 android:layout_marginLeft="5dp" />
 
-            <ImageView
+            <com.newnergy.para_client.CircleImageView
                 android:layout_width="25dp"
                 android:layout_height="25dp"
                 android:id="@+id/imageView_chat_profile_pic_right"

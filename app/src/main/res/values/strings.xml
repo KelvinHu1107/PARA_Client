@@ -1,0 +1,62 @@
+<resources>
+    <string name="app_name">PARA_Client</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="title_activity_register_active">RegisterActiveActivity</string>
+    <string name="facebook_app_id">549428541916989</string>
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_map_mark_activity">Map_mark_activity</string>
+
+    <string-array name="Type">
+        <item>Plumber</item>
+        <item>Electrician</item>
+        <item>Builder</item>
+        <item>Painter</item>
+        <item>Cleaner</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="PayMethod">
+        <item>Cash</item>
+        <item>Cheque</item>
+        <item>Bank transfer</item>
+    </string-array>
+
+    <string-array name="DueDate">
+        <item>ASAP</item>
+        <item>Within 24 hrs</item>
+        <item>Not specific</item>
+    </string-array>
+
+    <string-array name="Month">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+    </string-array>
+
+    <string-array name="Year">
+        <item>2016</item>
+        <item>2017</item>
+        <item>2018</item>
+        <item>2019</item>
+        <item>2020</item>
+        <item>2021</item>
+        <item>2022</item>
+        <item>2023</item>
+        <item>2024</item>
+        <item>2025</item>
+        <item>2026</item>
+    </string-array>
+
+</resources>

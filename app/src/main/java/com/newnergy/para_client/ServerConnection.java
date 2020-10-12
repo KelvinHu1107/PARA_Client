@@ -2,6 +2,7 @@ package com.newnergy.para_client;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Base64;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
@@ -26,6 +27,7 @@ public class ServerConnection {
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
             conn.setDoOutput(true);
             conn.setDoInput(true);
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
@@ -56,6 +58,42 @@ public class ServerConnection {
         }
     }
 
+    public static String GetTokenFromServer(String urlString, String urlParameters, String method){
+        String result = "";
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            String basicAuthentication = ValueMessager.email.toString() +":para";
+            byte[] data = basicAuthentication.getBytes();
+            conn.setRequestProperty("Authorization","Basic "+ Base64.encodeToString(data, Base64.DEFAULT));
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+            dataOutputStream.writeBytes(urlParameters);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+            int reposeCode = conn.getResponseCode();
+            if (reposeCode == 200) {
+                InputStream stream = conn.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                result = buffer.toString();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
+
     public static int getIdFromServer(String urlString, String urlParameters, String method) {
         int result = 0;
         BufferedReader reader = null;
@@ -65,6 +103,9 @@ public class ServerConnection {
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Connection", "Keep-Alive");
+
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
+
             conn.setDoOutput(true);
             conn.setDoInput(true);
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
@@ -101,12 +142,9 @@ public class ServerConnection {
             conn.setRequestMethod(method);
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
             conn.setDoInput(true);
-//            conn.setDoOutput(true);
-//            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
-//            dataOutputStream.writeBytes(urlParameters);
-//            dataOutputStream.flush();
-//            dataOutputStream.close();
+
             int reposeCode = conn.getResponseCode();
             if (reposeCode == 200) {
                 InputStream stream = conn.getInputStream();
@@ -124,6 +162,42 @@ public class ServerConnection {
         return result;
     }
 
+    public static Boolean deleteImageFromServer(String urlString, String urlParameters, String method) {
+        String result = "";
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Content-Type", "application/json");
+            conn.setRequestProperty("Connection", "Keep-Alive");
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
+            conn.setDoInput(true);
+            int reposeCode = conn.getResponseCode();
+//            System.out.println(conn.);
+            if (reposeCode == 200) {
+                InputStream stream = conn.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                result = buffer.toString();
+                if (buffer.toString().equals("true")) {
+                    return true;
+                } else {
+                    return false;
+                }
+            }else {
+                return false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     public static Bitmap getImageFromServer(String urlString, String urlParameters, String method) {
         String result = "";
         BufferedInputStream reader = null;
@@ -133,6 +207,9 @@ public class ServerConnection {
             conn.setRequestMethod(method);
             conn.setRequestProperty("Connection", "Keep-Alive");
             conn.setRequestProperty("Content-Type", "application/json");
+
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
+
             conn.setDoInput(true);
 //            conn.setDoOutput(true);
 //            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
@@ -174,6 +251,9 @@ public class ServerConnection {
             conn.setRequestProperty("Connection", "Keep-Alive");
 //            conn.setRequestProperty("Cache-Control", "no-cache");
             conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
+
             conn.setDoOutput(true);
             conn.setDoInput(true);
             DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
@@ -212,6 +292,58 @@ public class ServerConnection {
 
     }
 
+    public static String sendServiceImageToServer(String urlString, Bitmap bitmap, String method) {
+        String attachmentName = "bitmap";
+        String attachmentFileName = "bitmap.png";
+        String crlf = "\r\n";
+        String twoHyphens = "--";
+        String boundary = "*****";
+        BufferedReader reader = null;
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod(method);
+            conn.setRequestProperty("Connection", "Keep-Alive");
+//            conn.setRequestProperty("Cache-Control", "no-cache");
+            conn.setRequestProperty("Content-Type", "multipart/form-data; boundary=" + boundary);
+
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
+
+            conn.setDoOutput(true);
+            conn.setDoInput(true);
+            DataOutputStream dataOutputStream = new DataOutputStream(conn.getOutputStream());
+            dataOutputStream.writeBytes(twoHyphens + boundary + crlf);
+            dataOutputStream.writeBytes("Content-Disposition: form-data; name=\"" +
+                    attachmentName + "\";filename=\"" +
+                    attachmentFileName + "\"" + crlf);
+            dataOutputStream.writeBytes(crlf);
+            dataOutputStream.write(getStringImage(bitmap));
+            dataOutputStream.writeBytes(crlf);
+            dataOutputStream.writeBytes(twoHyphens + boundary +
+                    twoHyphens + crlf);
+            dataOutputStream.flush();
+            dataOutputStream.close();
+            int reposeCode = conn.getResponseCode();
+            if (reposeCode == 200) {
+                InputStream stream = conn.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                StringBuffer buffer = new StringBuffer();
+                String line = "";
+                while ((line = reader.readLine()) != null) {
+                    buffer.append(line);
+                }
+                String result=buffer.toString();
+                return result;
+            } else {
+                return "";
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
+        }
+
+    }
+
     public static byte[] getStringImage(Bitmap bmp) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -228,6 +360,7 @@ public class ServerConnection {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 //            conn.setRequestProperty("Content-type", "application/json");
             conn.setRequestProperty("Content-Type", "text/plain; charset=utf-8");
+            conn.setRequestProperty("Authorization","Bearer "+ValueMessager.accessToken);
             conn.setDoOutput(true);
             conn.setDoInput(true);
             conn.setRequestMethod(method);

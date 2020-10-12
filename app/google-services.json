@@ -1,0 +1,73 @@
+{
+  "project_info": {
+    "project_number": "473036043722",
+    "firebase_url": "https://para-141405.firebaseio.com",
+    "project_id": "para-141405",
+    "storage_bucket": "para-141405.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473036043722:android:29fbdf3f97739a62",
+        "android_client_info": {
+          "package_name": "com.newnergy.para_provider"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473036043722-12ddg2m958h868h1h63pvji7f7objg6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLrnVOg4yNePh18shvHXN-a9N_MyFlpOM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:473036043722:android:2cee6085611ea2eb",
+        "android_client_info": {
+          "package_name": "com.newnergy.para_client"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "473036043722-12ddg2m958h868h1h63pvji7f7objg6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBLrnVOg4yNePh18shvHXN-a9N_MyFlpOM"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

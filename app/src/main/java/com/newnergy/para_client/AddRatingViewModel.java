@@ -6,8 +6,17 @@ package com.newnergy.para_client;
 public class AddRatingViewModel {
     private String ProviderUsername ;
     private String ClientUsername ;
-    private Double Rating ;
-    private String Comment ;
+    private Double Rating;
+    private String Comment;
+    private Integer ServiceId;
+
+    public Integer getServiceId() {
+        return ServiceId;
+    }
+
+    public void setServiceId(Integer serviceId) {
+        ServiceId = serviceId;
+    }
 
     public String getProviderUsername() {
         return ProviderUsername;

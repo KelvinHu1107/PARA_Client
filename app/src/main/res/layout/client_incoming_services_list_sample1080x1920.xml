@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:scrollIndicators="top|left|bottom|start|end|right"
@@ -9,23 +10,26 @@
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:id="@+id/firstSection"
-        android:layout_height="75dp"
-        android:nestedScrollingEnabled="false">
+        android:nestedScrollingEnabled="false"
+        android:layout_marginLeft="12.5dp"
+        android:layout_height="85dp">
 
         <com.newnergy.para_client.CircleImageView
-            android:layout_width="50dp"
-            android:layout_height="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/imageView_pic"
             android:src="@drawable/client_photo_round"
-            android:padding="12.5dp"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:layout_weight="4.5"
+            android:layout_margin="5dp" />
 
         <LinearLayout
             android:orientation="vertical"
-            android:layout_width="fill_parent"
+            android:layout_width="match_parent"
             android:layout_height="76dp"
             android:outlineProvider="paddedBounds"
-            android:nestedScrollingEnabled="false">
+            android:nestedScrollingEnabled="false"
+            android:layout_weight="1">
 
             <LinearLayout
                 android:orientation="horizontal"
@@ -53,13 +57,13 @@
                     android:layout_height="match_parent"
                     android:text="St. Lukes"
                     android:id="@+id/textView_status"
-                    android:paddingRight="12.5dp"
                     android:textColor="#999999"
-                    android:textSize="10sp"
+                    android:textSize="12sp"
                     android:layout_gravity="center_vertical"
-                    android:gravity="right"
-                    android:layout_marginLeft="50dp"
-                    android:layout_weight="1" />
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="28dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp" />
 
             </LinearLayout>
 
@@ -86,16 +90,48 @@
                         android:paddingBottom="10dp"
                         android:background="#ffffff">
 
-                        <RatingBar
-                            android:id="@+id/rtbProductRating"
-                            android:layout_height="25dp"
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:numStars="5"
-                            android:rating="5"
-                            android:isIndicator="false"
-                            style="@style/ratingBar_median"
-                            android:stepSize="0.5"
-                            android:layout_marginLeft="12.5dp" />
+                            android:layout_height="match_parent"
+                            android:id="@+id/linearLayout_starContainer"
+                            android:layout_marginLeft="12.5dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star1"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star2"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star3"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star4"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star5"
+                                android:layout_weight="1" />
+                        </LinearLayout>
 
                         <TextView
                             android:layout_width="wrap_content"
@@ -104,70 +140,12 @@
                             android:id="@+id/textView_location"
                             android:paddingLeft="12.5dp"
                             android:textColor="#999999"
-                            android:textSize="15sp"
+                            android:textSize="12sp"
                             android:paddingRight="12.5dp"
-                            android:textStyle="bold"
                             android:layout_gravity="left"
-                            android:layout_marginLeft="50dp" />
+                            android:layout_marginLeft="30dp"
+                            android:gravity="right|center_vertical" />
 
-                        <LinearLayout
-                            android:orientation="horizontal"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_weight="2">
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageButton_furtherInfo"
-                                android:src="@drawable/button_information_xh_720x1280"
-                                android:background="#ffffff"
-                                android:paddingTop="13dp"
-                                android:paddingLeft="30dp"
-                                android:paddingRight="25dp"
-                                android:paddingBottom="13dp" />
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageButton_location_furtherInfo"
-                                android:src="@drawable/button_location_xh_720x1280"
-                                android:background="#ffffff"
-                                android:paddingRight="25dp"
-                                android:paddingTop="13dp"
-                                android:paddingBottom="13dp" />
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageButton_dial_incomingServices"
-                                android:src="@drawable/button_call_xh_720x1280"
-                                android:background="#ffffff"
-                                android:paddingTop="13dp"
-                                android:paddingRight="25dp"
-                                android:paddingBottom="13dp" />
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageButton_chat_incomingService"
-                                android:src="@drawable/button_chat_xh_720x1280"
-                                android:background="#ffffff"
-                                android:paddingTop="13dp"
-                                android:paddingRight="15dp"
-                                android:paddingBottom="13dp" />
-
-                            <ImageButton
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:id="@+id/imageButton_rollback"
-                                android:src="@drawable/button_back_xh_720x1280"
-                                android:background="#ffffff"
-                                android:paddingLeft="35dp"
-                                android:paddingTop="13dp"
-                                android:paddingRight="13dp"
-                                android:paddingBottom="13dp" />
-                        </LinearLayout>
                     </LinearLayout>
 
                 </LinearLayout>
@@ -180,7 +158,9 @@
     <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12.5dp"
+        android:layout_marginRight="12.5dp">
 
         <ImageView
             android:layout_width="match_parent"

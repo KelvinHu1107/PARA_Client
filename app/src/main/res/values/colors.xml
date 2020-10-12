@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="para_colorPrimary">#4972b3</color>
+    <color name="para_red">#f3736f</color>
+    <color name="textHint">#999999</color>
+    <color name="TitleColor">#666666</color>
+    <color name="HeaderColor">#4972B3</color>
+    <color name="inputColor">#333333</color>
+    <color name="chosen_header_bg_color">#4a72b3</color>
+    <color name="chosen_text_color">#000000</color>
+    <color name="chosen_selected_text_color">#999999</color>
+    <color name="chosen_dayOfWeek_color">#41679e</color>
+    <color name="white">#ffffff</color>
+    <color name="transparent">#00000000</color>
+</resources>

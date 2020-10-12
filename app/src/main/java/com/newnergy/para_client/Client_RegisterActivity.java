@@ -12,6 +12,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.iid.FirebaseInstanceId;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,6 +25,8 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static java.lang.System.currentTimeMillis;
 
 /**
  * Created by GaoxinHuang on 2016/6/2.
@@ -40,8 +44,6 @@ public class Client_RegisterActivity extends AppCompatActivity {
     private TextView tvEmailLeft;
     private TextView tvPasswordLeft;
     private TextView tvConfirmLeft;
-    private TextView tvFirstNameLeft;
-    private TextView tvLastNameLeft;
     private TextView tvPhoneLeft;
     private TextView tvWarningMessage;
     JSONObject response;
@@ -109,14 +111,12 @@ public class Client_RegisterActivity extends AppCompatActivity {
         EtPhoneNumber = (EditText) findViewById(R.id.et_register_phone);
         EtFirstName = (EditText) findViewById(R.id.et_register_first_name);
         EtLastName = (EditText) findViewById(R.id.et_register_last_name);
-        tvToolbarNext = (ImageView) findViewById(R.id.imageView_back);
-        tvToolbarBack = (ImageView) findViewById(R.id.imageView_ok);
+        tvToolbarNext = (ImageView) findViewById(R.id.imageView_ok);
+        tvToolbarBack = (ImageView) findViewById(R.id.imageView_back);
         tvWarningMessage = (TextView) findViewById(R.id.textView_register_warning);
         tvEmailLeft = (TextView) findViewById(R.id.textView_email_left);
         tvPasswordLeft = (TextView) findViewById(R.id.textView_password_left);
         tvConfirmLeft = (TextView) findViewById(R.id.textView_confirm_left);
-        tvFirstNameLeft = (TextView) findViewById(R.id.textView_firstName_left);
-        tvLastNameLeft = (TextView) findViewById(R.id.textView_lastName_left);
         tvPhoneLeft = (TextView) findViewById(R.id.textView_phone_left);
 
         try {
@@ -220,13 +220,18 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                     tvWarningMessage.setVisibility(View.VISIBLE);
                                     tvWarningMessage.setText("Warning, this account has been registered!");
                                     tvPasswordLeft.setTextColor(Color.parseColor("#f3736f"));
+                                    myLoading.CloseLoadingDialog();
 
                                 } else {
-                                    Client_RegisterController controller = new Client_RegisterController() {
+                                    LoginController controller = new LoginController() {
                                         @Override
-                                        public void onResponse(Boolean result) {
+                                        public void onResponse(String result) {
                                             super.onResponse(result);
-                                            if (result) {
+
+                                            AccountDataConvert convert=new AccountDataConvert();
+                                            AccountViewModel model=convert.convertJsonToModel(result);
+
+                                            if (model.getSuccess()) {
 
                                                 writeData("userEmail",EtEmail.getText().toString());
                                                 ValueMessager.email = EtEmail.getText().toString();
@@ -236,6 +241,12 @@ public class Client_RegisterActivity extends AppCompatActivity {
 
                                                 ValueMessager.userFirstName = firstName;
                                                 ValueMessager.userLastName = lastName;
+
+                                                ValueMessager.accessToken = model.getAccessToken();
+                                                ValueMessager.tokenDueTime = model.getExpiresIn() + currentTimeMillis();
+                                                ValueMessager.refreshToken = model.getRefreshToken();
+
+                                                connect(ValueMessager.email.toString());
 
                                                 myLoading.CloseLoadingDialog();
 
@@ -248,6 +259,8 @@ public class Client_RegisterActivity extends AppCompatActivity {
                                             }
                                         }
                                     };
+
+                                    ValueMessager.email = emailAddress;
                                     controller.execute("http://para.co.nz/api/ClientAccount/Post", "{'username':'" + emailAddress + "'," +
                                             "'password':'" + password + "'," +
                                             "'CellPhone':'" + phoneNumber + "'," +
@@ -257,6 +270,7 @@ public class Client_RegisterActivity extends AppCompatActivity {
                             }
                         };
                         myLoading.ShowLoadingDialog();
+
                         checkDuplicateUsername.execute("http://para.co.nz/api/ClientAccount/CheckDuplicateUsername", "{'username':'" + emailAddress + "'}", "POST");
 
                     } else {
@@ -271,11 +285,31 @@ public class Client_RegisterActivity extends AppCompatActivity {
     public boolean isEmail(String email){
 
         Pattern p = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}");
-        //Pattern p =  Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
+        Pattern p2 = Pattern.compile("\\w+@(\\w+.)+[a-z]{2,3}+\\.+[a-z]{2,3}");
+
         Matcher m = p.matcher(email);
-        return m.matches();
+        Matcher m2 = p2.matcher(email);
+
+        if(m.matches() || m2.matches()){
+            return true;
+        }else{
+            return false;
+        }
     }
 
+    public void connect(String username) {
+        DataSendController controller = new DataSendController() {
+            @Override
+            public void onResponse(Boolean s) {
+                System.out.println();
+            }
+        };
+        String token = FirebaseInstanceId.getInstance().getToken();
+        String data="{\"Username\":\"" + username + "\","
+                +"\"NotificationToken\":\"" + token + "\"}";
+
+        controller.execute("http://para.co.nz/api/NoticeAndroid/AddNotificationClient",data,"POST");
+    }
 
     public View.OnClickListener onClickBack(View v) {
         View.OnClickListener event = new View.OnClickListener() {

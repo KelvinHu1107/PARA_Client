@@ -12,6 +12,7 @@ public class ValueMessengerTaskInfo {
     public static int serviceId;
     public static Double budget;
     public static Double providerOfferedPrice;
+    public static Double providerDeposit;
     public static CharSequence jobTitle;
     public static CharSequence type;
     public static CharSequence providerUserName;
@@ -19,5 +20,6 @@ public class ValueMessengerTaskInfo {
     public static CharSequence providerLastName;
     public static Integer providerId;
     public static Bitmap providerProfilePhoto;
+    public static String providerProfilePicUrl;
 
 }

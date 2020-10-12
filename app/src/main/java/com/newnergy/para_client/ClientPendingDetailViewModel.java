@@ -25,12 +25,57 @@ public class ClientPendingDetailViewModel {
     private String[] ServicePhotoUrl;
     private String ProviderUsername;
     private String CreateDate;
+    private String CompleteDate;
     private Double deposit;
     private Double Rating;
+    private Double ProviderDeposit;
+    private Double extraDeposit;
+    private Double ServiceRating;
     private String ProviderFirstname;
     private String ProviderLastname;
     private String DueDate;
+    private String PaymentMethod;
     private boolean IsSecure;
+
+    public Double getExtraDeposit() {
+        return extraDeposit;
+    }
+
+    public void setExtraDeposit(Double extraDepositR) {
+        extraDeposit = extraDepositR;
+    }
+
+    public String getCompleteDate() {
+        return CompleteDate;
+    }
+
+    public void setCompleteDate(String completeDate) {
+        CompleteDate = completeDate;
+    }
+
+    public Double getServiceRating() {
+        return ServiceRating;
+    }
+
+    public void setServiceRating(Double rating) {
+        ServiceRating = rating;
+    }
+
+    public String getPaymentMethod() {
+        return PaymentMethod;
+    }
+
+    public void setPaymentMethod(String completeDate) {
+        PaymentMethod = completeDate;
+    }
+
+    public Double getProviderDeposit() {
+        return ProviderDeposit;
+    }
+
+    public void setProviderDeposit(Double providerDeposit) {
+        ProviderDeposit = providerDeposit;
+    }
 
     public String getDueDate() {
         return DueDate;

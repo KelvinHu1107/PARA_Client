@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar_profile_changeemail"
+        layout="@layout/toolbar_profile_changeemail">
+
+
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_email"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:text="ImNotGannaHurtYou@gmail.com"
+            android:layout_marginTop="25dp"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+    </LinearLayout>
+
+</LinearLayout>

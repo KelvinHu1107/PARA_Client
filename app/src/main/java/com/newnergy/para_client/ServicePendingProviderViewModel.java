@@ -12,8 +12,17 @@ public class ServicePendingProviderViewModel {
     private String ProviderProfilePhoto ;
     private Double ProviderRating ;
     private Double  Price ;
+    private Double ProviderDeposit;
     private String ProviderFirstname;
     private String ProivderLastname;
+
+    public Double getProviderDeposit() {
+        return ProviderDeposit;
+    }
+
+    public void setProviderDeposit(Double providerDeposit) {
+        ProviderDeposit = providerDeposit;
+    }
 
     public String getProviderFirstname() {
         return ProviderFirstname;

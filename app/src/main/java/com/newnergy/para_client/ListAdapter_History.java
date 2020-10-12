@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.newnergy.para_client.Image_package.ImageUnity;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -21,10 +23,11 @@ import java.util.Date;
 public class ListAdapter_History extends ArrayAdapter<String> {
     // declaration
 
-    CharSequence[] createDate;
+    CharSequence[] completeDate;
     int[]  serviceId;
     CharSequence[] providerPhoto;
     CharSequence[] getTitle;
+    String[] address;
     Integer[] providerId, status;
     Double[] budget;
     Context c;
@@ -32,25 +35,25 @@ public class ListAdapter_History extends ArrayAdapter<String> {
     private ProviderProfileViewModel list;
     ImageUnity imageUnity = new ImageUnity();
 
-    public ListAdapter_History(Context context, String[] objectName, CharSequence[] createDate, int[] serviceId, Integer[] providerId, CharSequence[] providerPhoto,
-                               CharSequence[] getTitle, Integer[] status, Double[] budget) {
+    public ListAdapter_History(Context context, String[] objectName, CharSequence[] completeDate, int[] serviceId, Integer[] providerId, CharSequence[] providerPhoto,
+                               CharSequence[] getTitle, String[] address, Double[] budget) {
 
         super(context, R.layout.history_list_sample, objectName);
 
         this.c = context;
         this.serviceId = serviceId;
-        this.createDate = createDate;
+        this.completeDate = completeDate;
         this.providerId = providerId;
         this.providerPhoto = providerPhoto;
         this.getTitle = getTitle;
-        this.status = status;
+        this.address = address;
         this.budget = budget;
     }
 
     public class ViewHolder {
-        TextView nameTv, textTv, timeTv, budgetTv;
-        ImageView imgIv;
-        LinearLayout linearLayout;
+        TextView[] nameTv = new TextView[serviceId.length], textTv = new TextView[serviceId.length], timeTv = new TextView[serviceId.length], budgetTv = new TextView[serviceId.length];
+        ImageView[] imgIv = new ImageView[serviceId.length];
+        LinearLayout[] linearLayout = new LinearLayout[serviceId.length];
 
     }
 
@@ -64,16 +67,18 @@ public class ListAdapter_History extends ArrayAdapter<String> {
             convertView = inflaterPending.inflate(R.layout.history_list_sample, null);
             else if(ValueMessager.resolution800x480)
                 convertView = inflaterPending.inflate(R.layout.history_list_sample, null);
+            else
+                convertView = inflaterPending.inflate(R.layout.history_list_sample, null);
         }
 
         //assign id to items , convert view
         final ViewHolder holder = new ViewHolder();
-        holder.nameTv = (TextView) convertView.findViewById(R.id.textView_name_history);
-        holder.imgIv = (ImageView) convertView.findViewById(R.id.imageView_pic_history);
-        holder.textTv = (TextView) convertView.findViewById(R.id.textView_title_history);
-        holder.timeTv = (TextView) convertView.findViewById(R.id.textView_date_history);
-        holder.linearLayout = (LinearLayout) convertView.findViewById(R.id.linearLayout_history);
-        holder.budgetTv = (TextView) convertView.findViewById(R.id.textView_price_history);
+        holder.nameTv[position] = (TextView) convertView.findViewById(R.id.textView_name_history);
+        holder.imgIv[position] = (ImageView) convertView.findViewById(R.id.imageView_pic_history);
+        holder.textTv[position] = (TextView) convertView.findViewById(R.id.textView_title_history);
+        holder.timeTv[position] = (TextView) convertView.findViewById(R.id.textView_date_history);
+        holder.linearLayout[position] = (LinearLayout) convertView.findViewById(R.id.linearLayout_history);
+        holder.budgetTv[position] = (TextView) convertView.findViewById(R.id.textView_price_history);
 
         Calendar currentTime = Calendar.getInstance();
         Long diff, diffDayLong;
@@ -86,71 +91,72 @@ public class ListAdapter_History extends ArrayAdapter<String> {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         SimpleDateFormat finalFormat = new SimpleDateFormat("dd-MMMM");
         try {
-            date = format.parse(createDate[position].toString());
+            date = format.parse(completeDate[position].toString());
             calculatedDate = finalFormat.format(date);
         } catch (ParseException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
-        imageUnity.setImage(c, holder.imgIv, "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/"+providerPhoto[position].toString());
+        if(providerPhoto[position].equals("")){
+            holder.imgIv[position].setImageResource(R.drawable.client_photo_round);
+        }else {
+            imageUnity.setImage(c, holder.imgIv[position], "http://para.co.nz/api/ProviderProfile/GetProviderProfileImage/" + providerPhoto[position].toString());
+        }
 
-        holder.timeTv.setText(calculatedDate);
+        ValueMessengerTaskInfo.id = serviceId[position];
+        ValueMessengerTaskInfo.providerId = providerId[position];
+        ValueMessengerTaskInfo.providerProfilePicUrl = "http://para.co.nz/api/ProviderProfile/GetProviderDetailById/"+providerId[position].toString();
+        ValueMessager.lastPageConfirm2 = 0;
 
-        DataTransmitController controller =new DataTransmitController(){
-            @Override
-            public void onResponse(String result) {
-                super.onResponse(result);
+        //kelvinkelvin
 
-                list = ProviderProfileDataConvert.convertJsonToModel(result);
-
-                holder.budgetTv.setText("$ "+budget[position].toString());
-                holder.textTv.setText(getTitle[position]);
-                holder.nameTv.setText(list.getFirstName()+" "+list.getLastName());
-
-            }
-        };
-        controller.execute("http://para.co.nz/api/ProviderProfile/GetProviderDetailById/"+providerId[position],"","GET");
-
+        holder.timeTv[position].setTag(calculatedDate);
+        String tag = (String) holder.timeTv[position].getTag();
+        if(tag!=null&&tag.equals(calculatedDate))
+        holder.timeTv[position].setText(calculatedDate);
 
 
-        holder.imgIv.setOnClickListener(new View.OnClickListener() {
+        holder.budgetTv[position].setTag(budget[position].toString());
+        String tag2 = (String) holder.budgetTv[position].getTag();
+        if(tag2!=null&&tag2.equals(budget[position].toString()))
+        holder.budgetTv[position].setText("$ "+budget[position].toString());
+
+        holder.textTv[position].setTag(address[position].toString());
+        String tag3 = (String) holder.textTv[position].getTag();
+        if(tag3!=null&&tag3.equals(address[position].toString()))
+        holder.textTv[position].setText(address[position]);
+
+        holder.nameTv[position].setTag(getTitle[position].toString());
+        String tag4 = (String) holder.nameTv[position].getTag();
+        if(tag4!=null&&tag4.equals(getTitle[position].toString()))
+        holder.nameTv[position].setText(getTitle[position]);
+
+        //kelvinkelvin solve list shifting problem
+
+
+        holder.imgIv[position].setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                ValueMessengerTaskInfo.id = serviceId[position];
-                ValueMessengerTaskInfo.providerId = providerId[position];
-                ValueMessager.lastPageConfirm2 = 0;
-
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);
             }
         });
 
-        holder.linearLayout.setOnClickListener(new View.OnClickListener() {
+        holder.linearLayout[position].setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                ValueMessengerTaskInfo.id = serviceId[position];
-                ValueMessengerTaskInfo.providerId = providerId[position];
-                ValueMessager.lastPageConfirm2 = 0;
-
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);
             }
         });
 
-        holder.timeTv.setOnClickListener(new View.OnClickListener() {
+        holder.timeTv[position].setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View v) {
-
-                ValueMessengerTaskInfo.id = serviceId[position];
-                ValueMessengerTaskInfo.providerId = providerId[position];
-                ValueMessager.lastPageConfirm2 = 0;
-
                 Intent nextPage_Confirm = new Intent(c,Client_Confirm2.class);
                 c.startActivity(nextPage_Confirm);
             }

@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        android:id="@+id/toolbar_card_address"
+        layout="@layout/toolbar_card_address">
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#ffffff">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Street"
+            android:id="@+id/textView5"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="12.5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_cardAddress_street"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Suburb"
+            android:id="@+id/textView30"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="12.5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText_cardAddress_suburb"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="City"
+            android:id="@+id/textView37"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="12.5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText_cardAddress_city"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Country"
+            android:id="@+id/textView8"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="12.5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/edit_cardAddress_country"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Post code"
+            android:id="@+id/textView_postCode"
+            android:textColor="#333333"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:gravity="left|center_horizontal"
+            android:layout_margin="12.5dp" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/editText_postCode"
+            android:textColorHint="#999999"
+            android:textSize="15sp"
+            android:textColor="#000000"
+            android:background="@drawable/border_radius"
+            android:layout_marginLeft="12.5dp"
+            android:layout_marginRight="12.5dp"
+            android:padding="12.5dp"
+            android:autoText="true"
+            android:lines="1"
+            android:singleLine="true" />
+
+    </LinearLayout>
+
+</LinearLayout>

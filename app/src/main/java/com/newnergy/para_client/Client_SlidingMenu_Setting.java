@@ -86,10 +86,10 @@ public class Client_SlidingMenu_Setting extends AppCompatActivity {
                    Intent nextPage_IncomingServices = new Intent(Client_SlidingMenu_Setting.this, Client_Incoming_Services.class);
                    startActivity(nextPage_IncomingServices);
                        break;
-                   case 2:
-                       Intent nextPage_Message = new Intent(Client_SlidingMenu_Setting.this, Client_Message.class);
-                       startActivity(nextPage_Message);
-                       break;
+//                   case 2:
+//                       Intent nextPage_Message = new Intent(Client_SlidingMenu_Setting.this, Chat_Table_Info.Client_Message.class);
+//                       startActivity(nextPage_Message);
+//                       break;
                    case 3:
                        Intent nextPage_Pending = new Intent(Client_SlidingMenu_Setting.this, Client_Pending.class);
                        startActivity(nextPage_Pending);

@@ -6,13 +6,21 @@ package com.newnergy.para_client;
 public class ClientUpdateServiceViewModel {
     private Integer ServiceId;
     private Double Budget;
-    private String Title;
+    private String Title, PaymentMethod;
     private Integer Status;
     private String Type;
     private String Description;
     private String DueDate;
     private Double Price, deposit;
-    private boolean IsSecure;
+    private Boolean IsSecure;
+
+    public String getPaymentMethod() {
+        return PaymentMethod;
+    }
+
+    public void setPaymentMethod(String type) {
+        PaymentMethod = type;
+    }
 
     public String getDueDate() {
         return DueDate;
@@ -22,11 +30,11 @@ public class ClientUpdateServiceViewModel {
         DueDate = text;
     }
 
-    public boolean getIsSecure() {
+    public Boolean getIsSecure() {
         return IsSecure;
     }
 
-    public boolean setIsSecure(boolean price) {
+    public Boolean setIsSecure(Boolean price) {
         IsSecure = price;
         return IsSecure;
     }

@@ -10,20 +10,25 @@ import android.os.SystemClock;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageButton;
+import android.widget.TextView;
+
+import com.newnergy.para_client.Chat.Client_Message;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Client_Incoming_Services extends AppCompatActivity
         implements OnRefreshListener {
 
-    private int ListSize = 10;
+    private int ListSize = 40;
     Adapter adapter;
     RefreshListView lv;
     private List<ProviderProfileViewModel> list;
@@ -43,24 +48,23 @@ public class Client_Incoming_Services extends AppCompatActivity
     Context context = this;
     Loading_Dialog myLoading;
 
-    public ImageButton pending, message, profile, imageButtonSearch, sortByDate, sortByType, sortByLocation, post;
-    public Button searchButton;
+    public ImageButton  profile, sortByDate, sortByType, sortByLocation, post;
     private Handler mHandler = new Handler(){
 
         public void handleMessage(Message msg) {
             switch (msg.what) {
                 case 1:
-                   initList();
+                    initList();
                     break;
                 case 2:
                     UpdateAdapter();
                     break;
+                case 3:
+                    //messageNotification();
+                    break;
             }
         };
     };
-
-
-
 
     public String readData(String openFileName) {
         try {
@@ -71,13 +75,46 @@ public class Client_Incoming_Services extends AppCompatActivity
 
             ValueMessager.readDataBuffer = bufferedReader.readLine();
 
-
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
         return ValueMessager.readDataBuffer.toString();
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+            RefreshTokenController controller = new RefreshTokenController(){
+                @Override
+                public void response(boolean result) {
+
+                    DataTransmitController c = new DataTransmitController() {
+                        @Override
+                        public void onResponse(String result) {
+                            super.onResponse(result);
+                            myLoading.CloseLoadingDialog();
+
+                            String outSide[] = result.trim().split("\"");
+
+                            String info1[] = ValueMessager.currentVersion.trim().split("\\.");
+                            String info2[] = outSide[1].trim().split("\\.");
+
+                            if(!info1[0].equals(info2[0])){
+                                Intent intent = new Intent(Client_Incoming_Services.this, Client_PopUp_Version.class);
+                                startActivity(intent);
+                            }
+                        }
+                    };
+                    c.execute("http://para.co.nz/api/version/getversion", "", "GET");
+                }
+            };
+
+            myLoading.ShowLoadingDialog();
+            controller.refreshToken(ValueMessager.email.toString(), ValueMessager.refreshToken);
+
     }
 
     public void getData() {
@@ -87,6 +124,9 @@ public class Client_Incoming_Services extends AppCompatActivity
                 super.onResponse(result);
 
                 list = ProviderProfileDataConvert.convertJsonToArrayList(result);
+                if(list.size() < ListSize){
+                    ListSize = list.size();
+                }
                 initList();
                 btnFunction();//button activity
             }
@@ -96,28 +136,28 @@ public class Client_Incoming_Services extends AppCompatActivity
     }
 
     public void btnFunction() {
-        pending = (ImageButton) findViewById(R.id.imageButton_pending_main);
-        message = (ImageButton) findViewById(R.id.imageButton_message_main);
+        ValueMessager.footerPending = (ImageButton) findViewById(R.id.imageButton_pending_main);
+        ValueMessager.textMessage = (TextView) findViewById(R.id.textView_footerMessage);
+        ValueMessager.textPending = (TextView) findViewById(R.id.textView_footerPending);
         profile = (ImageButton) findViewById(R.id.imageButton_profile_main);
-        imageButtonSearch = (ImageButton) findViewById(R.id.imageButtonToSearchPage);
         sortByDate = (ImageButton) findViewById(R.id.imageButton_sort_by_date);
         sortByType = (ImageButton) findViewById(R.id.imageButton_sort_by_type);
         post = (ImageButton) findViewById(R.id.imageButton_Post_Main);
-        sortByLocation = (ImageButton) findViewById(R.id.imageButton_sort_by_location);
-        searchButton = (Button) findViewById(R.id.buttonToSearchPage);
+        //sortByLocation = (ImageButton) findViewById(R.id.imageButton_sort_by_location);
+        ValueMessager.footerMessage = (ImageButton) findViewById(R.id.imageButton_message_main);
 
 
 
 
+        messageNotification();
 
         sortByDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortByType.setImageResource(R.drawable.type_1_xh_720x1280);
-                sortByDate.setImageResource(R.drawable.button_category_date_1_xh_720x1280);
-                sortByLocation.setImageResource(R.drawable.location_0_xh_720x1280);
-                //lv.removeViewsInLayout(0,1);
-                sortByDateFunction();
+                sortByType.setImageResource(R.drawable.p_type01);
+                sortByDate.setImageResource(R.drawable.c_rate02);
+
+                sortByRateFunction();
 
             }
         });
@@ -125,24 +165,14 @@ public class Client_Incoming_Services extends AppCompatActivity
         sortByType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                sortByType.setImageResource(R.drawable.type_0_xh_720x1280);
-                sortByDate.setImageResource(R.drawable.button_category_date_0_xh_720x1280);
-                sortByLocation.setImageResource(R.drawable.location_0_xh_720x1280);
-                //sortByTypeFunction();
+                sortByType.setImageResource(R.drawable.c_type);
+                sortByDate.setImageResource(R.drawable.c_rate01);
+
+                setSortByType();
             }
         });
 
-        sortByLocation.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sortByType.setImageResource(R.drawable.type_0_xh_720x1280);
-                sortByDate.setImageResource(R.drawable.button_category_date_0_xh_720x1280);
-                sortByLocation.setImageResource(R.drawable.location_1_xh_720x1280);
-                //sortByLocationFunction();
-            }
-        });
-
-        pending.setOnClickListener(new View.OnClickListener() {
+        ValueMessager.footerPending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent nextPage_Pending = new Intent(Client_Incoming_Services.this, Client_Pending.class);
@@ -151,9 +181,16 @@ public class Client_Incoming_Services extends AppCompatActivity
             }
         });
 
-        message.setOnClickListener(new View.OnClickListener() {
+        ValueMessager.footerMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+//                Intent intent = new Intent(Client_Incoming_Services.this, Client_Share.class);
+//                startActivity(intent);
+                if(ValueMessager.chat_db_Global!=null){
+                    ValueMessager.chat_db_Global.setAlreadyRead(ValueMessager.email.toString());
+                }
+
                 Intent nextPage_Pending = new Intent(Client_Incoming_Services.this, Client_Message.class);
                 startActivity(nextPage_Pending);
             }
@@ -168,21 +205,6 @@ public class Client_Incoming_Services extends AppCompatActivity
             }
         });
 
-        searchButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextPage_Search = new Intent(Client_Incoming_Services.this, Client_search.class);
-                startActivity(nextPage_Search);
-            }
-        });
-
-        imageButtonSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent nextPage_Search = new Intent(Client_Incoming_Services.this, Client_search.class);
-                startActivity(nextPage_Search);
-            }
-        });
 
         post.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -226,7 +248,6 @@ public class Client_Incoming_Services extends AppCompatActivity
         for (int i = 0; i < ListSize; i++) {
             objectName[i] = list.get(i).getFirstName() + " " + list.get(i).getLastName();
             name[i] = list.get(i).getFirstName() + " " + list.get(i).getLastName();
-            //createDate[i] = list.get(i).get
             id[i] = list.get(i).getId();
             suburb[i] = list.get(i).getProviderAddressSuburb();
             street[i] = list.get(i).getProviderAddressStreet();
@@ -236,43 +257,37 @@ public class Client_Incoming_Services extends AppCompatActivity
             companyPhone[i] = list.get(i).getCompanyPhone();
             rating[i] = list.get(i).getRating();
             type[i] = list.get(i).getProviderType();
+
         }
 
-//        for (int i = 0; i < list.size(); i++)
-//            dataList[i] = new ClientData();
+        for (int i = 0; i < ListSize; i++)
+            dataList[i] = new ClientData();
 
-        //SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
 
-//        for (int i = 0; i < list.size(); i++) {
-//            dataList[i].name = name[i];
-//            dataList[i].createDate = createDate[i];
-//            dataList[i].clientDueDate = clientDueDate[i];
-//            dataList[i].id = id[i];
-//            dataList[i].suburb = suburb[i];
-//            dataList[i].street = street[i];
-//            dataList[i].city = city[i];
-//            dataList[i].profilePhoto = profilePhoto[i];
-//            dataList[i].getTitle = getTitle[i];
-//            dataList[i].email = userName[i];
-//            dataList[i].companyPhone = companyPhone[i];
-//            dataList[i].rating = rating[i];
-//            dataList[i].type = type[i];
-
-//            try {
-//                dataList[i].date = format.parse(createDate[i].toString());
-//            } catch (ParseException e) {
-//                e.printStackTrace();
-//            }
-//        }
+        for (int i = 0; i < ListSize; i++) {
+            dataList[i].objectName = objectName[i];
+            dataList[i].name = name[i];
+            dataList[i].id = id[i];
+            dataList[i].suburb = suburb[i];
+            dataList[i].street = street[i];
+            dataList[i].city = city[i];
+            dataList[i].profilePhoto = profilePhoto[i];
+            dataList[i].getTitle = getTitle[i];
+            dataList[i].email = userName[i];
+            dataList[i].companyPhone = companyPhone[i];
+            dataList[i].rating = rating[i];
+            dataList[i].type = type[i];
+        }
         listReflash();
     }
 
     public void swapLists() {
         //swap
         for (int i = 0; i < ListSize; i++) {
+            objectName[i] = dataList[i].objectName.toString();
             name[i] = dataList[i].name;
             createDate[i] = dataList[i].createDate;
-            //clientId[i] = dataList[i].clientId;
             clientDueDate[i] = dataList[i].clientDueDate;
             id[i] = dataList[i].id;
             suburb[i] = dataList[i].suburb;
@@ -288,14 +303,14 @@ public class Client_Incoming_Services extends AppCompatActivity
         //swap
     }
 
-    public void sortByDateFunction() {
+    public void sortByRateFunction() {
 
         ClientData bufferList = new ClientData();
 
         //sort
-        for (int i = 0; i < list.size() - 1; i++) {
-            for (int j = 0; j < list.size() - 1; j++) {
-                if (dataList[j].date.getTime() < dataList[j + 1].date.getTime()) {
+        for (int i = 0; i < ListSize - 1; i++) {
+            for (int j = 0; j < ListSize - 1; j++) {
+                if (dataList[j].rating < dataList[j + 1].rating) {
                     bufferList = dataList[j];
                     dataList[j] = dataList[j + 1];
                     dataList[j + 1] = bufferList;
@@ -308,33 +323,85 @@ public class Client_Incoming_Services extends AppCompatActivity
         listReflash();
     }
 
-    /*
-        public void sortByLocationFunction() {
+    public void setSortByType(){
 
-            ClientData bufferList = new ClientData();
+        ClientData bufferList = new ClientData();
+        String sortString = new String();
 
-            //sort
-            for (int i = 0; i <= 5; i++) {
-                for (int j = 0; j <= 5; j++) {
-                    if (dataList[j].distance > dataList[j + 1].distance) {
-                        bufferList = dataList[j];
-                        dataList[j] = dataList[j + 1];
-                        dataList[j + 1] = bufferList;
-                    }
+        switch (ValueMessager.sortCounter%6){
+            case 0:
+                sortString = "Plumber";
+                break;
+            case 1:
+                sortString = "Electrician";
+                break;
+            case 2:
+                sortString = "Builder";
+                break;
+            case 3:
+                sortString = "Painter";
+                break;
+            case 4:
+                sortString = "Cleaner";
+                break;
+            case 5:
+                sortString = "Others";
+                break;
+        }
+
+        for (int i = 0; i < ListSize - 1; i++) {
+            for (int j = 0; j < ListSize - 1; j++) {
+                if (!dataList[j].type.equals(sortString) && dataList[j+1].type.equals(sortString))  {
+                    bufferList = dataList[j];
+                    dataList[j] = dataList[j + 1];
+                    dataList[j + 1] = bufferList;
                 }
             }
-            //sort
-
-            swapLists();
-
-            listReflash();
         }
-    */
+
+        swapLists();
+        listReflash();
+
+        ValueMessager.sortCounter += 1;
+
+    }
 
     public void listReflash() {
         adapter = new Adapter(this, objectName, name, createDate, clientDueDate, id, street, suburb, city, profilePhoto, getTitle, userName, companyPhone, rating, type);
         lv.setAdapter(adapter);
         lv.setOnRefreshListener(this);
+    }
+
+    public void messageNotification()
+    {
+        if(ValueMessager.notificationMessage>0) {
+            ValueMessager.textMessage.setVisibility(View.VISIBLE);
+            if(ValueMessager.notificationMessage > 0 && ValueMessager.notificationMessage < 10){
+                ValueMessager.textMessage.setText(" "+ValueMessager.notificationMessage+" ");
+            }else if(ValueMessager.notificationMessage > 9){
+                if(isNumeric(String.valueOf(ValueMessager.notificationPending))) {
+                    ValueMessager.textPending.setText(String.valueOf(ValueMessager.notificationPending));
+                }
+            }else if(ValueMessager.notificationMessage>99){
+                ValueMessager.textMessage.setText("99+");
+            }
+        }else{
+            ValueMessager.textMessage.setVisibility(View.INVISIBLE);
+        }
+
+
+        if(ValueMessager.notificationPending>0) {
+            ValueMessager.textPending.setVisibility(View.VISIBLE);
+            if (ValueMessager.notificationPending > 0 && ValueMessager.notificationPending < 10) {
+                ValueMessager.textPending.setText(" " + ValueMessager.notificationPending + " ");
+            } else if (ValueMessager.notificationPending > 9) {
+                ValueMessager.textPending.setText(String.valueOf(ValueMessager.notificationPending));
+            } else if (ValueMessager.notificationPending > 99) {
+                ValueMessager.textPending.setText("99+");
+            }
+        }else{
+            ValueMessager.textPending.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -346,12 +413,27 @@ public class Client_Incoming_Services extends AppCompatActivity
         myLoading = new Loading_Dialog();
         myLoading.getContext(this);
 
+        ValueMessager.sortCounter = 0;
         ValueMessager.imageCounter = 0;
         lv = (RefreshListView) findViewById(R.id.listView2);
 
-        getData();
-        scrollMyListViewToBottom();
+        RefreshTokenController c = new RefreshTokenController(){
+            @Override
+            public void response(boolean result ) {
 
+                getData();
+                if(result){
+                    System.out.println("ddddddddddddd fuck u gaoxin");
+                }else {
+                    System.out.println("failllllllllllllllll");
+                }
+            }
+        };
+
+        c.refreshToken(ValueMessager.email.toString(),"1a38a27a10134ac3a28cc15b90f9b24d");
+
+        //getData();
+        scrollMyListViewToBottom();
     }
 
     private void UpdateAdapter() {
@@ -403,6 +485,17 @@ public class Client_Incoming_Services extends AppCompatActivity
 
     }
 
+    public boolean isNumeric(String str)
+    {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() )
+        {
+            return false;
+        }
+        return true;
+    }
+
     @Override
     public void onLoadingMore() {
 
@@ -414,7 +507,7 @@ public class Client_Incoming_Services extends AppCompatActivity
                 SystemClock.sleep(2000);
                 Message message = new Message();
                 message.what = 1;
-                ListSize+=5;
+                ListSize += 40;
 
                 if(ListSize<list.size()) {
                     mHandler.sendMessage(message);
@@ -429,6 +522,7 @@ public class Client_Incoming_Services extends AppCompatActivity
 
 
                 System.out.println("test2");
+                scrollMyListViewToBottom();
                 return null;
             }
 
@@ -439,8 +533,6 @@ public class Client_Incoming_Services extends AppCompatActivity
                 lv.hideFooterView();
             }
         }.execute(new Void[] {});
-
-
     }
 
     private void scrollMyListViewToBottom() {
@@ -452,7 +544,4 @@ public class Client_Incoming_Services extends AppCompatActivity
             }
         });
     }
-
-
 }
-

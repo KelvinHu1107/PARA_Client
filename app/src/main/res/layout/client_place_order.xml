@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:id="@+id/linearLayout_mainContainer">
     <include
         android:id="@+id/toolbar_register_template"
         layout="@layout/toolbar_register">
@@ -50,7 +52,6 @@
                         android:layout_height="wrap_content"
                         android:text="Listing title"
                         android:id="@+id/textView51"
-                        android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
                         android:layout_gravity="center"
@@ -68,7 +69,9 @@
                         android:background="#ffffff"
                         android:layout_gravity="center"
                         android:gravity="right"
-                        android:maxLength="20" />
+                        android:maxLength="50"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
 
                 </LinearLayout>
 
@@ -102,6 +105,7 @@
                         android:entries="@array/Type"
                         android:spinnerMode="dropdown"
                         android:layout_gravity="center"
+                        android:cacheColorHint="#ffffff"
                         android:layout_margin="12.5dp"
                         android:layout_weight="1"
                         android:popupBackground="#ffffff"
@@ -132,25 +136,20 @@
                         android:gravity="left|center_vertical|center_horizontal"
                         android:layout_marginLeft="12.5dp" />
 
-                    <TextView
+                    <Spinner
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:id="@+id/textView_placeOrder_date"
-                        android:layout_weight="1"
-                        android:textColor="#666666"
-                        android:textSize="18sp"
-                        android:gravity="center_vertical|center_horizontal" />
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/imageView42"
+                        android:id="@+id/spinner_dueDate"
+                        android:entries="@array/DueDate"
+                        android:spinnerMode="dropdown"
                         android:layout_gravity="center"
-                        android:src="@drawable/arrow"
-                        android:layout_marginRight="12.5dp"
-                        android:layout_weight="2"
-                        android:paddingTop="12.5dp"
-                        android:paddingBottom="12.5dp" />
+                        android:cacheColorHint="#ffffff"
+                        android:layout_margin="12.5dp"
+                        android:layout_weight="1"
+                        android:popupBackground="#ffffff"
+                        android:theme="@style/AppTheme.PopupOverlay"
+                        android:gravity="right"
+                        android:paddingLeft="40dp" />
 
                 </LinearLayout>
 
@@ -172,8 +171,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Street"
-                        android:id="@+id/textView57"
-                        android:layout_weight="1"
+                        android:id="@+id/textView551"
                         android:textSize="18sp"
                         android:textColor="#333333"
                         android:layout_gravity="center"
@@ -187,11 +185,14 @@
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
-                        android:maxLength="20"
                         android:textColor="#666666"
                         android:background="#ffffff"
                         android:layout_gravity="center"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:maxLength="50"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
+
                 </LinearLayout>
 
                 <ImageView
@@ -210,7 +211,6 @@
                         android:layout_height="wrap_content"
                         android:text="Suburb"
                         android:id="@+id/textView27"
-                        android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
                         android:layout_gravity="center"
@@ -224,11 +224,13 @@
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
-                        android:maxLength="12"
+                        android:maxLength="50"
                         android:textColor="#666666"
                         android:background="#ffffff"
                         android:layout_gravity="center"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
                 </LinearLayout>
 
                 <ImageView
@@ -247,7 +249,6 @@
                         android:layout_height="wrap_content"
                         android:text="City"
                         android:id="@+id/textView36"
-                        android:layout_weight="1"
                         android:textSize="18sp"
                         android:textColor="#333333"
                         android:layout_gravity="center"
@@ -261,11 +262,13 @@
                         android:layout_weight="1"
                         android:layout_margin="12.5dp"
                         android:textSize="18sp"
-                        android:maxLength="12"
+                        android:maxLength="50"
                         android:textColor="#666666"
                         android:background="#ffffff"
                         android:layout_gravity="center"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:focusable="false"
+                        android:focusableInTouchMode="false" />
                 </LinearLayout>
             </LinearLayout>
 
@@ -301,7 +304,9 @@
                     android:padding="12.5dp"
                     android:textSize="18sp"
                     android:maxLength="500"
-                    android:textColor="#666666" />
+                    android:textColor="#666666"
+                    android:focusable="false"
+                    android:focusableInTouchMode="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -395,7 +400,7 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Not specified"
+                            android:text="Tender"
                             android:id="@+id/textView125"
                             android:textSize="16sp"
                             android:textColor="#000000"
@@ -466,15 +471,25 @@
                             android:layout_weight="1" >
 
                             <TextView
-                                android:layout_width="match_parent"
+                                android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:text="Do you want to secure funds?"
+                                android:text="Make a "
                                 android:id="@+id/textView22"
                                 android:textColor="#000000"
                                 android:textSize="14sp"
                                 android:layout_gravity="center"
-                                android:layout_weight="1"
-                                android:gravity="center_vertical" />
+                                android:gravity="center_vertical"
+                                android:textIsSelectable="false" />
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Prepayment"
+                                android:id="@+id/textView115"
+                                android:textColor="#2e988b"
+                                android:textSize="14sp"
+                                android:gravity="center_vertical|center_horizontal"
+                                android:layout_gravity="center" />
 
                             <ImageView
                                 android:layout_width="match_parent"
@@ -689,13 +704,20 @@
         </LinearLayout>
     </ScrollView>
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:srcCompat="@drawable/divide_line_furtherinfo_xh_720x1280"
+        android:id="@+id/imageView50" />
+
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:id="@+id/linearLayout11"
-        android:layout_height="45dp"
+        android:id="@+id/linearLayout_footer"
+        android:layout_height="wrap_content"
         android:paddingBottom="2dp"
-        android:background="#ffffff">
+        android:background="#ffffff"
+        android:paddingTop="8dp">
 
         <ImageButton
             android:layout_width="match_parent"
@@ -715,23 +737,61 @@
             android:background="#ffffff"
             android:layout_gravity="bottom" />
 
-        <ImageButton
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton_message_post"
-            android:src="@drawable/message_01"
-            android:layout_weight="1"
-            android:background="#ffffff"
-            android:layout_gravity="bottom" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
 
-        <ImageButton
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_message_post"
+                android:src="@drawable/message_01"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <TextView
+                android:text=" 1 "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView_footerMessage"
+                android:background="@drawable/bubble_red"
+                android:layout_marginLeft="45dp"
+                android:textSize="8sp"
+                android:padding="2dp"
+                android:textStyle="normal|bold"
+                android:visibility="invisible" />
+
+        </FrameLayout>
+
+        <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/imageButton_pending_post"
-            android:layout_weight="1"
-            android:src="@drawable/pending_01"
-            android:background="#ffffff"
-            android:layout_gravity="bottom" />
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_pending_post"
+                android:layout_weight="1"
+                android:src="@drawable/pending_01"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <TextView
+                android:text=" 1 "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView_footerPending"
+                android:background="@drawable/bubble_red"
+                android:layout_marginLeft="45dp"
+                android:textSize="8sp"
+                android:padding="2dp"
+                android:textStyle="normal|bold"
+                android:visibility="invisible" />
+
+        </FrameLayout>
 
         <ImageButton
             android:layout_width="match_parent"

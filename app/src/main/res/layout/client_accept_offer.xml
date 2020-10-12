@@ -2,18 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#ffffff">
+    android:background="#ffffff"
+    android:id="@+id/linearLayout_main">
+
     <include
         android:id="@+id/toolbar_register_template"
-        layout="@layout/client_register">
+        layout="@layout/toolbar_register">
     </include>
+
     <com.newnergy.para_client.CircleImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="100dp"
         android:id="@+id/imageView_pic"
         android:layout_gravity="center"
         android:src="@drawable/client_photo_round"
-        android:layout_marginTop="30dp" />
+        android:layout_marginTop="30dp"
+        android:layout_width="100dp" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -59,36 +62,6 @@
             android:layout_weight="1"
             android:textSize="20sp"
             android:textColor="#666666"
-            android:paddingRight="30dp"
-            android:gravity="right" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:orientation="horizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="12.5dp"
-        android:layout_marginBottom="12.5dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="Secured fund"
-            android:id="@+id/textView79"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:textColor="#009900"
-            android:gravity="left"
-            android:paddingLeft="40dp" />
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="$0"
-            android:id="@+id/textView78"
-            android:layout_weight="1"
-            android:textSize="20sp"
-            android:textColor="#009900"
             android:paddingRight="30dp"
             android:gravity="right" />
     </LinearLayout>

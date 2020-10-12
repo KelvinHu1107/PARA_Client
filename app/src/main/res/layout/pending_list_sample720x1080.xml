@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:background="#ffffff"
+        android:layout_height="75dp">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/linearLayout_pending"
+            android:layout_height="match_parent"
+            android:clickable="false">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <com.newnergy.para_client.CircleImageView
+                    android:layout_width="50dp"
+                    android:layout_height="match_parent"
+                    android:id="@+id/imageView_pic_pending"
+                    android:src="@drawable/client_photo_round"
+                    android:layout_margin="3dp"
+                    android:clickable="false" />
+
+                <TextView
+                    android:text="11 "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_indication"
+                    android:background="@drawable/bubble_red"
+                    android:layout_gravity="right"
+                    android:textSize="10sp"
+                    android:layout_marginRight="3dp"
+                    android:layout_marginTop="10dp"
+                    android:textColor="#f44336"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+
+            <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1">
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Title"
+
+                            android:id="@+id/textView_pending_name"
+                            android:textColor="#333333"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:layout_marginLeft="10dp"
+                            android:gravity="center_vertical"
+                        android:layout_weight="1"
+                        android:layout_marginTop="10dp" />
+
+                    <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:text="Budget"
+                            android:id="@+id/textView_pending_text"
+                            android:textColor="#666666"
+                            android:textSize="14sp"
+                            android:gravity="center_vertical"
+                            android:singleLine="true"
+                            android:lines="1"
+                            android:layout_marginTop="3dp"
+                        android:layout_weight="1.3"
+                        android:layout_marginLeft="10dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="100dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="5dp">
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="match_parent"
+                            android:text="Status"
+                            android:id="@+id/textView_pending_time"
+                            android:onClick="myClickHandler"
+                            android:textColor="#009900"
+                            android:textSize="15sp"
+                            android:layout_marginTop="3dp"
+                            android:lines="1"
+                            android:singleLine="true"
+                            android:gravity="center_vertical|right"
+                            android:textStyle="bold"
+                            android:paddingRight="12.5dp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="New Text"
+                            android:id="@+id/textView3" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView25"
+        android:src="@drawable/divide_line_furtherinfo_xh_720x1280"
+        android:background="#ffffff" />
+</LinearLayout>

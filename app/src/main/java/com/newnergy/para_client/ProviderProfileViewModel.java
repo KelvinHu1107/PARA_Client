@@ -26,8 +26,16 @@ public class ProviderProfileViewModel {
     private Integer CompanyId;
     private Integer LicenceId;
     private String ProviderType;
-
+    private String[] ProviderPhotos;
     private Double Rating;
+
+    public String[] getProviderPhotos() {
+        return ProviderPhotos;
+    }
+
+    public void setProviderPhotos(String[] servicePhotoUrl) {
+        ProviderPhotos = servicePhotoUrl;
+    }
 
     public String getProviderType() {
         return ProviderType;

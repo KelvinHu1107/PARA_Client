@@ -5,8 +5,8 @@
     android:background="#ffffff"
     android:orientation="vertical">
     <include
-        android:id="@+id/toolbar_notification"
-        layout="@layout/toolbar_notificaiton">
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
     </include>
 
     <ScrollView

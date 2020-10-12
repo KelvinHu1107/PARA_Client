@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollIndicators="top|left|bottom|start|end|right"
+    android:background="#ffffff">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:id="@+id/firstSection"
+        android:nestedScrollingEnabled="false"
+        android:layout_marginLeft="12.5dp"
+        android:layout_height="85dp">
+
+        <com.newnergy.para_client.CircleImageView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/imageView_pic"
+            android:src="@drawable/client_photo_round"
+            android:layout_gravity="center"
+            android:layout_weight="4.5"
+            android:layout_margin="5dp" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:outlineProvider="paddedBounds"
+            android:nestedScrollingEnabled="false"
+            android:layout_weight="1">
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="285dp"
+                android:layout_height="25dp"
+                android:nestedScrollingEnabled="false"
+                android:background="#ffffff"
+                android:paddingLeft="12.5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Pretty Girl"
+                    android:id="@+id/textView_name"
+                    android:textColor="#333333"
+                    android:textStyle="bold"
+                    android:background="#ffffff"
+                    android:textSize="15sp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:singleLine="true" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="St. Lukes"
+                    android:id="@+id/textView_status"
+                    android:textColor="#999999"
+                    android:textSize="12sp"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical"
+                    android:layout_marginLeft="50dp"
+                    android:layout_weight="1"
+                    android:paddingLeft="10dp" />
+
+            </LinearLayout>
+
+
+            <HorizontalScrollView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:id="@+id/horizontalScrollView"
+                android:nestedScrollingEnabled="true">
+
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:id="@+id/container_horizontal"
+                    android:scrollIndicators="left|start|end|right">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:scrollIndicators="left|right"
+                        android:paddingTop="10dp"
+                        android:paddingBottom="10dp"
+                        android:background="#ffffff">
+
+                        <LinearLayout
+                            android:orientation="horizontal"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:id="@+id/linearLayout_starContainer"
+                            android:layout_marginLeft="12.5dp">
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star1"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star2"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star3"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star4"
+                                android:layout_weight="1" />
+
+                            <ImageView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:srcCompat="@drawable/median_full_star"
+                                android:id="@+id/imageView_star5"
+                                android:layout_weight="1" />
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:text="Three Kings"
+                            android:id="@+id/textView_location"
+                            android:paddingLeft="12.5dp"
+                            android:textColor="#999999"
+                            android:textSize="12sp"
+                            android:paddingRight="12.5dp"
+                            android:layout_gravity="left"
+                            android:layout_marginLeft="55dp"
+                            android:gravity="right|center_vertical" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+            </HorizontalScrollView>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12.5dp"
+        android:layout_marginRight="12.5dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView13"
+            android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+    </LinearLayout>
+
+</LinearLayout>

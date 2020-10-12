@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,6 +14,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+
+import com.newnergy.para_client.Chat.Chat_SingleChat_db;
+import com.newnergy.para_client.Chat.Chat_User_db;
+import com.newnergy.para_client.Chat.Client_Message;
+import com.newnergy.para_client.Image_package.ImageUnity;
+import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Target;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
@@ -25,20 +33,83 @@ import java.util.regex.Pattern;
 
 public class Client_PlaceOrder extends AppCompatActivity {
 
-
-    private TextView  error, date;
+    private TextView  error, date, title;
     private EditText jobTitle, budget, street, suburb, city, description;
-    private ImageButton addPhoto, mainFooter, message, pending, profile;
+    private ImageButton addPhoto, mainFooter, profile;
     private ImageView photo1, photo2, photo3, photo4, photo5, picYes, picNo, cancel, save, info, send, priceYes, priceNo;
-    private Spinner spinner;
+    private Spinner spinner, taskDue;
     private ArrayList<Bitmap> bitmapArray = new ArrayList<Bitmap>();
-    private LinearLayout yes, no, taskDue, notice, main, budgetMain, budgetContainer, budgetYes, budgetNo;
+    private LinearLayout yes, no, notice, main, budgetMain, budgetContainer, budgetYes, budgetNo, placeOrderMain;
     private static final int REQUESTCODE=3;
-    private boolean isFundAdded = true, isBudgetKnown = false;
+    private boolean isFundAdded = false, isBudgetKnown = false;
     ImageUnity imageUnity = new ImageUnity();
     Context context = this;
     Loading_Dialog myLoading;
 
+    @Override
+    public void onResume()
+    {
+        super.onResume();
+        RefreshTokenController controller = new RefreshTokenController(){
+            @Override
+            public void response(boolean result) {
+
+                DataTransmitController c = new DataTransmitController() {
+                    @Override
+                    public void onResponse(String result) {
+                        super.onResponse(result);
+                        myLoading.CloseLoadingDialog();
+
+                        String outSide[] = result.trim().split("\"");
+
+                        String info1[] = ValueMessager.currentVersion.trim().split("\\.");
+                        String info2[] = outSide[1].trim().split("\\.");
+
+                        if(!info1[0].equals(info2[0])){
+                            Intent intent = new Intent(Client_PlaceOrder.this, Client_PopUp_Version.class);
+                            startActivity(intent);
+                        }
+                    }
+                };
+                c.execute("http://para.co.nz/api/version/getversion", "", "GET");
+            }
+        };
+
+        myLoading.ShowLoadingDialog();
+        controller.refreshToken(ValueMessager.email.toString(), ValueMessager.refreshToken);
+
+    }
+
+    public void messageNotification()
+    {
+        if(ValueMessager.notificationMessage>0) {
+            ValueMessager.textMessage.setVisibility(View.VISIBLE);
+            if(ValueMessager.notificationMessage > 0 && ValueMessager.notificationMessage < 10){
+                ValueMessager.textMessage.setText(" "+ValueMessager.notificationMessage+" ");
+            }else if(ValueMessager.notificationMessage > 9){
+                ValueMessager.textMessage.setText(String.valueOf(ValueMessager.notificationMessage));
+            }else if(ValueMessager.notificationMessage>99){
+                ValueMessager.textMessage.setText("99+");
+            }
+        }else{
+            ValueMessager.textMessage.setVisibility(View.INVISIBLE);
+        }
+
+        if(ValueMessager.notificationPending>0) {
+            ValueMessager.textPending.setVisibility(View.VISIBLE);
+            if (ValueMessager.notificationPending > 0 && ValueMessager.notificationPending < 10) {
+                ValueMessager.textPending.setText(" " + ValueMessager.notificationPending + " ");
+            } else if (ValueMessager.notificationPending > 9) {
+                if(isNumeric(String.valueOf(ValueMessager.notificationPending))) {
+                    ValueMessager.textPending.setText(String.valueOf(ValueMessager.notificationPending));
+                }
+            } else if (ValueMessager.notificationPending > 99) {
+                ValueMessager.textPending.setText("99+");
+            }
+        }else{
+            ValueMessager.textPending.setVisibility(View.INVISIBLE);
+        }
+    }
 
     public boolean isBudget (String number){
 
@@ -49,21 +120,19 @@ public class Client_PlaceOrder extends AppCompatActivity {
 
     public void sendImage(Bitmap newImg,int username) {
 
-        SendImageController controller = new SendImageController() {
+        SendServiceImageController controller = new SendServiceImageController() {
             @Override
-            public void onResponse(Boolean result) {
+            public void onResponse(String result) {
                 super.onResponse(result);
-                if (result) {
-                    System.out.println("yyyyyyyyyyyyyes");
-                } else {
-                    System.out.println("nnnnnnnnnnno");
-                }
+//                if (result) {
+//                    System.out.println("yyyyyyyyyyyyyes");
+//                } else {
+//                    System.out.println("nnnnnnnnnnno");
+//                }
             }
         };
-
         controller.setBitmap(newImg);
         controller.execute("http://para.co.nz/api/JobService/UploadImage/"+username);
-
     }
 
     public String readData(String openFileName){
@@ -74,7 +143,6 @@ public class Client_PlaceOrder extends AppCompatActivity {
             BufferedReader bufferedReader = new BufferedReader(inputStreamReader);
 
             ValueMessager.readDataBuffer = bufferedReader.readLine();
-
 
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -94,9 +162,6 @@ public class Client_PlaceOrder extends AppCompatActivity {
             public void onResponse(Integer result) {
                 super.onResponse(result);
 
-
-
-
                 ValueMessengerTaskInfo.id = result;
 
                 DataSendController status = new DataSendController(){
@@ -104,11 +169,11 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     public void onResponse(Boolean result) {
                         super.onResponse(result);
 
-                        System.out.println("wwwwwwwwww"+bitmapArray.size());
-
                         for(int i=0; i<bitmapArray.size(); i++){
                             sendImage(bitmapArray.get(i),ValueMessengerTaskInfo.id);
                         }
+
+                        ValueMessager.bitmapListPost.clear();
 
                         ValueMessager.selectedDay = "";
                         ValueMessager.selectedMonth = "";
@@ -145,10 +210,11 @@ public class Client_PlaceOrder extends AppCompatActivity {
 
             }
         };
-            placeOrderServiceViewModel.setClientEmail(readData("userEmail"));
-            placeOrderServiceViewModel.setTitle(jobTitle.getText().toString());
+        placeOrderServiceViewModel.setClientEmail(readData("userEmail"));
+        placeOrderServiceViewModel.setTitle(jobTitle.getText().toString());
+        placeOrderServiceViewModel.setType(spinner.getSelectedItem().toString());
         if (isBudgetKnown == false) {
-            budget.setText("-1.0");
+            budget.setText("0");
             placeOrderServiceViewModel.setBudget(Double.parseDouble(budget.getText().toString()));
             }
             else {
@@ -158,21 +224,24 @@ public class Client_PlaceOrder extends AppCompatActivity {
         placeOrderServiceViewModel.setSuburb(suburb.getText().toString());
         placeOrderServiceViewModel.setCity(city.getText().toString());
         placeOrderServiceViewModel.setDescription(description.getText().toString());
-        placeOrderServiceViewModel.setDueDate(ValueMessager.selectedDate);
+        placeOrderServiceViewModel.setDueDate(taskDue.getSelectedItem().toString());
 
-            String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
-            myLoading.ShowLoadingDialog();
-            c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
 
+        String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
+        myLoading.ShowLoadingDialog();
+        c.execute("http://para.co.nz/api/ClientJobService/AddService", data, "POST");
     }
 
     public void btnFunction(){
 
         main = (LinearLayout) findViewById(R.id.linearLayout_container);
+        placeOrderMain = (LinearLayout) findViewById(R.id.linearLayout_placeOrderMain);
         cancel = (ImageView) findViewById(R.id.imageView_back);
         error = (TextView) findViewById(R.id.textView_PO_error);
         save = (ImageView) findViewById(R.id.imageView_ok);
-        date = (TextView) findViewById(R.id.textView_placeOrder_date);
+        ValueMessager.textMessage = (TextView) findViewById(R.id.textView_footerMessage);
+        ValueMessager.textPending = (TextView) findViewById(R.id.textView_footerPending);
+        title = (TextView) findViewById(R.id.tree_field_title);
         jobTitle = (EditText) findViewById(R.id.editText_PO_workTitle);
         budget = (EditText) findViewById(R.id.editText_PO_budget);
         street = (EditText) findViewById(R.id.editText_PO_street);
@@ -182,8 +251,8 @@ public class Client_PlaceOrder extends AppCompatActivity {
         addPhoto = (ImageButton) findViewById(R.id.imageButton_addPhoto);
         mainFooter = (ImageButton) findViewById(R.id.imageButton_main_post);
         send = (ImageView) findViewById(R.id.imageView_send);
-        message = (ImageButton) findViewById(R.id.imageButton_message_post);
-        pending = (ImageButton) findViewById(R.id.imageButton_pending_post);
+        ValueMessager.footerMessage = (ImageButton) findViewById(R.id.imageButton_message_post);
+        ValueMessager.footerPending = (ImageButton) findViewById(R.id.imageButton_pending_post);
         profile = (ImageButton) findViewById(R.id.imageButton_setting_post);
         photo1 = (ImageView) findViewById(R.id.imageView_OP_photo1);
         photo2 = (ImageView) findViewById(R.id.imageView_OP_photo2);
@@ -196,14 +265,20 @@ public class Client_PlaceOrder extends AppCompatActivity {
         picNo = (ImageView) findViewById(R.id.imageView_addFund_false);
         info = (ImageView) findViewById(R.id.imageView_info);
         spinner = (Spinner) findViewById(R.id.spinner_OP);
+        taskDue = (Spinner) findViewById(R.id.spinner_dueDate);
         yes = (LinearLayout) findViewById(R.id.linearLayout_placeOrder_addFund_true);
         no = (LinearLayout) findViewById(R.id.linearLayout_placeOrder_addFund_false);
-        taskDue = (LinearLayout) findViewById(R.id.linearLayout_taskDue);
+        //taskDue = (LinearLayout) findViewById(R.id.linearLayout_taskDue);
         notice = (LinearLayout) findViewById(R.id.linearLayout_notice);
         budgetMain = (LinearLayout) findViewById(R.id.linearLayout_budget_container);
         budgetYes = (LinearLayout) findViewById(R.id.linearLayout_budgetYes);
         budgetNo = (LinearLayout) findViewById(R.id.linearLayout_budgetNo);
         budgetContainer = (LinearLayout) findViewById(R.id.linearLayout_editText_container);
+
+        messageNotification();
+
+        //cancel.setVisibility(View.INVISIBLE);
+        title.setText("Post a task");
 
         priceYes.setImageResource(R.drawable.circle);
         priceNo.setImageResource(R.drawable.dot);
@@ -211,7 +286,10 @@ public class Client_PlaceOrder extends AppCompatActivity {
         budgetMain.removeView(budgetContainer);
 
         save.setVisibility(View.INVISIBLE);
-        main.removeView(notice);
+        //main.removeView(notice);
+        placeOrderMain.removeView(main);
+
+
         photo1.setVisibility(View.INVISIBLE);
         photo2.setVisibility(View.INVISIBLE);
         photo3.setVisibility(View.INVISIBLE);
@@ -219,6 +297,86 @@ public class Client_PlaceOrder extends AppCompatActivity {
         photo5.setVisibility(View.INVISIBLE);
 
         error.setVisibility(View.INVISIBLE);
+
+        jobTitle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                jobTitle.setFocusable(true);
+                jobTitle.setFocusableInTouchMode(true);
+            }
+        });
+
+        street.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                street.setFocusable(true);
+                street.setFocusableInTouchMode(true);
+            }
+        });
+
+        suburb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                suburb.setFocusable(true);
+                suburb.setFocusableInTouchMode(true);
+            }
+        });
+
+        city.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                city.setFocusable(true);
+                city.setFocusableInTouchMode(true);
+            }
+        });
+
+        description.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                description.setFocusable(true);
+                description.setFocusableInTouchMode(true);
+            }
+        });
+
+        System.out.println("sssssssssssss"+ValueMessager.bitmapListPost.size());
+
+//        if(ValueMessager.bitmapListPost.size() == 1){
+//            photo1.setImageBitmap(ValueMessager.bitmapListPost.get(0));
+//            photo1.setVisibility(View.VISIBLE);
+//        }else if(ValueMessager.bitmapListPost.size() == 2){
+//            photo1.setImageBitmap(ValueMessager.bitmapListPost.get(0));
+//            photo1.setVisibility(View.VISIBLE);
+//            photo2.setImageBitmap(ValueMessager.bitmapListPost.get(1));
+//            photo2.setVisibility(View.VISIBLE);
+//        }else if(ValueMessager.bitmapListPost.size() == 3){
+//            photo1.setImageBitmap(ValueMessager.bitmapListPost.get(0));
+//            photo1.setVisibility(View.VISIBLE);
+//            photo2.setImageBitmap(ValueMessager.bitmapListPost.get(1));
+//            photo2.setVisibility(View.VISIBLE);
+//            photo3.setImageBitmap(ValueMessager.bitmapListPost.get(2));
+//            photo3.setVisibility(View.VISIBLE);
+//        }else if(ValueMessager.bitmapListPost.size() == 4){
+//            photo1.setImageBitmap(ValueMessager.bitmapListPost.get(0));
+//            photo1.setVisibility(View.VISIBLE);
+//            photo2.setImageBitmap(ValueMessager.bitmapListPost.get(1));
+//            photo2.setVisibility(View.VISIBLE);
+//            photo3.setImageBitmap(ValueMessager.bitmapListPost.get(2));
+//            photo3.setVisibility(View.VISIBLE);
+//            photo4.setImageBitmap(ValueMessager.bitmapListPost.get(3));
+//            photo4.setVisibility(View.VISIBLE);
+//        }else if(ValueMessager.bitmapListPost.size() == 5){
+//            photo1.setImageBitmap(ValueMessager.bitmapListPost.get(0));
+//            photo1.setVisibility(View.VISIBLE);
+//            photo2.setImageBitmap(ValueMessager.bitmapListPost.get(1));
+//            photo2.setVisibility(View.VISIBLE);
+//            photo3.setImageBitmap(ValueMessager.bitmapListPost.get(2));
+//            photo3.setVisibility(View.VISIBLE);
+//            photo4.setImageBitmap(ValueMessager.bitmapListPost.get(3));
+//            photo4.setVisibility(View.VISIBLE);
+//            photo5.setImageBitmap(ValueMessager.bitmapListPost.get(4));
+//            photo5.setVisibility(View.VISIBLE);
+//        }
+
 
         if(ValueMessager.isSettingDate) {
             if (DraftValues.title != "")
@@ -296,7 +454,6 @@ public class Client_PlaceOrder extends AppCompatActivity {
             }
         }
 
-
         if(ValueMessager.selectedDay != "")
         date.setText(ValueMessager.selectedDay+"/"+ValueMessager.selectedMonth+"/"+ValueMessager.selectedYear);
 
@@ -327,9 +484,21 @@ public class Client_PlaceOrder extends AppCompatActivity {
         cancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
-                ValueMessager.intent = intent;
-                createDraft();
+
+                if(jobTitle.getText().toString().equals("") && street.getText().toString().equals("") && suburb.getText().toString().equals("") &&
+                        city.getText().toString().equals("") && description.getText().toString().equals("")){
+
+                    ValueMessager.bitmapListPost.clear();
+
+                    Intent intent2 = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    startActivity(intent2);
+                }else {
+
+                    Intent intent = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    ValueMessager.intent = intent;
+
+                    createDraft();
+                }
 
             }
         });
@@ -337,7 +506,7 @@ public class Client_PlaceOrder extends AppCompatActivity {
         addPhoto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent uploadImage = new Intent(Client_PlaceOrder.this, SelectPicPopupWindowUploadImage.class);
+                Intent uploadImage = new Intent(Client_PlaceOrder.this, SelectPicForPlaceOrder.class);
                 startActivityForResult(uploadImage,REQUESTCODE);
 
             }
@@ -346,36 +515,80 @@ public class Client_PlaceOrder extends AppCompatActivity {
         mainFooter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
-                ValueMessager.intent = intent;
-                createDraft();
+
+                if(jobTitle.getText().toString().equals("") && street.getText().toString().equals("") && suburb.getText().toString().equals("") &&
+                        city.getText().toString().equals("") && description.getText().toString().equals("")){
+
+                    Intent intent2 = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    startActivity(intent2);
+                }else {
+
+                    Intent intent = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    ValueMessager.intent = intent;
+
+                    createDraft();
+                }
             }
         });
 
-        message.setOnClickListener(new View.OnClickListener() {
+        ValueMessager.footerMessage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Message.class);
-                ValueMessager.intent = intent;
-                createDraft();
+                if(ValueMessager.chat_db_Global!=null){
+                    ValueMessager.chat_db_Global.setAlreadyRead(ValueMessager.email.toString());
+                }
+
+                if(jobTitle.getText().toString().equals("") && street.getText().toString().equals("") && suburb.getText().toString().equals("") &&
+                        city.getText().toString().equals("") && description.getText().toString().equals("")){
+
+                    Intent intent2 = new Intent(Client_PlaceOrder.this, Client_Message.class);
+                    startActivity(intent2);
+                }else {
+
+                    Intent nextPage_Pending = new Intent(Client_PlaceOrder.this, Client_Message.class);
+                    startActivity(nextPage_Pending);
+
+                    createDraft();
+                }
             }
         });
 
-        pending.setOnClickListener(new View.OnClickListener() {
+        ValueMessager.footerPending.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Pending.class);
-                ValueMessager.intent = intent;
-                createDraft();
+
+                if(jobTitle.getText().toString().equals("") && street.getText().toString().equals("") && suburb.getText().toString().equals("") &&
+                        city.getText().toString().equals("") && description.getText().toString().equals("")){
+
+                    Intent intent2 = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    startActivity(intent2);
+                }else {
+
+                    Intent intent = new Intent(Client_PlaceOrder.this, Client_Pending.class);
+                    ValueMessager.intent = intent;
+
+                    createDraft();
+                }
             }
         });
 
         profile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Setting.class);
-                ValueMessager.intent = intent;
-                createDraft();
+
+                if(jobTitle.getText().toString().equals("") && street.getText().toString().equals("") && suburb.getText().toString().equals("") &&
+                        city.getText().toString().equals("") && description.getText().toString().equals("")){
+
+                    Intent intent2 = new Intent(Client_PlaceOrder.this, Client_Incoming_Services.class);
+                    startActivity(intent2);
+                }else {
+
+                    Intent intent = new Intent(Client_PlaceOrder.this, Client_Setting.class);
+                    ValueMessager.intent = intent;
+
+                    createDraft();
+                }
+
             }
         });
 
@@ -466,79 +679,76 @@ public class Client_PlaceOrder extends AppCompatActivity {
             }
         });
 
-        taskDue.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                if(jobTitle.getText().equals("")){}
-                    else{
-                    DraftValues.title = jobTitle.getText().toString();
-                }
-
-                DraftValues.category = spinner.getSelectedItem().toString();
-
-                if(isBudgetKnown == true) {
-                    if (budget.getText().toString() != "") {
-                        DraftValues.budget = budget.getText().toString();
-                    }
-                }
-
-                if(street.getText().equals("")){}
-                else{
-                    DraftValues.street = street.getText().toString();
-                }
-
-                if(suburb.getText().equals("")){}
-                else{
-                    DraftValues.suburb = suburb.getText().toString();
-                }
-
-                if(city.getText().equals("")){}
-                else{
-                    DraftValues.city = city.getText().toString();
-                }
-
-                if(description.getText().equals("")){}
-                else{
-                    DraftValues.description = description.getText().toString();
-                }
-
-                photo1.setDrawingCacheEnabled(true);
-                photo2.setDrawingCacheEnabled(true);
-                photo3.setDrawingCacheEnabled(true);
-                photo4.setDrawingCacheEnabled(true);
-                photo5.setDrawingCacheEnabled(true);
-
-
-
-
-                if(photo1.getDrawingCache() != null) {
-                    DraftValues.pic1 = photo1.getDrawingCache();
-                }
-                if(photo2.getDrawingCache() != null) {
-                    DraftValues.pic2 = photo2.getDrawingCache();
-
-                }
-                if(photo3.getDrawingCache() != null) {
-                    DraftValues.pic3 = photo3.getDrawingCache();
-
-                }
-                if(photo4.getDrawingCache() != null) {
-                    DraftValues.pic4 = photo4.getDrawingCache();
-
-                }
-                if(photo5.getDrawingCache() != null) {
-                    DraftValues.pic5 = photo5.getDrawingCache();
-                }
-
-                ValueMessager.lastPageCalender = "PlaceOrder";
-                ValueMessager.isSettingDate = true;
-
-                Intent intent = new Intent(Client_PlaceOrder.this, Client_Calender.class);
-                startActivity(intent);
-
-            }
-        });
+//        taskDue.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//
+//                if(jobTitle.getText().equals("")){}
+//                    else{
+//                    DraftValues.title = jobTitle.getText().toString();
+//                }
+//
+//                DraftValues.category = spinner.getSelectedItem().toString();
+//
+//                if(isBudgetKnown == true) {
+//                    if (budget.getText().toString() != "") {
+//                        DraftValues.budget = budget.getText().toString();
+//                    }
+//                }
+//
+//                if(street.getText().equals("")){}
+//                else{
+//                    DraftValues.street = street.getText().toString();
+//                }
+//
+//                if(suburb.getText().equals("")){}
+//                else{
+//                    DraftValues.suburb = suburb.getText().toString();
+//                }
+//
+//                if(city.getText().equals("")){}
+//                else{
+//                    DraftValues.city = city.getText().toString();
+//                }
+//
+//                if(description.getText().equals("")){}
+//                else{
+//                    DraftValues.description = description.getText().toString();
+//                }
+//
+//                photo1.setDrawingCacheEnabled(true);
+//                photo2.setDrawingCacheEnabled(true);
+//                photo3.setDrawingCacheEnabled(true);
+//                photo4.setDrawingCacheEnabled(true);
+//                photo5.setDrawingCacheEnabled(true);
+//
+//                if(photo1.getDrawingCache() != null) {
+//                    DraftValues.pic1 = photo1.getDrawingCache();
+//                }
+//                if(photo2.getDrawingCache() != null) {
+//                    DraftValues.pic2 = photo2.getDrawingCache();
+//
+//                }
+//                if(photo3.getDrawingCache() != null) {
+//                    DraftValues.pic3 = photo3.getDrawingCache();
+//
+//                }
+//                if(photo4.getDrawingCache() != null) {
+//                    DraftValues.pic4 = photo4.getDrawingCache();
+//
+//                }
+//                if(photo5.getDrawingCache() != null) {
+//                    DraftValues.pic5 = photo5.getDrawingCache();
+//                }
+//
+//                ValueMessager.lastPageCalender = "PlaceOrder";
+//                ValueMessager.isSettingDate = true;
+//
+//                Intent intent = new Intent(Client_PlaceOrder.this, Client_Calender.class);
+//                startActivity(intent);
+//
+//            }
+//        });
 
         send.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -552,7 +762,6 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     public void onResponse(Integer result) {
                         super.onResponse(result);
 
-
                         ValueMessengerTaskInfo.id = result;
 
                         DataSendController status = new DataSendController(){
@@ -563,6 +772,8 @@ public class Client_PlaceOrder extends AppCompatActivity {
                                 for(int i=0; i<bitmapArray.size(); i++){
                                     sendImage(bitmapArray.get(i),ValueMessengerTaskInfo.id);
                                 }
+
+                                ValueMessager.bitmapListPost.clear();
 
                                 myLoading.CloseLoadingDialog();
 
@@ -601,10 +812,10 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     }
                 };
 
-                if(date.getText() == ""){
-                    error.setVisibility(View.VISIBLE);
-                    error.setText("Date must be set!");
-                }
+//                if(date.getText() == ""){
+//                    error.setVisibility(View.VISIBLE);
+//                    error.setText("Date must be set!");
+//                }
 
                 if(jobTitle.getText().toString().equals(""))
                 {
@@ -659,8 +870,8 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     error.setText("Description can not be empty!");
                 }
 
-                if(jobTitle.getText().toString().equals("")||street.getText().toString().equals("")||suburb.getText().toString().equals("") || date.getText() ==""
-                        ||city.getText().toString().equals("")||description.getText().toString().equals("") || (isBudgetKnown== true && !isBudget(budget.getText().toString())) ||
+                if(jobTitle.getText().toString().equals("")||street.getText().toString().equals("")||suburb.getText().toString().equals("") ||
+                city.getText().toString().equals("")||description.getText().toString().equals("") || (isBudgetKnown== true && !isBudget(budget.getText().toString())) ||
                         (isBudgetKnown== true && Double.parseDouble(budget.getText().toString())<0)  ){
                     return;
                 }
@@ -674,12 +885,24 @@ public class Client_PlaceOrder extends AppCompatActivity {
                     else if(isBudgetKnown) {
                         placeOrderServiceViewModel.setBudget(Double.parseDouble(budget.getText().toString()));
                     }
+
                     placeOrderServiceViewModel.setStreet(street.getText().toString());
                     placeOrderServiceViewModel.setSuburb(suburb.getText().toString());
                     placeOrderServiceViewModel.setCity(city.getText().toString());
                     placeOrderServiceViewModel.setDescription(description.getText().toString());
                     placeOrderServiceViewModel.setIsSecure(isFundAdded);
-                    placeOrderServiceViewModel.setDueDate(ValueMessager.selectedDate);
+                    placeOrderServiceViewModel.setDueDate(taskDue.getSelectedItem().toString());
+
+                    if(isFundAdded){
+                        if(isBudgetKnown) {
+                            placeOrderServiceViewModel.setClientDeposit(0.0);
+                            placeOrderServiceViewModel.setIsSecure(true);
+                        }
+                        else if(!isBudgetKnown){
+                            placeOrderServiceViewModel.setClientDeposit(0.0);
+                            placeOrderServiceViewModel.setIsSecure(true);
+                        }
+                    }
 
                     String data = placeServiceDataConvert.convertModelToJson(placeOrderServiceViewModel);
                     myLoading.ShowLoadingDialog();
@@ -688,70 +911,99 @@ public class Client_PlaceOrder extends AppCompatActivity {
             }
         });
 
+//        InputMethodManager imm = (InputMethodManager) getSystemService(context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(0, InputMethodManager.HIDE_NOT_ALWAYS);
+
     }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == REQUESTCODE) {
             if (resultCode == RESULT_OK) {
-                String returnedResult = data.getStringExtra("test_String");
-                Bitmap bitmapFromPW = (Bitmap) data.getParcelableExtra("BitmapImage");
-                System.out.println("here: "+ bitmapFromPW);
-
-                UploadPhoto(bitmapFromPW);
+                String url = data.getStringExtra("ImageUrl");
+                UploadPhoto(url);
             }
         }
     }
 
-    private void UploadPhoto(Bitmap bitmapFromPW)
+    private void UploadPhoto(String bitmapFromPW)
     {
-
         ValueMessager.counter = ValueMessager.counter +1;
+
+        Target target = new Target() {
+            @Override
+            public void onBitmapLoaded(Bitmap bitmap, Picasso.LoadedFrom from) {
+                bitmapArray.add(bitmap);
+            }
+
+            @Override
+            public void onBitmapFailed(Drawable errorDrawable) {
+                // loading of the bitmap failed
+                // TODO do some action/warning/error message
+            }
+
+            @Override
+            public void onPrepareLoad(Drawable placeHolderDrawable) {
+
+            }
+        };
 
         if(photo1.getVisibility() == View.INVISIBLE)
         {
-            photo1.setImageBitmap(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(photo1);
             photo1.setVisibility(View.VISIBLE);
-            bitmapArray.add(bitmapFromPW) ;
+            Picasso.with(context).load("file://"+bitmapFromPW).into(target);
         }
         else if(photo1.getVisibility() == View.VISIBLE && photo2.getVisibility() == View.INVISIBLE )
         {
-            photo2.setImageBitmap(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(photo2);
             photo2.setVisibility(View.VISIBLE);
-            bitmapArray.add(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(target);
         }
         else if(photo2.getVisibility() == View.VISIBLE && photo3.getVisibility() == View.INVISIBLE  )
         {
-            photo3.setImageBitmap(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(photo3);
             photo3.setVisibility(View.VISIBLE);
-            bitmapArray.add(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(target);
         }
         else if(photo3.getVisibility() == View.VISIBLE && photo4.getVisibility() == View.INVISIBLE  )
         {
-            photo4.setImageBitmap(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(photo4);
             photo4.setVisibility(View.VISIBLE);
-            bitmapArray.add(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(target);
         }
         else if(photo4.getVisibility() == View.VISIBLE && photo5.getVisibility() == View.INVISIBLE  )
         {
-            photo5.setImageBitmap(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(photo5);
             photo5.setVisibility(View.VISIBLE);
-            bitmapArray.add(bitmapFromPW);
+            Picasso.with(context).load("file://"+bitmapFromPW).into(target);
         }
 
     }
 
-
+    public boolean isNumeric(String str)
+    {
+        Pattern pattern = Pattern.compile("[0-9]*");
+        Matcher isNum = pattern.matcher(str);
+        if( !isNum.matches() )
+        {
+            return false;
+        }
+        return true;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.client_place_order);
 
+        System.out.println("88888888888888");
+
         myLoading=new Loading_Dialog();
         myLoading.getContext(this);
+        ValueMessager.chat_db_Global =new Chat_SingleChat_db(Client_PlaceOrder.this);
+        ValueMessager.chat_User_db_Global=new Chat_User_db(Client_PlaceOrder.this);
 
         btnFunction();
-
     }
 }

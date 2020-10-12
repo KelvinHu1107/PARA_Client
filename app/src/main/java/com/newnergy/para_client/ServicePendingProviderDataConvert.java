@@ -26,6 +26,7 @@ public class ServicePendingProviderDataConvert {
                 jsvm.setPrice(object.getDouble("Price"));
                 jsvm.setProviderProfilePhoto(object.getString("ProviderProfilePhoto"));
                 jsvm.setProviderRating(object.getDouble("ProviderRating"));
+                jsvm.setProviderDeposit(object.getDouble("ProviderDeposit"));
                 jsvm.setProviderFirstname(object.getString("ProviderFirstname"));
                 jsvm.setProivderLastname(object.getString("ProivderLastname"));
                 result.add(jsvm);

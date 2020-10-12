@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.Toolbar xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:id="@+id/toolbar_register_template"
+    android:layout_height="@dimen/toolbar__header_high"
+    android:background="@color/HeaderColor"
+    android:titleTextColor="@android:color/white">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginRight="@dimen/toolbar_right_marge">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView_back"
+            android:src="@drawable/go_back"
+            android:layout_gravity="center"
+            android:padding="12.5dp" />
+
+        <TextView
+            android:id="@+id/tree_field_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="Register"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/toolbar_font_color"
+            android:textSize="20sp"
+            android:gravity="center"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView_ok"
+            android:layout_gravity="center"
+            android:src="@drawable/confirm_tick"
+            android:padding="12.5dp" />
+
+    </LinearLayout>
+</android.support.v7.widget.Toolbar>

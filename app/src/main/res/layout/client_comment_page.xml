@@ -3,8 +3,8 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
     <include
-        android:id="@+id/toolbar_rating"
-        layout="@layout/toolbar_rating">
+        android:id="@+id/toolbar_register_template"
+        layout="@layout/toolbar_register">
     </include>
 
     <LinearLayout

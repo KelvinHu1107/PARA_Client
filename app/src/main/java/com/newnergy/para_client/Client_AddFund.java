@@ -37,7 +37,7 @@ public class Client_AddFund extends AppCompatActivity {
                 ClientPendingDetailDataConvert clientPendingDetailDataConvert = new ClientPendingDetailDataConvert();
                 jsm = clientPendingDetailDataConvert.convertJsonToModel(result);
 
-                previousNum.setText(jsm.getDeposit().toString());
+                previousNum.setText(jsm.getExtraDeposit().toString());
 
                 btnFunctions();
                 myLoading.CloseLoadingDialog();
@@ -95,7 +95,7 @@ public class Client_AddFund extends AppCompatActivity {
 
                         model.setServiceId(ValueMessengerTaskInfo.id);
                         model.setIsSecure(true);
-                        model.setDeposit(Double.parseDouble(editText.getText().toString()) + jsm.getDeposit());
+                        model.setDeposit(Double.parseDouble(editText.getText().toString()) + jsm.getExtraDeposit());// Modified, set "Extra Deposit"!!! by getting extra deposit.
                         String data = convert.ModelToJson(model);
 
                         c.execute("http://para.co.nz/api/ClientJobService/updatejobservice", data, "PUT");

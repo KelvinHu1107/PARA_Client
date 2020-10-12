@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+    <include
+        android:id="@+id/toolbar_pending"
+        layout="@layout/toolbar_pending">
+    </include>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="75dp"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:layout_marginRight="12.5dp"
+            android:background="@drawable/border_radius"
+            android:layout_marginBottom="25dp"
+            android:layout_marginTop="12.5dp"
+            android:layout_marginLeft="12.5dp">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Jobs on pending"
+                android:id="@+id/textView4"
+                android:textColor="#333333"
+                android:layout_weight="1"
+                android:gravity="center_vertical|center_horizontal"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="Number"
+                android:id="@+id/textView_pending_number"
+                android:layout_weight="1"
+                android:textColor="#666666"
+                android:gravity="center_vertical|right"
+                android:paddingRight="40dp"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView2"
+        android:src="@drawable/divide_line_furtherinfo_xh_720x1280" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:id="@+id/main_layout_pending"
+        android:layout_height="match_parent"
+        android:weightSum="1"
+        android:background="#ffffff">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/body_layout_pending"
+            android:layout_height="427dp"
+            android:layout_weight="1" >
+
+            <ListView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/listView_pending"
+                android:layout_weight="1"
+                android:background="#ffffff" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/divide_line_furtherinfo_xh_720x1280"
+            android:id="@+id/imageView42"
+            android:layout_weight="1" />
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:id="@+id/footer_layout_pending"
+            android:layout_height="45dp"
+            android:paddingBottom="2dp"
+            android:layout_marginTop="8dp">
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_pending_to_main"
+                android:layout_weight="1"
+                android:src="@drawable/main_02"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_post_pending"
+                android:layout_weight="1"
+                android:src="@drawable/post_01"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <FrameLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+                <ImageButton
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imageButton_pending_to_message"
+                    android:src="@drawable/message_01"
+                    android:layout_weight="1"
+                    android:background="#ffffff"
+                    android:layout_gravity="bottom" />
+
+                <TextView
+                    android:text=" 1 "
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textView_footerMessage"
+                    android:background="@drawable/bubble_red"
+                    android:layout_marginLeft="45dp"
+                    android:textSize="8sp"
+                    android:padding="2dp"
+                    android:textStyle="normal|bold"
+                    android:visibility="invisible" />
+
+            </FrameLayout>
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_pending_pending"
+                android:layout_weight="1"
+                android:src="@drawable/pending_02"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+
+            <ImageButton
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageButton_pending_to_profile"
+                android:src="@drawable/client_setting_01"
+                android:layout_weight="1"
+                android:background="#ffffff"
+                android:layout_gravity="bottom" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

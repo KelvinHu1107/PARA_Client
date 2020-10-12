@@ -14,18 +14,19 @@
         android:layout_marginRight="@dimen/toolbar_right_marge">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/imageView_back"
             android:src="@drawable/go_back"
             android:layout_gravity="center"
-            android:padding="12.5dp" />
+            android:padding="12.5dp"
+            android:layout_weight="2" />
 
         <TextView
             android:id="@+id/tree_field_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
             android:text="Register"
             android:layout_gravity="center_vertical"
             android:textColor="@color/toolbar_font_color"
@@ -34,12 +35,13 @@
             android:textStyle="bold" />
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:id="@+id/imageView_ok"
             android:layout_gravity="center"
             android:src="@drawable/confirm_tick"
-            android:padding="12.5dp" />
+            android:padding="12.5dp"
+            android:layout_weight="2" />
 
     </LinearLayout>
 </android.support.v7.widget.Toolbar>
